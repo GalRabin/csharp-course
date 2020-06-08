@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace EX3
@@ -6,7 +7,7 @@ namespace EX3
     {
         private Dictionary<string, GarageVehicle> garageVehicles;
 
-        public void addGarageVeichle(GarageVehicle vehicle)
+        public void AddGarageVehicle(GarageVehicle vehicle)
         {
             string vehicleLicenseNumber = vehicle.Vehicle.LicenseNumber;
             if (garageVehicles.ContainsKey(vehicleLicenseNumber))
@@ -49,6 +50,14 @@ namespace EX3
             // TODO handling if not exists
 
             return garageVehicles[licenseNumber];
+        }
+    }
+
+    public class GarageRegistrationException : Exception
+    {
+        public GarageRegistrationException(string message)
+            : base(message)
+        {
         }
     }
 }

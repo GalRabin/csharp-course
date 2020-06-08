@@ -1,9 +1,12 @@
+using System;
+
 namespace EX3
 {
     public class Car : Vehicle
     {
         public enum CarColors
         {
+            None,
             Red,
             Blue,
             Black,
@@ -11,16 +14,48 @@ namespace EX3
         }
 
         private int numberOfDoors;
-        private CarColors colors;
-        
-        public Car(string modelName, string licenseNumber, int numberOfDoors, CarColors colors) : base(modelName, licenseNumber)
+        private CarColors color;
+
+        public CarColors Color
         {
-            this.numberOfDoors = numberOfDoors;
-            this.colors = colors;
+            get
+            {
+                return color;
+            }
+            set
+            {    
+                if (!Enum.IsDefined(typeof(CarColors), (int) value))
+                {
+                    color = CarColors.None;
+                    throw new ArgumentException("Invalid color value");
+                }
+
+                color = value;
+            }
         }
 
-        public CarColors Colors => colors;
+        public int NumberOfDoors
+        {
+            get
+            {
+              return  numberOfDoors;
+            }
+            set
+            {
+                if (IsValidNumberOfDoors(value))
+                {
+                    numberOfDoors = value;   
+                }
+                else
+                {
+                    throw new ArgumentException("Number of doors is not valid");
+                }
+            }
+        }
 
-        public int NumberOfDoors => numberOfDoors;
+        private static bool IsValidNumberOfDoors(int numberOfDoors)
+        {
+            return numberOfDoors >= 2 && numberOfDoors <= 5;
+        }
     }
 }

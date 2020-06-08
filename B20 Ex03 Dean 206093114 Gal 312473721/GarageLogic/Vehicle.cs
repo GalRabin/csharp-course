@@ -1,21 +1,48 @@
+using System;
+
 namespace EX3
 {
     public abstract class Vehicle
     {
         private string modelName;
         private string licenseNumber;
-        private ElectricEngine electricEngine;
-        private FuelEngine fuelEngine;
+        private object engine;
 
-        public Vehicle(string modelName, string licenseNumber)
+        public string ModelName
         {
-            this.modelName = modelName;
-            this.licenseNumber = licenseNumber;
+            get
+            {
+                return modelName;
+            }
+            set
+            {
+                modelName = value;   
+            }
         }
 
-        public string ModelName => modelName;
+        public string LicenseNumber
+        {
+            get
+            {
+                return licenseNumber;
+            }
+            set
+            {
+                licenseNumber = value;
+            }
+        }
 
-        public string LicenseNumber => licenseNumber;
+        public object Engine
+        {
+            get
+            {
+                return engine;
+            }
+            set
+            {
+                engine = value;
+            }
+        }
 
         public float RemainingEnergyPrecentage()
         {
@@ -23,11 +50,6 @@ namespace EX3
             float remainingEnergy = 2;
 
             return remainingEnergy;
-        }
-
-        public void SetEngine(object engine)
-        {
-            // TODO same for all, errors handling
         }
     }
 }

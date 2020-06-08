@@ -19,7 +19,7 @@ namespace EX3
             this.ownerName = ownerName;
             this.phoneNumber = phoneNumber;
             this.vehicle = vehicle;
-            this.vehicleStatus = VehicleGarageStatus.InRepair;
+            vehicleStatus = VehicleGarageStatus.InRepair;
         }
 
         public string OwnerName => ownerName;
@@ -28,7 +28,7 @@ namespace EX3
 
         public Vehicle Vehicle => vehicle;
 
-        public VehicleGarageStatus VeiclStatus
+        public VehicleGarageStatus VehicleStatus
         {
             get => vehicleStatus;
             set => vehicleStatus = value;

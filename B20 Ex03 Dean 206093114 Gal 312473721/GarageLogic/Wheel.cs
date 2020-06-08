@@ -1,3 +1,5 @@
+using System;
+
 namespace EX3
 {
     public class Wheel
@@ -22,6 +24,14 @@ namespace EX3
         public void InflateAction(float pressureToAdd)
         {
             // should throw exception if over load
+        }
+    }
+    
+    public class WheelException : Exception
+    {
+        public WheelException(string message)
+            : base(message)
+        {
         }
     }
 }

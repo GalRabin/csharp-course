@@ -1,3 +1,5 @@
+using System;
+
 namespace EX3
 {
     public class ElectricEngine

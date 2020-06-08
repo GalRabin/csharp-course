@@ -1,32 +1,52 @@
+using System;
+
 namespace EX3
 {
     public class Motorcycle : Vehicle
     {
         public enum MotorCycleLicenseTypes
         {
-            A1,
-            A,
-            AA,
-            B
+            None = 0,
+            A1 = 1,
+            A = 2,
+            AA = 3,
+            B = 4
         }
         
-        private MotorCycleLicenseTypes licenseTypes;
+        private MotorCycleLicenseTypes licenseType;
         private int engineVolume;
 
-        public Motorcycle(string modelName, string licenseNumber, MotorCycleLicenseTypes licenseTypes, int engineVolume) : base(modelName, licenseNumber)
+
+        public MotorCycleLicenseTypes LicenseType
         {
-            this.licenseTypes = licenseTypes;
-            this.engineVolume = engineVolume;
-        }
-        
-        public MotorCycleLicenseTypes LicenseTypes
-        {
-            get => licenseTypes;
+            get
+            {
+                return licenseType;
+            }
+
+            set
+            {
+                if (!Enum.IsDefined(typeof(MotorCycleLicenseTypes), (int) value))
+                {
+                    licenseType = MotorCycleLicenseTypes.None;
+                    throw new ArgumentException("Invalid license value");
+                }
+
+                licenseType = value;
+            }
         }
 
         public int EngineVolume
         {
-            get => engineVolume;
+            get
+            {
+                return engineVolume;   
+            }
+            
+            set
+            {
+                engineVolume = value;   
+            }
         }
     }
 }

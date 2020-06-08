@@ -1,9 +1,12 @@
+using System;
+
 namespace EX3
 {
     public class FuelEngine
     {
         public enum FuelTypes
         {
+            None,
             Soler,
             Octane95,
             Octane96,
@@ -30,6 +33,24 @@ namespace EX3
         public void RefuelOperation(float litersToRefuel)
         {
             // TODO refuel , throw error if exceeds max
+        }
+        
+        public static bool TryParseFuelType(string fuelValue, out FuelTypes o_fuelType)
+        {
+            bool validFuelType = false;
+            int fuelAsInteger;
+            
+            if (int.TryParse(fuelValue, out fuelAsInteger) && Enum.IsDefined(typeof(FuelTypes), fuelAsInteger))
+            {
+                Enum.TryParse(fuelValue, out o_fuelType);
+                validFuelType = true;
+            }
+            else
+            {
+                o_fuelType = FuelTypes.None;
+            }
+            
+            return validFuelType;
         }
     }
 }

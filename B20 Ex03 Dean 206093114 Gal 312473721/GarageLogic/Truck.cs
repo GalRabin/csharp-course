@@ -4,15 +4,29 @@ namespace EX3
     {
         private bool containsDangerousMaterials;
         private float cargoVolume;
-        
-        public Truck(string modelName, string licenseNumber, float cargoVolume, bool containsDangerousMaterials) : base(modelName, licenseNumber)
+
+        public bool ContainsDangerousMaterials
         {
-            this.cargoVolume = cargoVolume;
-            this.containsDangerousMaterials = containsDangerousMaterials;
+            get
+            {
+                return containsDangerousMaterials;
+            }
+            set
+            {
+                containsDangerousMaterials = value;
+            } 
         }
 
-        public bool ContainsDangerousMaterials => containsDangerousMaterials;
-
-        public float CargoVolume => cargoVolume;
+        public float CargoVolume
+        {
+            get
+            {
+                return cargoVolume;
+            }
+            set
+            {
+                cargoVolume = value;
+            }
+        }
     }
 }

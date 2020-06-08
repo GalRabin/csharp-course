@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>EX2</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="Ex02.ConsoleUtils, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\..\..\Volumes\GoogleDrive\My Drive\IDC\Computer science\year_C\Semester B\CS\C#\HW\ex2\DN_IDC_2020B_Ex02\Ex02.ConsoleUtils.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

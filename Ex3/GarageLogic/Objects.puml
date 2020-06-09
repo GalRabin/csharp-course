@@ -1,6 +1,4 @@
 @startuml
-@startuml
-scale 2
 abstract class Vehicle {
     +ModelName: string
     +LicenseNumber: string
@@ -41,4 +39,4 @@ Speaker "1" *-- "*" Topic
 Event "1" o-- "*" Speaker
 Event "1" o-- "*" Attendee
 @enduml
-@enduml
+

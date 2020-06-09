@@ -1,4 +1,12 @@
 @startuml
+class Garage {
+
+}
+
+class GarageVehicle {
+
+}
+
 abstract class Vehicle {
     +ModelName: string
     +LicenseNumber: string
@@ -7,36 +15,32 @@ abstract class Vehicle {
     -RemainingEnergyPercentage()
 }
 
-class ApplicationUser {
-    -userName: string
-    -password: string
-    +isLocked: boolean
-    -suggestRandomPasswod()
-    +changeProfilePic()
+class Car {
 }
 
-class Speaker {
-    +openForSpeaking: boolean
-    -callForAction()
-    +applyAsSpokePerson()
+class Truck {
+
 }
 
-class Topic {
-    +title: string
-    +sourceCodeUrl: string
-    +downloadMaterials()
+class Motorcycle {
+
 }
 
-class Attendee {
-    -eventAttended: number
-    -suggestEventBasedOnPreference()
-    +registerForTicket()
+class FuelEngine {
+
 }
 
-ApplicationUser <|-- Speaker
-ApplicationUser <|-- Attendee
-Speaker "1" *-- "*" Topic
-Event "1" o-- "*" Speaker
-Event "1" o-- "*" Attendee
+class ElectricEngine {
+
+}
+
+Garage *-- GarageVehicle
+GarageVehicle *-- Vehicle
+Vehicle <|-- Car
+Vehicle <|-- Truck
+Vehicle <|-- Motorcycle
+Vehicle *-- FuelEngine
+Vehicle *-- ElectricEngine
+
 @enduml
 

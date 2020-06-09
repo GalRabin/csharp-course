@@ -17,40 +17,51 @@ namespace EX3
         private float currentAmountOfFuelsLiters;
         private float maxAmountOfFuelsLiters;
 
-        public FuelEngine(FuelTypes fuelType, float currentAmountOfFuelsLiters, float maxAmountOfFuelsLiters)
+        public FuelTypes FuelType
         {
-            this.fuelType = fuelType;
-            this.currentAmountOfFuelsLiters = currentAmountOfFuelsLiters;
-            this.maxAmountOfFuelsLiters = maxAmountOfFuelsLiters;
+            get
+            {
+                return fuelType;
+            }
+            set
+            {
+                if (!Enum.IsDefined(typeof(FuelTypes), (int) value))
+                {
+                    fuelType = FuelTypes.None;
+                    throw new ArgumentException("Invalid fuel type");
+                }
+
+                fuelType = value;  
+            } 
         }
 
-        public FuelTypes FuelType => fuelType;
+        public float MaxAmountOfFuelsLiters
+        {
+            get
+            {
+                return maxAmountOfFuelsLiters;
+            }
+            set
+            {
+                maxAmountOfFuelsLiters = value;  
+            } 
+        }
 
-        public float MaxAmountOfFuelsLiters => maxAmountOfFuelsLiters;
-        
-        public float CurrentAmountOfFuelsLiters => currentAmountOfFuelsLiters;
+        public float CurrentAmountOfFuelsLiters
+        {
+            get
+            {
+                return currentAmountOfFuelsLiters;
+            }
+            set
+            {
+                currentAmountOfFuelsLiters = value;   
+            }
+        }
 
         public void RefuelOperation(float litersToRefuel)
         {
             // TODO refuel , throw error if exceeds max
-        }
-        
-        public static bool TryParseFuelType(string fuelValue, out FuelTypes o_fuelType)
-        {
-            bool validFuelType = false;
-            int fuelAsInteger;
-            
-            if (int.TryParse(fuelValue, out fuelAsInteger) && Enum.IsDefined(typeof(FuelTypes), fuelAsInteger))
-            {
-                Enum.TryParse(fuelValue, out o_fuelType);
-                validFuelType = true;
-            }
-            else
-            {
-                o_fuelType = FuelTypes.None;
-            }
-            
-            return validFuelType;
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace EX3
 {
@@ -6,7 +7,9 @@ namespace EX3
     {
         private string modelName;
         private string licenseNumber;
-        private object engine;
+        private FuelEngine fuelEngine;
+        private ElectricEngine electricEngine;
+        private List<Wheel> wheels;
 
         public string ModelName
         {
@@ -36,17 +39,44 @@ namespace EX3
         {
             get
             {
-                return engine;
+                if (electricEngine != null)
+                {
+                    return electricEngine;
+                }
+                if (fuelEngine != null)
+                {
+                    return fuelEngine;
+                }
+
+                return null;
             }
             set
             {
-                engine = value;
+                electricEngine = null;
+                fuelEngine = null;
+                if (value is FuelEngine)
+                {
+                    fuelEngine = (FuelEngine)value;
+                }
+                else if (value is ElectricEngine)
+                {
+                    electricEngine = (ElectricEngine)value;
+                }
+                else
+                {
+                    throw new ArgumentException("Not valid engien object");
+                }
             }
+        }
+
+        public void AppendWheel(Wheel wheel)
+        {
+            wheels.Add(wheel);
         }
 
         public float RemainingEnergyPrecentage()
         {
-            // should get it form engine
+            // TODO implement
             float remainingEnergy = 2;
 
             return remainingEnergy;

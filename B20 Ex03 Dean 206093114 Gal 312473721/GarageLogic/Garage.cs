@@ -5,14 +5,14 @@ namespace EX3
 {
     public class Garage
     {
-        private Dictionary<string, GarageVehicle> garageVehicles;
+        private Dictionary<string, GarageVehicle> garageVehicles = new Dictionary<string, GarageVehicle>();
 
         public void AddGarageVehicle(GarageVehicle vehicle)
         {
             string vehicleLicenseNumber = vehicle.Vehicle.LicenseNumber;
             if (garageVehicles.ContainsKey(vehicleLicenseNumber))
             {
-                // TODO throw error 
+                throw new ArgumentException($"Vehicle with plate {vehicleLicenseNumber} already exists");
             }
             garageVehicles.Add(vehicleLicenseNumber, vehicle);
         }

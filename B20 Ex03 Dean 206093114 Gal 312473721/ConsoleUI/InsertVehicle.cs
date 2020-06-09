@@ -1,308 +1,158 @@
 using System;
-using System.Collections.Generic;
+using System.Security.Policy;
 
 namespace EX3
 {
     public class InsertVehicle
     {
-        private static string getModelNameFromUser()
-        {
-            Console.Write("Enter car model name: ");
-            
-            return Console.ReadLine();
-        }
-
-        private static string getLicenseNumberFromUser()
-        {
-            Console.Write("Enter car license number: ");
-            return Console.ReadLine();
-        }
-        
-        private enum EngineType
-        {
-            Electric = 1,
-            Fuel = 2
-        }
-
         private static ElectricEngine getElectricEngineFromUser()
-        {
-            float remainingTimeOfEngineHours, maxTimeOfEngineHours;
+        { 
+            ElectricEngine newEngine = new ElectricEngine();
             Console.Write("Enter engine remaining hours: ");
-            while (!float.TryParse(Console.ReadLine(), out remainingTimeOfEngineHours))
-            {
-                Console.Write("Invalid input - Please enter valid float input: ");
-            }
-            
+            Utils.getValidPropertyFromUser(newEngine,"RemainingTimeOfEngineHours", typeof(float));
             Console.Write("Enter engine max hours: ");
-            while (!float.TryParse(Console.ReadLine(), out maxTimeOfEngineHours))
+            Utils.getValidPropertyFromUser(newEngine, "MaxTimeOfEngineHours", typeof(float));
+
+            return newEngine;
+        }
+
+        private static Wheel getWheelFromUser()
+        {
+            Wheel newWheel = new Wheel();
+            Console.Write("Enter wheel manufacture name: ");
+            Utils.getValidPropertyFromUser(newWheel, "ManufactureName");
+            Console.Write("Enter wheel max presure: ");
+            Utils.getValidPropertyFromUser(newWheel, "MaxAirPressure");
+            Console.Write("Enter wheel current presure: ");
+            Utils.getValidPropertyFromUser(newWheel, "CurrentAirPressure");
+
+            return newWheel;
+        }
+
+        private static void getWheels(Vehicle vehicle, int numberOfWheels)
+        {
+            for (int i = 0; i < numberOfWheels; i++)
             {
-                Console.Write("Invalid input - Please enter valid float input: ");
+                vehicle.AppendWheel(getWheelFromUser());
             }
-            
-            return new ElectricEngine(remainingTimeOfEngineHours, maxTimeOfEngineHours);
         }
 
         private static FuelEngine getFuelEngineFromUser()
         {
-            FuelEngine.FuelTypes fuelType;
-            float currentAmountOfFuelsLiters;
-            float maxAmountOfFuelsLiters;
-            
+            FuelEngine newEngine = new FuelEngine();
+            // Remaining fuel
             Console.Write("Enter current amount of fuel: ");
-            while (!float.TryParse(Console.ReadLine(), out currentAmountOfFuelsLiters))
-            {
-                Console.Write("Invalid input - Please enter valid float input: ");
-            }
-            
+            Utils.getValidPropertyFromUser(newEngine, "CurrentAmountOfFuelsLiters", typeof(float));
+            // Max fuel
             Console.Write("Enter max amount of fuel: ");
-            while (!float.TryParse(Console.ReadLine(), out maxAmountOfFuelsLiters))
-            {
-                Console.Write("Invalid input - Please enter valid float input: ");
-            }
-            
-            Console.Write($@"
-Please choose fuel type:
-{(int)FuelEngine.FuelTypes.Soler}. {FuelEngine.FuelTypes.Soler}.
-{(int)FuelEngine.FuelTypes.Octane95}. {FuelEngine.FuelTypes.Octane95}.
-{(int)FuelEngine.FuelTypes.Octane96}. {FuelEngine.FuelTypes.Octane96}.
-{(int)FuelEngine.FuelTypes.Octane98}. {FuelEngine.FuelTypes.Octane98}.
+            Utils.getValidPropertyFromUser(newEngine, "MaxAmountOfFuelsLiters", typeof(float));
+            // Get fuel type
+            Utils.printPrettyEnumChoices(typeof(FuelEngine.FuelTypes), "Please choose fuel type", "Choose fuel type");
+            newEngine.FuelType = (FuelEngine.FuelTypes)Utils.getValidEnumFromUser(typeof(FuelEngine.FuelTypes));
 
-Please choose fuel type: ");
-            while (!FuelEngine.TryParseFuelType(Console.ReadLine(), out fuelType))
-            {
-                Console.Write("Invalid input - Please enter valid fuel type number: ");
-            }
-            
-            return new FuelEngine(fuelType, currentAmountOfFuelsLiters, maxAmountOfFuelsLiters);
+            return newEngine;
         }
 
-        private static object getEngineFromUser(VehicleTypes vehicleType)
+        private static void getEngineFromUser(Vehicle vehicle)
         {
-            EngineType engineType;
-            object engine = null;
-            bool isDefinedResult;
-            Console.Write($@"
-Please engine of {vehicleType}:
-{(int)EngineType.Electric}. {EngineType.Electric}.
-{(int)EngineType.Fuel}. {EngineType.Fuel}.
-
-Please choose engine type: ");
-            do
+            Utils.printPrettyEnumChoices(typeof(Utils.EngineType), "Please choose engine type", "Choose engine type");
+            switch (Utils.getValidEnumFromUser(typeof(Utils.EngineType)))
             {
-                Enum.TryParse(Console.ReadLine(), out engineType);
-                isDefinedResult = Enum.IsDefined(typeof(EngineType), (int)engineType);
-                if (!isDefinedResult)
-                {
-                    Console.Write("Invalid input please choose engine type: ");
-                }
-            } while (!isDefinedResult);
-
-            switch (engineType)
-            {
-                case EngineType.Electric:
-                    engine = getElectricEngineFromUser();
+                case Utils.EngineType.Electric:
+                    vehicle.Engine = getElectricEngineFromUser();
                     break;
-                case EngineType.Fuel:
-                    engine = getFuelEngineFromUser();
+                case Utils.EngineType.Fuel:
+                    vehicle.Engine = getFuelEngineFromUser();
                     break;
             }
-
-            return engine;
+        }
+        
+        private static void getSharedVehicleParametersFromUser(Vehicle vehicle)
+        {
+            Console.Write("Enter car model name: ");
+            vehicle.ModelName = Console.ReadLine();
+            Console.Write("Enter car license number: ");
+            vehicle.LicenseNumber = Console.ReadLine();
         }
 
         private static Motorcycle CreateMotocycle()
         {
             Motorcycle newMotocycle = new Motorcycle();
-            newMotocycle.ModelName = getModelNameFromUser();
-            newMotocycle.LicenseNumber = getLicenseNumberFromUser();
-            int licenseType;
-            int engineVolume;
-
-            Console.Write($@"
-Please choose motorcycle license type:
-{(int)Motorcycle.MotorCycleLicenseTypes.A1}. {Motorcycle.MotorCycleLicenseTypes.A1}.
-{(int)Motorcycle.MotorCycleLicenseTypes.A}. {Motorcycle.MotorCycleLicenseTypes.A}.
-{(int)Motorcycle.MotorCycleLicenseTypes.AA}. {Motorcycle.MotorCycleLicenseTypes.AA}.
-{(int)Motorcycle.MotorCycleLicenseTypes.B}. {Motorcycle.MotorCycleLicenseTypes.B}.
-
-Please choose license type number: ");
-            while (true)
-            {
-                while (!int.TryParse(Console.ReadLine(), out licenseType))
-                {
-                    Console.Write("Invalid input - enter valid license type: ");
-                }
-
-                try
-                {
-                    newMotocycle.LicenseType = (Motorcycle.MotorCycleLicenseTypes)licenseType;
-                    break;
-                }
-                catch (ArgumentException e)
-                {
-                    Console.Write("Invalid input - enter valid license type: ");
-                }
-            }
-            
+            // Model and plate
+            getSharedVehicleParametersFromUser(newMotocycle);
+            // License type configuration
+            Utils.printPrettyEnumChoices(typeof(Motorcycle.MotorCycleLicenseTypes), "Please choose motorcycle license type", "Choose license type");
+            newMotocycle.LicenseType = (Motorcycle.MotorCycleLicenseTypes)Utils.getValidEnumFromUser(typeof(Motorcycle.MotorCycleLicenseTypes));
+            // Engine volume configuration
             Console.Write("Enter motorcycle engine volume as float (e.g. 300): ");
-            while (true)
-            {
-                while (!int.TryParse(Console.ReadLine(), out engineVolume))
-                {
-                    Console.Write("Invalid input - enter volume, enter again: ");
-                }
+            Utils.getValidPropertyFromUser(newMotocycle, "EngineVolume", typeof(int));
+            // Get wheels from user
+            getWheels(newMotocycle, 2);
 
-                try
-                {
-                    newMotocycle.EngineVolume = engineVolume;
-                    break;
-                }
-                catch (ArgumentException e)
-                {
-                    Console.Write("Invalid input - enter volume, enter again: ");
-                }
-            }
-
-            newMotocycle.EngineVolume = engineVolume;
-            
             return newMotocycle;
         }
 
         private static Truck CreateTruck()
         {
             Truck newTruck = new Truck();
-            float cargoVolume;
-            bool containsDangerousMaterials;
-            newTruck.ModelName = getModelNameFromUser();
-            newTruck.LicenseNumber = getLicenseNumberFromUser();
+            // Model and plate
+            getSharedVehicleParametersFromUser(newTruck);
+            // Cargo volume configuration
             Console.Write("Enter cargo volume as float (e.g. 17.3 in liters): ");
-            while (!float.TryParse(Console.ReadLine(), out cargoVolume))
-            {
-                Console.Write("Invalid input - Please enter valid float input: ");
-            }
-            newTruck.CargoVolume = cargoVolume;
+            Utils.getValidPropertyFromUser(newTruck,"CargoVolume", typeof(float));
+            // Cargo dangerous material configuration
             Console.Write("Is the cargo include dangerous materials? (true|false) ");
-            while (bool.TryParse(Console.ReadLine(), out containsDangerousMaterials))
-            {
-                
-                Console.Write("Invalid input - Please enter true or false: ");
-            }
+            Utils.getValidPropertyFromUser(newTruck,"ContainsDangerousMaterials", typeof(bool));
+            // Get wheels from user
+            getWheels(newTruck, 4);
 
-            newTruck.ContainsDangerousMaterials = containsDangerousMaterials;
-            
             return newTruck;
         }
 
         private static Car CreateCar()
         {
             Car newCar = new Car();
-
-            int numberOfDoors;
-            int color;
-            newCar.ModelName = getModelNameFromUser();
-            newCar.LicenseNumber = getLicenseNumberFromUser();
+            // Model and plate
+            getSharedVehicleParametersFromUser(newCar);
+            // Doors configuration
             Console.Write("Enter car number of doors [2-5]: ");
-            while (true)
-            {
-                while (!int.TryParse(Console.ReadLine(), out numberOfDoors))
-                {
-                    Console.Write("Invalid input - enter integer in range of 2-5: ");
-                }
-
-                try
-                {
-                    newCar.NumberOfDoors = numberOfDoors;
-                    break;
-                }
-                catch (ArgumentException e)
-                {
-                    Console.Write("Invalid input - enter integer in range of 2-5: ");
-                }
-            }
-
-            Console.Write($@"
-Please choose car color:
-{(int) Car.CarColors.Red}. {Car.CarColors.Red}.
-{(int) Car.CarColors.Blue}. {Car.CarColors.Blue}.
-{(int) Car.CarColors.Black}. {Car.CarColors.Black}.
-{(int) Car.CarColors.Gray}. {Car.CarColors.Gray}.
-
-Please choose color number: ");
-            while (true)
-            {
-                while (!int.TryParse(Console.ReadLine(), out color))
-                {
-                    Console.Write("Invalid input - enter integer in range of 2-5: ");
-                }
-
-                try
-                {
-                    newCar.Color = (Car.CarColors)color;
-                    break;
-                }
-                catch (ArgumentException e)
-                {
-                    Console.Write("Invalid input - enter integer in range of 2-5: ");
-                }
-            }
-
-            newCar.Engine = getEngineFromUser(VehicleTypes.Car);
-
+            Utils.getValidPropertyFromUser(newCar, "NumberOfDoors", typeof(int));
+            // Color configuration
+            Utils.printPrettyEnumChoices(typeof(Car.CarColors), "Please choose car color", "Choose color");
+            newCar.Color = (Car.CarColors)Utils.getValidEnumFromUser(typeof(Car.CarColors));
+            // Get wheels from user
+            getWheels(newCar,4);
+            
             return newCar;
         }
 
-        private enum VehicleTypes
-        {
-            Car = 1,
-            Truck = 2,
-            Motorcycle = 3
-        }
-        private static VehicleTypes GetVehicleInsertedType()
-        {
-            string keyboardInput;
-            int keyboardInputAsInteger;
-            string msg = $@"
-Please enter the type of you vehicle:
-{(int)VehicleTypes.Car}. Car.
-{(int)VehicleTypes.Truck}. Truck.
-{(int)VehicleTypes.Motorcycle}. Motorcycle.
-
-Please vehicle type number: ";
-            Console.Write(msg);
-
-            keyboardInput = Console.ReadLine();
-            while (int.TryParse(keyboardInput, out keyboardInputAsInteger) && !Enum.IsDefined(typeof(VehicleTypes), keyboardInputAsInteger)) {
-                Console.Write("Not valid operation,  Please choose valid operation number: ");
-                keyboardInput = Console.ReadLine();
-            }
-
-            return (VehicleTypes) Enum.Parse(typeof(VehicleTypes), keyboardInput);
-        }
-        
         internal static void CreateNewVehicleInGarage(Garage garageManagement)
         {
-            string ownerPhoneNumber;
-            string ownerName;
-            Vehicle insertedVehicle = null;
+            GarageVehicle newVehicle = new GarageVehicle();
+            // Phone and name of car owner
             Console.Write("Enter vehicle owner name: ");
-            ownerName = Console.ReadLine();
+            Utils.getValidPropertyFromUser(newVehicle, "OwnerName");
             Console.Write("Enter owner phone number: ");
-            ownerPhoneNumber = Console.ReadLine();
-            
-            switch (GetVehicleInsertedType())
+            Utils.getValidPropertyFromUser(newVehicle, "PhoneNumber");
+            // Get Vehicle detalis
+            Utils.printPrettyEnumChoices(typeof(Utils.VehicleTypes), "Please choose car type", "Choose type");
+            switch (Utils.getValidEnumFromUser(typeof(Utils.VehicleTypes)))
             {
-                case VehicleTypes.Car:
-                    insertedVehicle = CreateCar();
+                case Utils.VehicleTypes.Car:
+                    newVehicle.Vehicle = CreateCar();
                     break;
-                case VehicleTypes.Truck:
-                    insertedVehicle = CreateTruck();
+                case Utils.VehicleTypes.Truck:
+                    newVehicle.Vehicle = CreateTruck();
                     break;
-                case VehicleTypes.Motorcycle:
-                    insertedVehicle = CreateMotocycle();
+                case Utils.VehicleTypes.Motorcycle:
+                    newVehicle.Vehicle = CreateMotocycle();
                     break;
             }
 
-            garageManagement.AddGarageVehicle(new GarageVehicle(ownerName, ownerPhoneNumber, insertedVehicle));
+            getEngineFromUser(newVehicle.Vehicle);
+
+            garageManagement.AddGarageVehicle(newVehicle);
+            Console.Clear();
         }
     }
 }

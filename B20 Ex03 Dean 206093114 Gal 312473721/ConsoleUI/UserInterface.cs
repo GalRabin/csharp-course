@@ -6,7 +6,7 @@ namespace EX3
     {
         private enum Operations
         {
-            Idle,
+            None,
             InsertVehicle,
             ListPlates,
             ChangeStatus,
@@ -17,42 +17,14 @@ namespace EX3
             Exit
         }
 
-        private static Operations ChooseOperationToPerformInGarage()
-        {
-            string msg = $@"
-Welcome to our garage!
-
-Please choose operation you want to perform:
-{(int)Operations.InsertVehicle}. Insert new vehicle to garage.
-{(int)Operations.ListPlates}. List current license plates in garage.
-{(int)Operations.ChangeStatus}. Change vehicle repair status.
-{(int)Operations.InflateWheels}. Inflate wheels in vehicle to Maximum capacity.
-{(int)Operations.Refuel}. Refuel vehicle.
-{(int)Operations.Recharge}. Recharge vehicle.
-{(int)Operations.DisplayVehicle}. Display vehicle information.
-{(int)Operations.Exit}. Exit program.
-
-Please choose you desired operation number: ";
-            Console.Write(msg);
-            
-            int keyboardInputAsInteger;
-            string keyboardInput = Console.ReadLine();
-            while (int.TryParse(keyboardInput, out keyboardInputAsInteger) && !Enum.IsDefined(typeof(Operations), keyboardInputAsInteger)) {
-                Console.Write("Not valid operation,  Please choose valid operation number: ");
-                keyboardInput = Console.ReadLine();
-            }
-            Console.Clear();
-            
-            return (Operations)Enum.Parse(typeof(Operations), keyboardInput);
-        }
-        
         private static void RunConsoleUserinterface()
         {
             Garage garageManagement = new Garage();
-            Operations operation = Operations.Idle;
+            Operations operation = Operations.None;
             while (operation != Operations.Exit)
             {
-                operation = ChooseOperationToPerformInGarage();
+                Utils.printPrettyEnumChoices(typeof(Operations), "Please choose operation in garage", "Choose operation");
+                operation = (Operations)Utils.getValidEnumFromUser(typeof(Operations));
                 switch (operation)
                 {
                     case Operations.InsertVehicle:

@@ -4,6 +4,7 @@ namespace EX3
     {
         public enum VehicleGarageStatus
         {
+            None,
             InRepair,
             Repaired,
             PayedFor
@@ -13,25 +14,53 @@ namespace EX3
         private string phoneNumber;
         private Vehicle vehicle;
         private VehicleGarageStatus vehicleStatus;
-        
-        public GarageVehicle(string ownerName, string phoneNumber, Vehicle vehicle)
+
+        public string OwnerName
         {
-            this.ownerName = ownerName;
-            this.phoneNumber = phoneNumber;
-            this.vehicle = vehicle;
-            vehicleStatus = VehicleGarageStatus.InRepair;
+            get
+            {
+                return ownerName;
+            }
+            set
+            {
+                ownerName = value;
+            }
         }
 
-        public string OwnerName => ownerName;
+        public string PhoneNumber
+        {
+            get
+            {
+                return phoneNumber;
+            }
+            set
+            {
+                phoneNumber = value;
+            }
+        }
 
-        public string PhoneNumber => phoneNumber;
-
-        public Vehicle Vehicle => vehicle;
+        public Vehicle Vehicle
+        {
+            get
+            {
+                return vehicle;
+            }
+            set
+            {
+                vehicle = value;
+            }
+        }
 
         public VehicleGarageStatus VehicleStatus
         {
-            get => vehicleStatus;
-            set => vehicleStatus = value;
+            get
+            {
+                return vehicleStatus;
+            }
+            set
+            {
+                vehicleStatus = value;
+            }
         }
     }
 }

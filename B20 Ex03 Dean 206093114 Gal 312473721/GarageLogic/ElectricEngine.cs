@@ -6,16 +6,30 @@ namespace EX3
     {
         private float remainingTimeOfEngineHours;
         private float maxTimeOfEngineHours;
-
-        public ElectricEngine(float remainingTimeOfEngineHours, float maxTimeOfEngineHours)
+        
+        public float MaxTimeOfEngineHours
         {
-            this.remainingTimeOfEngineHours = remainingTimeOfEngineHours;
-            this.maxTimeOfEngineHours = maxTimeOfEngineHours;
+            get
+            {
+                return  maxTimeOfEngineHours;
+            }
+            set
+            {
+                maxTimeOfEngineHours = value;   
+            }
         }
 
-        public float RemainingTimeOfEngineHours => remainingTimeOfEngineHours;
-
-        public float MaxTimeOfEngineHours => maxTimeOfEngineHours;
+        public float RemainingTimeOfEngineHours
+        {
+            get
+            {
+                return  remainingTimeOfEngineHours;
+            }
+            set
+            {
+                remainingTimeOfEngineHours = value;   
+            }
+        }
 
         public void RechargeOperation(float hoursToChargeEngine)
         {

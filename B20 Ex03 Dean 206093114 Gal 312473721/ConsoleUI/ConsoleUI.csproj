@@ -34,12 +34,16 @@
     <ItemGroup>
       <Compile Include="InsertVehicle.cs" />
       <Compile Include="UserInterface.cs" />
+      <Compile Include="Utils.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\GarageLogic\GarageLogic.csproj">
         <Project>{f0dd55e8-b45b-4a7a-9952-b4c50571f005}</Project>
         <Name>GarageLogic</Name>
       </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+      <Reference Include="System" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

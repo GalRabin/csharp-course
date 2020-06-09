@@ -4,34 +4,44 @@ namespace EX3
 {
     public class Wheel
     {
-        private string manufacturName;
+        private string manufactureName;
         private float currentAirPressure;
         private float maxAirPressure;
 
-        public Wheel(string manufacturName, float currentAirPressure, float maxAirPressure)
+        public string ManufactureName
         {
-            this.manufacturName = manufacturName;
-            this.currentAirPressure = currentAirPressure;
-            this.maxAirPressure = maxAirPressure;
+            get
+            {
+              return manufactureName;
+            }
+            set
+            {
+                manufactureName = value;   
+            }
         }
 
-        public string ManufacturName => manufacturName;
-
-        public float CurrentAirPressure => currentAirPressure;
-
-        public float MaxAirPressure => maxAirPressure;
-
-        public void InflateAction(float pressureToAdd)
+        public float CurrentAirPressure
         {
-            // should throw exception if over load
+            get
+            {
+                return currentAirPressure;
+            }
+            set
+            {
+                currentAirPressure = value;   
+            }
         }
-    }
-    
-    public class WheelException : Exception
-    {
-        public WheelException(string message)
-            : base(message)
+        
+        public float MaxAirPressure
         {
+            get
+            {
+                return maxAirPressure;
+            }
+            set
+            {
+                maxAirPressure = value;   
+            }
         }
     }
 }

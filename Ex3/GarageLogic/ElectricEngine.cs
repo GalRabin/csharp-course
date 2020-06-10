@@ -33,7 +33,10 @@ namespace EX3
 
         public void RechargeOperation(float hoursToChargeEngine)
         {
-            //TODO implement, throw error if not successfull
+            if (hoursToChargeEngine + remainingTimeOfEngineHours > maxTimeOfEngineHours)
+            {
+                throw new ArgumentException("Unable to charge engine because more than max time to charge.");
+            }
         }
     }
 }

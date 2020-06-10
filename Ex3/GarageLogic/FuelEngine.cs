@@ -61,7 +61,12 @@ namespace EX3
 
         public void RefuelOperation(float litersToRefuel)
         {
-            // TODO refuel , throw error if exceeds max
+            if (litersToRefuel + currentAmountOfFuelsLiters > maxAmountOfFuelsLiters)
+            {
+                throw new ArgumentException("Unable to fuel more than full capacity.");
+            }
+
+            currentAmountOfFuelsLiters += litersToRefuel;
         }
     }
 }

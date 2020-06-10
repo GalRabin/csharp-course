@@ -7,6 +7,24 @@ namespace EX3
     {
         private Dictionary<string, GarageVehicle> garageVehicles = new Dictionary<string, GarageVehicle>();
 
+        public List<Type> GetVehicleTypes()
+        {
+            return new List<Type>()
+            {
+                typeof(Car),
+                typeof(Truck),
+                typeof(Motorcycle)
+            };
+        }
+        
+        public List<Type> GetEngineTypes()
+        {
+            return new List<Type>()
+            {
+                typeof(FuelEngine),
+                typeof(ElectricEngine)
+            };
+        }
         public void AddGarageVehicle(GarageVehicle vehicle)
         {
             string vehicleLicenseNumber = vehicle.Vehicle.LicenseNumber;
@@ -20,44 +38,68 @@ namespace EX3
         public List<string> ListVehicleLicenseNumber(GarageVehicle.VehicleGarageStatus status)
         {
             List<string> licensesNumbers = new List<string>();
-            // TODO should implement
+            foreach(KeyValuePair<string, GarageVehicle> vehicle in garageVehicles)
+            {
+                if (vehicle.Value.VehicleStatus == status)
+                {
+                    licensesNumbers.Add(vehicle.Key);
+                }
+            }
 
             return licensesNumbers;
         }
 
-        public void ChangeVehicleStatus(float licenseNumber, GarageVehicle.VehicleGarageStatus status)
+        public void ChangeVehicleStatus(string licenseNumber, GarageVehicle.VehicleGarageStatus status)
         {
-            // TODO implement
+            try
+            {
+                garageVehicles[licenseNumber].VehicleStatus = status;
+            }
+            catch (KeyNotFoundException)
+            {
+                throw new ArgumentException($"Vehicle with license number {licenseNumber} not exists in garage.");
+            }
         }
 
-        public void InflateWheelsToMax(float licenseNumber)
+        public void InflateWheelsToMax(string licenseNumber)
         {
-            // TODO implement
+            try
+            {
+                garageVehicles[licenseNumber].InflateAllWheels();  
+            }
+            catch (KeyNotFoundException)
+            {
+                throw new ArgumentException($"Vehicle with license number {licenseNumber} not exists in garage.");
+            }
         }
         
-        public void RefuelEngine(float licenseNumber, FuelEngine.FuelTypes fuelType, float litersToFill)
+        public void RefuelEngine(string licenseNumber, FuelEngine.FuelTypes fuelType, float litersToFill)
         {
-            // TODO implement, throw error if not fuel engine or more than maximum
+            try
+            {
+                garageVehicles[licenseNumber].RefuelEngine(fuelType, litersToFill);  
+            }
+            catch (KeyNotFoundException)
+            {
+                throw new ArgumentException($"Vehicle with license number {licenseNumber} not exists in garage.");
+            }        
         }
         
-        public void ChargeEngine(float licenseNumber, float hoursToCharge)
+        public void ChargeEngine(string licenseNumber, float hoursToCharge)
         {
-            // TODO implement, throw error if not electric engine or more than maximum
+            try
+            {
+                garageVehicles[licenseNumber].ChargeEngine(hoursToCharge);  
+            }
+            catch (KeyNotFoundException)
+            {
+                throw new ArgumentException($"Vehicle with license number {licenseNumber} not exists in garage.");
+            }        
         }
 
         public GarageVehicle GetVehicle(string licenseNumber)
         {
-            // TODO handling if not exists
-
             return garageVehicles[licenseNumber];
-        }
-    }
-
-    public class GarageRegistrationException : Exception
-    {
-        public GarageRegistrationException(string message)
-            : base(message)
-        {
         }
     }
 }

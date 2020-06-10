@@ -28,5 +28,10 @@ namespace EX3
                 cargoVolume = value;
             }
         }
+        public override int DefaultNumberOfWheels()
+        {
+            return 6;
+        }
+
     }
 }

@@ -4,7 +4,7 @@ namespace EX3
 {
     public class Car : Vehicle
     {
-        public enum CarColors
+        public enum Colors
         {
             None,
             Red,
@@ -14,9 +14,8 @@ namespace EX3
         }
 
         private int numberOfDoors;
-        private CarColors color;
-
-        public CarColors Color
+        private Colors color;
+        public Colors Color
         {
             get
             {
@@ -24,9 +23,9 @@ namespace EX3
             }
             set
             {    
-                if (!Enum.IsDefined(typeof(CarColors), (int) value))
+                if (!Enum.IsDefined(typeof(Colors), (int) value))
                 {
-                    color = CarColors.None;
+                    color = Colors.None;
                     throw new ArgumentException("Invalid color value");
                 }
 
@@ -56,6 +55,11 @@ namespace EX3
         private static bool IsValidNumberOfDoors(int numberOfDoors)
         {
             return numberOfDoors >= 2 && numberOfDoors <= 5;
+        }
+
+        public override int DefaultNumberOfWheels()
+        {
+            return 4;
         }
     }
 }

@@ -5,88 +5,61 @@ using System.Text.RegularExpressions;
 namespace EX3
 {
     public class Utils
-    {
-        internal enum VehicleTypes
+    { 
+        internal static bool getValidYesNoFromUser()
         {
-            None,
-            Car,
-            Truck,
-            Motorcycle
-        }
-        
-        internal enum EngineType
-        {
-            None,
-            Electric,
-            Fuel
-        }
-        
-        internal static void getValidPropertyFromUser(object target, string targetProperty, Type type = null)
-        {
-            string otherResponse = "";
-            int integerResponse = -1;
-            float floatResponse = -1;
-            bool boolResponse = false;
-            Type targetType = target.GetType();
-            PropertyInfo property = targetType.GetProperty(targetProperty);
-            while (true)
+            string response = Console.ReadLine();
+            while (response != "yes" && response != "no")
             {
-                if (type == typeof(int))
-                {
-                    while (!int.TryParse(Console.ReadLine(), out integerResponse))
-                    {
-                        Console.Write("Invalid input - enter valid integer value: ");
-                    }
-                }
-                else if (type == typeof(float))
-                {
-                    while (!float.TryParse(Console.ReadLine(), out floatResponse))
-                    {
-                        Console.Write("Invalid input - enter valid float value: ");
-                    }
-                } 
-                else if (type == typeof(bool))
-                {
-                    while (!bool.TryParse(Console.ReadLine(), out boolResponse))
-                    {
-                        Console.Write("Invalid input - enter valid bool value: ");
-                    }
-                }
-                else
-                {
-                    while ((otherResponse = Console.ReadLine()).Length == 0)
-                    {
-                        Console.Write("Invalid input - enter valid string value: ");
-                    }
-                }
-
-                try
-                {
-                    if (type == typeof(int))
-                    {
-                        property.SetValue (target, integerResponse, null);
-                    }
-                    else if (type == typeof(float))
-                    {
-                        property.SetValue (target, floatResponse, null);
-                    }
-                    else if (type == typeof(bool))
-                    {
-                        property.SetValue (target, boolResponse, null);
-                    }
-                    else
-                    {
-                        property.SetValue (target, otherResponse, null);
-                    }
-                    break;
-                }
-                catch (Exception e)
-                {
-                    Console.Write($"Invalid input - {e.Message}, Enter value again: ");
-                }
+                Console.Write("Invalid input - enter valid string value: ");
+                response = Console.ReadLine();
             }
+
+            return response == "yes";
+        }
+        internal static int getValidIntegerInRangeFromUser(int min, int max)
+        {
+            int response = -1;
+            while (!int.TryParse(Console.ReadLine(), out response) || min > response || response > max)
+            {
+                Console.Write("Invalid input - enter valid integer value: ");
+            }
+
+            return response;
+        }
+        internal static int getValidIntegerFromUser()
+        {
+            int response = -1;
+            while (!int.TryParse(Console.ReadLine(), out response))
+            {
+                Console.Write("Invalid input - enter valid integer value: ");
+            }
+
+            return response;
         }
         
+        internal static float getValidFloatFromUser()
+        {
+            float response;
+            while (!float.TryParse(Console.ReadLine(), out response))
+            {
+                Console.Write("Invalid input - enter valid float value: ");
+            }
+
+            return response;
+        }
+        
+        internal static string getValidStringFromUser()
+        {
+            string response;
+            while ((response = Console.ReadLine()).Length == 0)
+            {
+                Console.Write("Invalid input - enter valid string value: ");
+            }
+
+            return response;
+        }
+
         internal static object getValidEnumFromUser(Type enumType)
         {
             string keyboardInput = Console.ReadLine();
@@ -95,26 +68,92 @@ namespace EX3
                 Console.Write("Invalid input, Please choose valid choice number: ");
                 keyboardInput = Console.ReadLine();
             }
-            Console.Clear();
+
             return Convert.ChangeType(Enum.Parse(enumType, keyboardInput), enumType);
         }
         
-        public static string SplitCamelCase(string input)
+        private static string SplitCamelCase(string input)
         {
             return Regex.Replace(input, "(?<=[a-z])([A-Z])", " $1", RegexOptions.Compiled);
         }
         
-        internal static void printPrettyEnumChoices(Type enumType, string preMessage, string postMessage)
+        internal static void printPrettyEnumChoices(Type enumType)
         {
-            Console.WriteLine($"\n{preMessage}: ");
+            Console.WriteLine($"Choose {SplitCamelCase(enumType.Name)}: ");
             foreach (object item in Enum.GetValues(enumType))
             {
                 if (item.ToString() != "None")
                 {
-                    Console.WriteLine($"{(int)item}. {SplitCamelCase(item.ToString())}.");
+                    Console.WriteLine($"   {(int)item}. {SplitCamelCase(item.ToString())}.");
                 }
             }
-            Console.Write($"\n{postMessage}: ");
+            Console.Write("\nEnter your choice: ");
+        }
+
+        internal static void propertyPrompt(PropertyInfo property)
+        {
+            Type type = property.PropertyType;
+            string simplifiedType = SplitCamelCase(property.DeclaringType.ToString().Split('.')[1]);
+            if (type == typeof(int) || type == typeof(string) || type == typeof(float))
+            {
+                Console.Write($"{simplifiedType} - Enter {SplitCamelCase(property.Name)}: ");
+            }
+            else if (property.PropertyType.IsEnum)
+            {
+                Console.Write($"{simplifiedType} - ");
+                printPrettyEnumChoices(property.PropertyType);
+            }
+        }
+
+        internal static object getConfigurationByObjectProperty(Type type, bool clearAfterProperty = true)
+        {
+            object instance = Activator.CreateInstance(type);
+            foreach(var prop in type.GetProperties())
+            {
+                while(true)
+                {
+                    if (clearAfterProperty)
+                    {
+                        Console.Clear();
+                    }
+                    try
+                    {
+                        propertyPrompt(prop);
+                        Type propertyType = prop.PropertyType;
+                        object value = null;
+                        if (propertyType == typeof(int))
+                        { 
+                            value = getValidIntegerFromUser();
+                        }
+                        else if (propertyType == typeof(float))
+                        {
+                            value = getValidFloatFromUser();
+                        }
+                        else if (propertyType == typeof(string))
+                        {
+                            value = getValidStringFromUser();
+                        }
+                        else if (propertyType.IsEnum)
+                        {
+                            value = getValidEnumFromUser(propertyType);
+                        }
+                        else
+                        { 
+                            break;
+                        }
+                        prop.SetValue(instance, value);
+                        break;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Error - {e.InnerException.Message}, press any key to retry...");
+                        Console.ReadKey();
+                    }
+                }
+            }
+            Console.Clear();
+
+            return instance;
         }
     }
 }

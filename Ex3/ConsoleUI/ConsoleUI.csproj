@@ -33,6 +33,7 @@
     </PropertyGroup>
     <ItemGroup>
       <Compile Include="InsertVehicle.cs" />
+      <Compile Include="ListPlates.cs" />
       <Compile Include="UserInterface.cs" />
       <Compile Include="Utils.cs" />
     </ItemGroup>

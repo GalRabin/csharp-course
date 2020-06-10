@@ -16,7 +16,6 @@ namespace EX3
         private MotorCycleLicenseTypes licenseType;
         private int engineVolume;
 
-
         public MotorCycleLicenseTypes LicenseType
         {
             get
@@ -47,6 +46,11 @@ namespace EX3
             {
                 engineVolume = value;   
             }
+        }
+        
+        public override int DefaultNumberOfWheels()
+        {
+            return 2;
         }
     }
 }

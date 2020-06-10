@@ -10,7 +10,6 @@ namespace EX3
         private FuelEngine fuelEngine;
         private ElectricEngine electricEngine;
         private List<Wheel> wheels;
-
         public string ModelName
         {
             get
@@ -69,10 +68,19 @@ namespace EX3
             }
         }
 
-        public void AppendWheel(Wheel wheel)
+        public List<Wheel> Wheels
         {
-            wheels.Add(wheel);
+            get
+            {
+                return wheels;
+            }
+            set
+            {
+                wheels = value;
+            } 
         }
+
+        public abstract int DefaultNumberOfWheels();
 
         public float RemainingEnergyPrecentage()
         {

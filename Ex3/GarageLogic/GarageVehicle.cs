@@ -4,7 +4,7 @@ namespace EX3
 {
     public class GarageVehicle
     {
-        public enum VehicleGarageStatus
+        public enum eVehicleGarageStatus
         {
             None,
             InRepair,
@@ -12,20 +12,21 @@ namespace EX3
             PayedFor
         }
         
-        private string ownerName;
-        private string phoneNumber;
-        private Vehicle vehicle;
-        private VehicleGarageStatus vehicleStatus;
+        private string m_OwnerName;
+        private string m_PhoneNumber;
+        private Vehicle m_Vehicle;
+        private eVehicleGarageStatus m_VehicleStatus;
 
         public string OwnerName
         {
             get
             {
-                return ownerName;
+
+                return m_OwnerName;
             }
             set
             {
-                ownerName = value;
+                m_OwnerName = value;
             }
         }
 
@@ -33,11 +34,12 @@ namespace EX3
         {
             get
             {
-                return phoneNumber;
+
+                return m_PhoneNumber;
             }
             set
             {
-                phoneNumber = value;
+                m_PhoneNumber = value;
             }
         }
 
@@ -45,45 +47,46 @@ namespace EX3
         {
             get
             {
-                return vehicle;
+                return m_Vehicle;
             }
             set
             {
-                vehicle = value;
+                m_Vehicle = value;
             }
         }
 
-        public VehicleGarageStatus VehicleStatus
+        public eVehicleGarageStatus VehicleStatus
         {
             get
             {
-                return vehicleStatus;
+
+                return m_VehicleStatus;
             }
             set
             {
-                vehicleStatus = value;
+                m_VehicleStatus = value;
             }
         }
 
         public void InflateAllWheels()
         {
-            foreach (Wheel wheel in vehicle.Wheels)
+            foreach (Wheel wheel in m_Vehicle.Wheels)
             {
                 float missingPressure = wheel.MaxAirPressure - wheel.CurrentAirPressure;
                 wheel.CurrentAirPressure += missingPressure;
             }
         }
         
-        public void RefuelEngine(FuelEngine.FuelTypes fuelType, float litersToFill)
+        public void RefuelEngine(FuelEngine.eFuelTypes i_FuelType, float i_LitersToFill)
         {
-            if (vehicle.Engine is FuelEngine)
+            if (m_Vehicle.Engine is FuelEngine)
             {
-                FuelEngine fuelEngine = vehicle.Engine as FuelEngine;
-                if (fuelEngine.FuelType != fuelType)
+                FuelEngine fuelEngine = m_Vehicle.Engine as FuelEngine;
+                if (fuelEngine.FuelType != i_FuelType)
                 {
                     throw new ArgumentException("Unable to fuel wrong type of fuel.");
                 }
-                fuelEngine.RefuelOperation(litersToFill);
+                fuelEngine.RefuelOperation(i_LitersToFill);
             }
             else
             {
@@ -91,12 +94,12 @@ namespace EX3
             }
         }
 
-        public void ChargeEngine(float hoursToCharge)
+        public void ChargeEngine(float i_HoursToCharge)
         {
-            if (vehicle.Engine is ElectricEngine)
+            if (m_Vehicle.Engine is ElectricEngine)
             {
-                ElectricEngine electricEngine = vehicle.Engine as ElectricEngine; 
-                electricEngine.RechargeOperation(hoursToCharge);
+                ElectricEngine electricEngine = m_Vehicle.Engine as ElectricEngine; 
+                electricEngine.RechargeOperation(i_HoursToCharge);
             }
             else
             {

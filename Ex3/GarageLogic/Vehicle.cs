@@ -1,65 +1,79 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace EX3
 {
     public abstract class Vehicle
     {
-        private string modelName;
-        private string licenseNumber;
-        private FuelEngine fuelEngine;
-        private ElectricEngine electricEngine;
-        private List<Wheel> wheels;
+        private string m_LicenseNumber;
+        private string m_ModelName;
+        private FuelEngine m_FuelEngine;
+        private ElectricEngine m_ElectricEngine;
+        private List<Wheel> i_Wheels;
         public string ModelName
         {
             get
             {
-                return modelName;
+
+                return m_ModelName;
             }
             set
             {
-                modelName = value;   
+                m_ModelName = value;   
             }
         }
-
         public string LicenseNumber
         {
             get
             {
-                return licenseNumber;
+
+                return m_LicenseNumber;
             }
             set
             {
-                licenseNumber = value;
+                m_LicenseNumber = value;
             }
         }
-
+        public void SetFuelMax(int i_Max)
+        {
+            this.m_FuelEngine.MaxAmountOfFuelsLiters = i_Max;
+        }
+        public void SetFuelType(FuelEngine.eFuelTypes i_Type)
+        {
+            this.m_FuelEngine.FuelType = i_Type;
+        }
+        public void SetElectricMax(int i_Max)
+        {
+            this.m_ElectricEngine.MaxTimeOfEngineHours = i_Max;
+        }
         public object Engine
         {
             get
             {
-                if (electricEngine != null)
+                if (m_ElectricEngine != null)
                 {
-                    return electricEngine;
+                    return m_ElectricEngine;
                 }
-                if (fuelEngine != null)
+                if (m_FuelEngine != null)
                 {
-                    return fuelEngine;
+                    return m_FuelEngine;
                 }
 
                 return null;
             }
             set
             {
-                electricEngine = null;
-                fuelEngine = null;
+                m_ElectricEngine = null;
+                m_FuelEngine = null;
+
                 if (value is FuelEngine)
                 {
-                    fuelEngine = (FuelEngine)value;
+                    m_FuelEngine = (FuelEngine)value;
                 }
                 else if (value is ElectricEngine)
                 {
-                    electricEngine = (ElectricEngine)value;
+                    m_ElectricEngine = (ElectricEngine)value;
                 }
                 else
                 {
@@ -67,19 +81,47 @@ namespace EX3
                 }
             }
         }
+        public StringBuilder getEngineInfo()
+        {
+            StringBuilder str = new StringBuilder();
 
+            if(m_ElectricEngine != null)
+            {
+                str.Append("Engine type: electric engine\n");
+                str.Append(m_ElectricEngine.getInfo() + "\n");
+            }
+            else
+            {
+                str.Append("Engine type: fuel engine\n");
+                str.Append(m_FuelEngine.getInfo() + "\n");
+            }
+
+            return str;
+        }
         public List<Wheel> Wheels
         {
             get
             {
-                return wheels;
+
+                return i_Wheels;
             }
             set
             {
-                wheels = value;
+                i_Wheels = value;
             } 
         }
-
+        public StringBuilder getWheelsInfo()
+        {
+            StringBuilder str = new StringBuilder();
+            
+            for(int i = 0; i < this.i_Wheels.Count; i++) 
+            {
+                Wheel wheel = this.i_Wheels[i];
+                str.Append("Wheel number " + i + 1 + "\n" + wheel.getInfo() + "\n");
+            }
+            
+            return str;
+        }
         public abstract int DefaultNumberOfWheels();
 
         public float RemainingEnergyPrecentage()

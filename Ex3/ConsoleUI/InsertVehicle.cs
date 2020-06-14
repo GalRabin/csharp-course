@@ -5,54 +5,81 @@ namespace EX3
 {
     public class InsertVehicle
     {
-        private static Type GetTypeFromUser(List<Type> types, string preMessage)
+        private static Type GetTypeFromUser(List<Type> i_Types, string i_PreMessage)
         {
-            Console.WriteLine($"{preMessage}:");
-            for (int i = 0; i < types.Count; i++)
+            Console.WriteLine($"{i_PreMessage}:");
+
+            for (int i = 0; i < i_Types.Count; i++)
             {
-                string simplifiedType = types[i].ToString().Split('.')[1];
+                string simplifiedType = i_Types[i].ToString().Split('.')[1];
                 Console.WriteLine($"   {i + 1}. {simplifiedType}");
             }
 
             Console.Write("\nEnter your choice: ");
 
-            return types[Utils.getValidIntegerInRangeFromUser(1, types.Count) - 1];
+            return i_Types[Utils.GetValidIntegerInRangeFromUser(1, i_Types.Count) - 1];
         }
 
-        private static List<Wheel> getWheelsFromUser(int defaultNumberOfWheels)
-        { 
+        private static List<Wheel> getWheelsFromUser(int i_DefaultNumberOfWheels)
+        {
             List<Wheel> wheels = new List<Wheel>();
-            Console.Write($"Default number of wheels is {defaultNumberOfWheels}, Do you want to change it? (yes|no) ");
-            if (Utils.getValidYesNoFromUser())
+            Console.Write($"Default number of wheels is {i_DefaultNumberOfWheels}, Do you want to change it? (yes|no) ");
+
+            if (Utils.GetValidYesNoFromUser())
             {
                 Console.Write("Enter number of wheels: ");
-                defaultNumberOfWheels = Utils.getValidIntegerFromUser();
+                i_DefaultNumberOfWheels = Utils.GetValidIntegerFromUser();
                 Console.Clear();
             }
-            for (int i = 0; i < defaultNumberOfWheels; i++)
+
+            for (int i = 0; i < i_DefaultNumberOfWheels; i++)
             {
-                Console.WriteLine($"Wheel {i + 1} - {defaultNumberOfWheels}");
-                wheels.Add((Wheel)Utils.getConfigurationByObjectProperty(typeof(Wheel), false));
+                Console.WriteLine($"Wheel {i + 1} - {i_DefaultNumberOfWheels}");
+                wheels.Add((Wheel)Utils.GetConfigurationByObjectProperty(typeof(Wheel), false));
             }
 
             return wheels;
         }
-        
-        internal static void CreateNewVehicleInGarage(Garage garage)
+
+        internal static void CreateNewVehicleInGarage(Garage i_Garage)
         {
-            GarageVehicle garageVehicle = (GarageVehicle) Utils.getConfigurationByObjectProperty(typeof(GarageVehicle));
             // Configure vehicle
-            Type vehicleType = GetTypeFromUser(garage.GetVehicleTypes(), "Choose vehicle type");
-            Vehicle vehicle = (Vehicle)Utils.getConfigurationByObjectProperty(vehicleType);
+            Type vehicleType = GetTypeFromUser(i_Garage.GetVehicleTypes(), "Choose vehicle type");
+            Type engineType = GetTypeFromUser(i_Garage.GetEngineTypes(), "Choose engine type");
+
+            Vehicle vehicle = i_Garage.getDefaultProperties(vehicleType, engineType);
+            /* 
+             * Have to ask only the non default props
+             * Maybe give vehicle to utils to ask specific questions
+             * * */
+
+            //Vehicle vehicle = (Vehicle)Utils.getConfigurationByObjectProperty(vehicleType);
+
+            GarageVehicle garageVehicle = (GarageVehicle)Utils.GetConfigurationByObjectProperty(typeof(GarageVehicle));      
+            
+            // check if already exist
+            bool isAlreadyInGarage = false;
+
+            if (i_Garage.GetVehicle(vehicle.LicenseNumber) != null)
+            {
+                isAlreadyInGarage = true;
+                garageVehicle = i_Garage.GetVehicle(vehicle.LicenseNumber);
+                vehicle = garageVehicle.Vehicle;
+                garageVehicle.VehicleStatus = GarageVehicle.eVehicleGarageStatus.InRepair;
+                Console.WriteLine("Vehicle is already in garage and move to In Repair mode.\n" +
+                    "Next steps will relate to that vehicle\n");
+            }
             // Configure vehicle engine
-            Type engineType = GetTypeFromUser(garage.GetEngineTypes(), "Choose engine type");
-            vehicle.Engine = Utils.getConfigurationByObjectProperty(engineType);
+            vehicle.Engine = Utils.GetConfigurationByObjectProperty(engineType);
             // Configure vehicle wheels
             vehicle.Wheels = getWheelsFromUser(vehicle.DefaultNumberOfWheels());
-            // Set up vehicle inside garage
-            garageVehicle.Vehicle = vehicle;
-            
-            garage.AddGarageVehicle(garageVehicle);
+
+            if (!isAlreadyInGarage)
+            {
+                // Set up vehicle inside garage
+                garageVehicle.Vehicle = vehicle;
+                i_Garage.AddGarageVehicle(garageVehicle);
+            }
         }
     }
 }

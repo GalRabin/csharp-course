@@ -4,7 +4,7 @@ namespace EX3
 {
     public class FuelEngine
     {
-        public enum FuelTypes
+        public enum eFuelTypes
         {
             None,
             Soler,
@@ -13,25 +13,26 @@ namespace EX3
             Octane98
         }
 
-        private FuelTypes fuelType;
-        private float currentAmountOfFuelsLiters;
-        private float maxAmountOfFuelsLiters;
+        private eFuelTypes m_FuelType;
+        private float m_CurrentAmountOfFuelsLiters;
+        private float m_MaxAmountOfFuelsLiters;
 
-        public FuelTypes FuelType
+        public eFuelTypes FuelType
         {
             get
             {
-                return fuelType;
+
+                return m_FuelType;
             }
             set
             {
-                if (!Enum.IsDefined(typeof(FuelTypes), (int) value))
+                if (!Enum.IsDefined(typeof(eFuelTypes), (int) value))
                 {
-                    fuelType = FuelTypes.None;
+                    m_FuelType = eFuelTypes.None;
                     throw new ArgumentException("Invalid fuel type");
                 }
 
-                fuelType = value;  
+                m_FuelType = value;  
             } 
         }
 
@@ -39,11 +40,12 @@ namespace EX3
         {
             get
             {
-                return maxAmountOfFuelsLiters;
+
+                return m_MaxAmountOfFuelsLiters;
             }
             set
             {
-                maxAmountOfFuelsLiters = value;  
+                m_MaxAmountOfFuelsLiters = value;  
             } 
         }
 
@@ -51,22 +53,39 @@ namespace EX3
         {
             get
             {
-                return currentAmountOfFuelsLiters;
+
+                return m_CurrentAmountOfFuelsLiters;
             }
             set
             {
-                currentAmountOfFuelsLiters = value;   
+                if (value > m_MaxAmountOfFuelsLiters)
+                {
+                    throw new System.Exception("Current amount in tank can not be more than maximum, " + this.m_MaxAmountOfFuelsLiters);
+                }
+
+                m_CurrentAmountOfFuelsLiters = value;   
             }
         }
-
-        public void RefuelOperation(float litersToRefuel)
+        public string getInfo()
         {
-            if (litersToRefuel + currentAmountOfFuelsLiters > maxAmountOfFuelsLiters)
+            string str = string.Format(
+                "Fuel type: {0}\n" +
+                "Maximum liters on full tank: {1}\n" +
+                "Current amount of litrs in tank: {2}\n",
+                this.m_FuelType.ToString(),
+                this.m_MaxAmountOfFuelsLiters,
+                this.m_CurrentAmountOfFuelsLiters);
+
+            return str;
+        }
+        public void RefuelOperation(float i_LitersToRefuel)
+        {
+            if (i_LitersToRefuel + m_CurrentAmountOfFuelsLiters > m_MaxAmountOfFuelsLiters)
             {
                 throw new ArgumentException("Unable to fuel more than full capacity.");
             }
 
-            currentAmountOfFuelsLiters += litersToRefuel;
+            m_CurrentAmountOfFuelsLiters += i_LitersToRefuel;
         }
     }
 }

@@ -4,19 +4,20 @@ namespace EX3
 {
     public class Wheel
     {
-        private string manufactureName;
-        private float currentAirPressure;
-        private float maxAirPressure;
+        private string m_ManufactureName;
+        private float m_CurrentAirPressure;
+        private float m_MaxAirPressure;
 
         public string ManufactureName
         {
             get
             {
-              return manufactureName;
+
+              return m_ManufactureName;
             }
             set
             {
-                manufactureName = value;   
+                m_ManufactureName = value;   
             }
         }
 
@@ -24,11 +25,12 @@ namespace EX3
         {
             get
             {
-                return currentAirPressure;
+
+                return m_CurrentAirPressure;
             }
             set
             {
-                currentAirPressure = value;   
+                m_CurrentAirPressure = value;   
             }
         }
         
@@ -36,12 +38,31 @@ namespace EX3
         {
             get
             {
-                return maxAirPressure;
+
+                return m_MaxAirPressure;
             }
             set
             {
-                maxAirPressure = value;   
+                if (value < m_CurrentAirPressure)
+                {
+                    throw new System.Exception("Maximal amount of air pressure in wheel can not be less than current, " +
+                        + this.m_CurrentAirPressure);
+                }
+
+                m_MaxAirPressure = value;   
             }
+        }
+        public string getInfo()
+        {
+            string str = String.Format(
+                "Manufacture name: {0}\n" +
+                "Max air pressure: {1}\n" +
+                "Current air pressure: {2}\n",
+                this.m_ManufactureName,
+                this.m_MaxAirPressure,
+                this.m_CurrentAirPressure);
+
+            return str;
         }
     }
 }

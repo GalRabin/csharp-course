@@ -2,18 +2,19 @@ namespace EX3
 {
     public class Truck : Vehicle
     {
-        private bool containsDangerousMaterials;
-        private float cargoVolume;
+        private bool m_ContainsDangerousMaterials;
+        private float m_CargoVolume;
 
         public bool ContainsDangerousMaterials
         {
             get
             {
-                return containsDangerousMaterials;
+
+                return m_ContainsDangerousMaterials;
             }
             set
             {
-                containsDangerousMaterials = value;
+                m_ContainsDangerousMaterials = value;
             } 
         }
 
@@ -21,15 +22,17 @@ namespace EX3
         {
             get
             {
-                return cargoVolume;
+
+                return m_CargoVolume;
             }
             set
             {
-                cargoVolume = value;
+                m_CargoVolume = value;
             }
         }
         public override int DefaultNumberOfWheels()
         {
+
             return 6;
         }
 

@@ -4,7 +4,7 @@ namespace EX3
 {
     public class Motorcycle : Vehicle
     {
-        public enum MotorCycleLicenseTypes
+        public enum eMotorCycleLicenseTypes
         {
             None = 0,
             A1 = 1,
@@ -13,25 +13,26 @@ namespace EX3
             B = 4
         }
         
-        private MotorCycleLicenseTypes licenseType;
-        private int engineVolume;
+        private eMotorCycleLicenseTypes m_LicenseType;
+        private int m_EngineVolume;
 
-        public MotorCycleLicenseTypes LicenseType
+        public eMotorCycleLicenseTypes LicenseType
         {
             get
             {
-                return licenseType;
+
+                return m_LicenseType;
             }
 
             set
             {
-                if (!Enum.IsDefined(typeof(MotorCycleLicenseTypes), (int) value))
+                if (!Enum.IsDefined(typeof(eMotorCycleLicenseTypes), (int) value))
                 {
-                    licenseType = MotorCycleLicenseTypes.None;
+                    m_LicenseType = eMotorCycleLicenseTypes.None;
                     throw new ArgumentException("Invalid license value");
                 }
 
-                licenseType = value;
+                m_LicenseType = value;
             }
         }
 
@@ -39,17 +40,19 @@ namespace EX3
         {
             get
             {
-                return engineVolume;   
+
+                return m_EngineVolume;   
             }
             
             set
             {
-                engineVolume = value;   
+                m_EngineVolume = value;   
             }
         }
         
         public override int DefaultNumberOfWheels()
         {
+
             return 2;
         }
     }

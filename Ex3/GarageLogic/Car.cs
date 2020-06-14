@@ -4,7 +4,7 @@ namespace EX3
 {
     public class Car : Vehicle
     {
-        public enum Colors
+        public enum eColors
         {
             None,
             Red,
@@ -13,23 +13,24 @@ namespace EX3
             Gray
         }
 
-        private int numberOfDoors;
-        private Colors color;
-        public Colors Color
+        private int m_NumberOfDoors;
+        private eColors m_Color;
+
+        public eColors Color
         {
             get
             {
-                return color;
+                return m_Color;
             }
             set
             {    
-                if (!Enum.IsDefined(typeof(Colors), (int) value))
+                if (!Enum.IsDefined(typeof(eColors), (int) value))
                 {
-                    color = Colors.None;
+                    m_Color = eColors.None;
                     throw new ArgumentException("Invalid color value");
                 }
 
-                color = value;
+                m_Color = value;
             }
         }
 
@@ -37,28 +38,31 @@ namespace EX3
         {
             get
             {
-              return  numberOfDoors;
+
+              return  m_NumberOfDoors;
             }
             set
             {
                 if (IsValidNumberOfDoors(value))
                 {
-                    numberOfDoors = value;   
+                    m_NumberOfDoors = value;   
                 }
                 else
                 {
-                    throw new ArgumentException("Number of doors is not valid");
+                    throw new ArgumentException("Number of doors is not valid, only 2-5");
                 }
             }
         }
-
-        private static bool IsValidNumberOfDoors(int numberOfDoors)
+        
+        private static bool IsValidNumberOfDoors(int i_NumberOfDoors)
         {
-            return numberOfDoors >= 2 && numberOfDoors <= 5;
+
+            return i_NumberOfDoors >= 2 && i_NumberOfDoors <= 5;
         }
 
         public override int DefaultNumberOfWheels()
         {
+
             return 4;
         }
     }

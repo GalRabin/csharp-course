@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 
-namespace EX3
+namespace ConsoleUI
 {
     public class Utils
-    { 
+    {
         internal static bool GetValidYesNoFromUser()
         {
             string response = Console.ReadLine();
@@ -18,13 +20,13 @@ namespace EX3
 
             return response == "yes";
         }
-        internal static int GetValidIntegerInRangeFromUser(int min, int max)
+        internal static int GetValidInRangeFromUser(int min, int max)
         {
             int response = -1;
             
             while (!int.TryParse(Console.ReadLine(), out response) || min > response || response > max)
             {
-                Console.Write("Invalid input - enter valid integer value: ");
+                Console.Write(Messages.k_InvalidInput);
             }
 
             return response;
@@ -35,7 +37,7 @@ namespace EX3
             
             while (!int.TryParse(Console.ReadLine(), out response))
             {
-                Console.Write("Invalid input - enter valid integer value: ");
+                Console.Write(Messages.k_InvalidInput);
             }
 
             return response;
@@ -47,7 +49,7 @@ namespace EX3
             
             while (!float.TryParse(Console.ReadLine(), out response))
             {
-                Console.Write("Invalid input - enter valid float value: ");
+                Console.Write(Messages.k_InvalidInput);
             }
 
             return response;
@@ -56,7 +58,6 @@ namespace EX3
         internal static string GetValidStringFromUser()
         {
             string response;
-            
             while ((response = Console.ReadLine()).Length == 0)
             {
                 Console.Write("Invalid input - enter valid string value: ");
@@ -65,85 +66,74 @@ namespace EX3
             return response;
         }
 
-        internal static object GetValidEnumFromUser(Type i_EnumType)
+        internal static string ExtractEnumChoices(Type i_EnumType, Dictionary<int, string> i_EnumTranslation)
         {
-            string keyboardInput = Console.ReadLine();
-            int keyboardInputAsInteger;
+            StringBuilder message = new StringBuilder();
+            string[] enumNames = Enum.GetNames(i_EnumType);
             
-            while (int.TryParse(keyboardInput, out keyboardInputAsInteger) && !Enum.IsDefined(i_EnumType, keyboardInputAsInteger) || keyboardInput ==null) {
-                Console.Write("Invalid input, Please choose valid choice number: ");
-                keyboardInput = Console.ReadLine();
+            for (int i = 1; i < enumNames.Length; i++)
+            {
+                message.Append(string.Format("\t{0}. {1}{2}", i, i_EnumTranslation[i], Environment.NewLine));
             }
 
-            return Convert.ChangeType(Enum.Parse(i_EnumType, keyboardInput), i_EnumType);
+            return message.ToString();
         }
         
-        private static string splitCamelCase(string i_Input)
+        internal static int GetValidEnumFromUser(Type i_Enum)
         {
+            int keyboardInputAsInteger;
+            
+            while (int.TryParse(Console.ReadLine(), out keyboardInputAsInteger) && !Enum.IsDefined(i_Enum, keyboardInputAsInteger)) {
+                Console.Write(Messages.k_InvalidInput);
+            }
 
-            return Regex.Replace(i_Input, "(?<=[a-z])([A-Z])", " $1", RegexOptions.Compiled);
+            return keyboardInputAsInteger;
         }
         
-        internal static void PrintPrettyEnumChoices(Type i_EnumType)
+        internal static string SplitCamelCase(string input)
         {
-            Console.WriteLine($"Choose {splitCamelCase(i_EnumType.Name)}: ");
-
-            foreach (object item in Enum.GetValues(i_EnumType))
+            return Regex.Replace(input, "(?<=[a-z])([A-Z])", " $1", RegexOptions.Compiled);
+        }
+     
+        internal static void PrintPrettyEnumChoices(Type enumType)
+        {
+            Console.WriteLine($"Choose {SplitCamelCase(enumType.Name)}: ");
+            foreach (object item in Enum.GetValues(enumType))
             {
                 if (item.ToString() != "None")
                 {
-                    Console.WriteLine($"   {(int)item}. {splitCamelCase(item.ToString())}.");
+                    Console.WriteLine($"   {(int)item}. {SplitCamelCase(item.ToString())}.");
                 }
             }
-
             Console.Write("\nEnter your choice: ");
         }
-
-        internal static void PropertyPrompt(PropertyInfo i_Property)
+        internal static void PropertyPrompt(PropertyInfo property)
         {
-            Type type = i_Property.PropertyType;
-            string simplifiedType = splitCamelCase(i_Property.DeclaringType.ToString().Split('.')[1]);
-
+            Type type = property.PropertyType;
+            string simplifiedType = SplitCamelCase(property.DeclaringType.ToString().Split('.')[1]);
             if (type == typeof(int) || type == typeof(string) || type == typeof(float))
             {
-                Console.Write($"{simplifiedType} - Enter {splitCamelCase(i_Property.Name)}: ");
+                Console.Write($"{simplifiedType} - Enter {SplitCamelCase(property.Name)}: ");
             }
-            else if (i_Property.PropertyType.IsEnum)
+            else if (property.PropertyType.IsEnum)
             {
                 Console.Write($"{simplifiedType} - ");
-                PrintPrettyEnumChoices(i_Property.PropertyType);
+                printPrettyEnumChoices(property.PropertyType);
             }
         }
-        /*internal static object getDefaultConfiguration(Type type)
+
+        internal static Dictionary<string, object> GetConfigurationByPropertiesType(Type type)
         {
-            object instance = Activator.CreateInstance(type);
+            Dictionary<string, object> objectConfiguration = new Dictionary<string, object>();
             foreach(var prop in type.GetProperties())
-            {
-                prop.SetValue(instance, prop.GetValue(instance));
-            }
-
-            return instance;
-
-        }*/
-        internal static object GetConfigurationByObjectProperty(Type i_Type, bool i_ClearAfterProperty = true)
-        {
-            object instance = Activator.CreateInstance(i_Type);
-
-            foreach(var prop in i_Type.GetProperties())
             {
                 while(true)
                 {
-                    if (i_ClearAfterProperty)
-                    {
-                        Console.Clear();
-                    }
-
                     try
                     {
-                        PropertyPrompt(prop);
+                        propertyPrompt(prop);
                         Type propertyType = prop.PropertyType;
                         object value = null;
-
                         if (propertyType == typeof(int))
                         { 
                             value = GetValidIntegerFromUser();
@@ -154,7 +144,7 @@ namespace EX3
                         }
                         else if (propertyType == typeof(string))
                         {
-                            value = GetValidStringFromUser();
+                            value = Console.ReadLine();
                         }
                         else if (propertyType.IsEnum)
                         {
@@ -165,7 +155,7 @@ namespace EX3
                             break;
                         }
 
-                        prop.SetValue(instance, value);
+                        objectConfiguration[prop.ToString()] = value;
                         break;
                     }
                     catch (Exception e)
@@ -175,10 +165,9 @@ namespace EX3
                     }
                 }
             }
-
-            Console.Clear();
-
-            return instance;
+            
+            return objectConfiguration;
         }
+        
     }
 }

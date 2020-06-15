@@ -1,68 +1,50 @@
-using System;
+using GarageLogic.Exceptions;
 
-namespace EX3
+namespace GarageLogic
 {
     public class Wheel
     {
-        private string m_ManufactureName;
-        private float m_CurrentAirPressure;
-        private float m_MaxAirPressure;
+        private string m_BrandName;
+        private float m_CurrentPressure;
+        private readonly float r_MaxPressure;
+        public Wheel(string i_BrandName, float i_CurrentPressure, float i_MaxPressure)
+        {
+            m_BrandName = i_BrandName;
+            m_CurrentPressure = i_CurrentPressure;
+            r_MaxPressure = i_MaxPressure;
+        }
 
-        public string ManufactureName
+        internal string BrandName
         {
             get
             {
-
-              return m_ManufactureName;
-            }
-            set
-            {
-                m_ManufactureName = value;   
+                return m_BrandName;
             }
         }
 
-        public float CurrentAirPressure
+        internal float CurrentPressure
         {
             get
             {
+                return m_CurrentPressure;
+            }
+        }
 
-                return m_CurrentAirPressure;
-            }
-            set
+        internal void InflateToMax()
+        {
+            m_CurrentPressure = r_MaxPressure;
+        }
+
+        internal void Inflate(float i_PressureToAdd)
+        {
+            if (i_PressureToAdd + m_CurrentPressure > r_MaxPressure)
             {
-                m_CurrentAirPressure = value;   
+                throw new ValueOutOfRangeException(0, r_MaxPressure);
             }
+
+            m_CurrentPressure += i_PressureToAdd;
         }
         
-        public float MaxAirPressure
-        {
-            get
-            {
-
-                return m_MaxAirPressure;
-            }
-            set
-            {
-                if (value < m_CurrentAirPressure)
-                {
-                    throw new System.Exception("Maximal amount of air pressure in wheel can not be less than current, " +
-                        + this.m_CurrentAirPressure);
-                }
-
-                m_MaxAirPressure = value;   
-            }
-        }
-        public string getInfo()
-        {
-            string str = String.Format(
-                "Manufacture name: {0}\n" +
-                "Max air pressure: {1}\n" +
-                "Current air pressure: {2}\n",
-                this.m_ManufactureName,
-                this.m_MaxAirPressure,
-                this.m_CurrentAirPressure);
-
-            return str;
-        }
+        
     }
 }

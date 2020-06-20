@@ -13,9 +13,4 @@ jobs:
       - name: resharper
         uses: glassechidna/resharper-action@master
         with:
-          solution: EX4/Ex4/Ex4.sln
-  
-      - name: resharper
-        uses: glassechidna/resharper-action@master
-        with:
-          solution: EX3/Ex3/Ex3.sln
+          solution: Ex4/Ex4.sln

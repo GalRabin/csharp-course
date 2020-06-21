@@ -1,17 +1,21 @@
+using GarageLogic.Engines;
 using GarageLogic.Exceptions;
+using System;
+using System.Collections.Generic;
 
 namespace GarageLogic.Vehicles
 {
     public abstract class Car : Vehicle
     {
-        private static readonly int sr_DefaultNumberOfWheels = 4;
-        private static readonly int sr_DefaultMaxWheelsPressure = 32;
         private Enums.eCarColors m_Color;
         private int m_NumberOfDoors;
-
-        protected Car(string i_OwnerName, string i_OwnerPhoneNumber, string i_ModelName, string i_LicenseNumber) :
-            base(i_OwnerName, i_OwnerPhoneNumber, i_ModelName, i_LicenseNumber)
+        
+        protected Car(Customer i_Customer, string i_ModelName, string i_LicenseNumber,
+             List<Wheel> i_Wheels, Engine i_Engine, Enums.eCarColors i_Color, int i_NumberOfDoors) :
+            base(i_Customer, i_ModelName, i_LicenseNumber, i_Wheels, i_Engine)
         {
+            this.m_Color = i_Color;
+            this.m_NumberOfDoors = i_NumberOfDoors;
         }
 
         public Enums.eCarColors Color
@@ -41,6 +45,13 @@ namespace GarageLogic.Vehicles
                 
                 throw new ValueOutOfRangeException(2, 5);
             }
+        }
+        public override string ToString()
+        {
+            return base.ToString() + string.Format("Car color: {0}" + Environment.NewLine + 
+                                                    "Number of doors: {1}" + Environment.NewLine,
+                                                    this.Color,
+                                                    this.NumberOfDoors);
         }
     }
 }

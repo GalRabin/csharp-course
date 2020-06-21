@@ -1,15 +1,16 @@
 using GarageLogic.Engines;
+using System.Collections.Generic;
 
 namespace GarageLogic.Vehicles
 {
-    public class ElectricMotorcycle : Motocycle
+    public class ElectricMotorcycle : Motorcycle
     {
-        private static readonly float sr_DefaultMaxElectricChargeHours = 1.2f;
-
-        public ElectricMotorcycle(string i_OwnerName, string i_OwnerPhoneNumber, string i_ModelName, string i_LicenseNumber, float i_RemainingEnergy) :
-            base(i_OwnerName, i_OwnerPhoneNumber, i_ModelName, i_LicenseNumber)
+        
+        public ElectricMotorcycle(Customer i_Customer, string i_ModelName, string i_LicenseNumber,
+            List<Wheel> i_Wheels, ElectricEngine i_ElectricEngine, 
+            Enums.eMotorcycleLicenseTypes i_LicenseType, int i_EngineVolume) :
+            base(i_Customer, i_ModelName, i_LicenseNumber, i_Wheels, i_ElectricEngine, i_LicenseType, i_EngineVolume)
         {
-            m_Engine = new ElectricEngine(sr_DefaultMaxElectricChargeHours,i_RemainingEnergy);
         }
     }
 }

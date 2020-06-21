@@ -13,6 +13,16 @@ namespace GarageLogic.Exceptions
             r_MaxValue = i_MaxValue;
         }
 
+        public override string Message
+        {
+            get
+            {
+                return string.Format("Value out of range." + Environment.NewLine + 
+                    "Min value: {0}." + Environment.NewLine + 
+                    "Max value: {1}" + Environment.NewLine,
+                    this.MinValue, this.MaxValue);
+            }
+        }
         public float MinValue
         {
             get

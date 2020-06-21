@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ConsoleUI": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\dean\\source\\repos\\csharp-course"
+    }
+  }
+}

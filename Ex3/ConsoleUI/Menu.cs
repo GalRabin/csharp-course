@@ -1,5 +1,7 @@
 using System;
+using System.Reflection;
 using GarageLogic;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace ConsoleUI
 {
@@ -8,10 +10,12 @@ namespace ConsoleUI
         public Menu()
         {
             Garage garage = new Garage();
+            
             Enums.eMenuOperations operation = Enums.eMenuOperations.None;
-            Console.Write(Messages.MenuOperations());
             while (operation != Enums.eMenuOperations.Exit)
             {
+                Console.Clear();
+                Console.Write(Messages.MenuOperations());
                 operation = (Enums.eMenuOperations)Utils.GetValidEnumFromUser(typeof(Enums.eMenuOperations));
                 Console.Clear();
                 switch (operation)
@@ -38,6 +42,7 @@ namespace ConsoleUI
                         Operations.DisplayVehicle(garage);
                         break;
                 }
+                System.Threading.Thread.Sleep(2000);
             }
         }
     }

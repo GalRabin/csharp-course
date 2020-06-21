@@ -1,54 +1,44 @@
+using System;
 using System.Collections.Generic;
+using System.Text;
 using GarageLogic.Engines;
+using GarageLogic.Exceptions;
 
 namespace GarageLogic.Vehicles
 {
     public abstract class Vehicle
     {
-        private static readonly int sr_DefaultNumberOfWheels;
-        private string m_OwnerName;
-        private string m_OwnerPhoneNumber;
+        private Customer m_Owner;
         private Enums.eVehicleGarageStatus m_VehicleStatus;
         private string m_ModelName;
         private string m_LicenseNumber;
         private List<Wheel> m_Wheels;
-        protected Engine m_Engine;
-
-        public Vehicle(string i_OwnerName, string i_OwnerPhoneNumber, string i_ModelName, string i_LicenseNumber)
+        private Engine m_Engine;
+        
+        
+        public Vehicle(Customer i_Customer, string i_ModelName, string i_LicenseNumber, List<Wheel> i_Wheels,
+            Engine i_Engine)
         {
-            m_OwnerName = i_OwnerName;
-            m_OwnerPhoneNumber = i_OwnerPhoneNumber;
-            m_VehicleStatus = Enums.eVehicleGarageStatus.InRepair;
-            m_ModelName = i_ModelName;
-            m_LicenseNumber = i_LicenseNumber;
-            m_Wheels = new List<Wheel>();
+            this.m_Owner = i_Customer;
+            this.m_VehicleStatus = Enums.eVehicleGarageStatus.InRepair;
+            this.m_ModelName = i_ModelName;
+            this.m_LicenseNumber = i_LicenseNumber;
+            this.m_Wheels = i_Wheels;
+            this.m_Engine = i_Engine; 
         }
 
-        internal string OwnerName
-        {
-            get
-            {
-                return m_OwnerName;
-            }
-            set
-            {
-                m_OwnerName = value;
-            }
-        }
-
-        internal string OwnerPhoneNumber
+        public Customer Customer
         {
             get
             {
-                return m_OwnerPhoneNumber;
+                return this.m_Owner;
             }
             set
             {
-                m_OwnerPhoneNumber = value;
+                this.m_Owner = value;
             }
         }
-
-        internal Enums.eVehicleGarageStatus VehicleStatus
+        public Enums.eVehicleGarageStatus VehicleStatus
         {
             get
             {
@@ -60,7 +50,7 @@ namespace GarageLogic.Vehicles
             }
         }
 
-        internal string ModelName
+        public string ModelName
         {
             get
             {
@@ -72,7 +62,7 @@ namespace GarageLogic.Vehicles
             }
         }
 
-        internal string LicenseNumber
+        public string LicenseNumber
         {
             get
             {
@@ -84,7 +74,7 @@ namespace GarageLogic.Vehicles
             }
         }
 
-        internal List<Wheel> Wheels
+        public List<Wheel> Wheels
         {
             get
             {
@@ -100,5 +90,29 @@ namespace GarageLogic.Vehicles
         {
             get { return m_Engine; }
         }
+        public override string ToString()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(m_Owner.ToString() + Environment.NewLine);
+            stringBuilder.Append(string.Format("Vehicle status: {0}" + Environment.NewLine +
+                                                "Model name: {1}" + Environment.NewLine +
+                                                "License number: {2}" + Environment.NewLine,
+                                                m_VehicleStatus,
+                                                m_ModelName,
+                                                m_LicenseNumber));
+            int i = 0;
+
+            foreach(Wheel wheel in m_Wheels)
+            {
+                stringBuilder.Append(string.Format("Wheel number {0} details: ", i + 1) + Environment.NewLine);
+                stringBuilder.Append(wheel.ToString());
+                i++;
+            }
+
+            stringBuilder.Append(m_Engine.ToString());
+
+            return stringBuilder.ToString();
+        }
     }
 }
+ 

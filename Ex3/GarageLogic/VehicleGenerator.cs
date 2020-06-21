@@ -7,57 +7,74 @@ namespace GarageLogic
 {
     public class VehicleGenerator
     {
-        public static Vehicle GenerateVehicle(Enums.VehiclesTypes i_VehicleType, Dictionary<string, object> i_CommonProperties, Dictionary<string, object> i_specialProperties)
+        public static Vehicle GenerateVehicle(Enums.eVehicleType i_VehicleType, Dictionary<string, object> i_Properties)
         {
             Vehicle vehicle = null;
+            List<Wheel> wheels = new List<Wheel>();
+            
+            foreach (var v in i_Properties.Values)
+            {
+                if (v.GetType() == typeof(Wheel))
+                {
+                    wheels.Add((Wheel)v);
+                }
+            }
             switch (i_VehicleType)
             {
-                case Enums.VehiclesTypes.FuelMotorcycle:
-                    vehicle = new FuelMotorcycle(i_OwnerName, i_OwnerPhoneNumber, i_ModelName, i_LicenseNumber, i_RemainingEnergy);
+                case Enums.eVehicleType.FuelMotorcycle:
+
+                    vehicle = new FuelMotorcycle((Customer)i_Properties["Customer"], (string)i_Properties["Model Name"],
+                         (string)i_Properties["License Number"], wheels,
+                         (GarageLogic.Engines.FuelEngine)i_Properties["Fuel Engine"],
+                         (Enums.eMotorcycleLicenseTypes)i_Properties["License Type"], (int)i_Properties["Engine Volume"]);
                     break;
-                case Enums.VehiclesTypes.ElectricMotorcycle:
-                    vehicle = new ElectricMotorcycle(i_OwnerName, i_OwnerPhoneNumber, i_ModelName, i_LicenseNumber, i_RemainingEnergy);
+                case Enums.eVehicleType.ElectricMotorcycle:
+                    vehicle = new ElectricMotorcycle((Customer)i_Properties["Customer"], (string)i_Properties["Model Name"],
+                        (string)i_Properties["License Number"], wheels,
+                        (GarageLogic.Engines.ElectricEngine)i_Properties["Electric Engine"],
+                        (Enums.eMotorcycleLicenseTypes)i_Properties["License Type"], (int)i_Properties["Engine Volume"]);
                     break;
-                case Enums.VehiclesTypes.FuelCar:
-                    vehicle = new FuelCar(i_OwnerName, i_OwnerPhoneNumber, i_ModelName, i_LicenseNumber, i_RemainingEnergy);
+                case Enums.eVehicleType.FuelCar:
+                    vehicle = new FuelCar((Customer)i_Properties["Customer"], (string)i_Properties["Model Name"],
+                              (string)i_Properties["License Number"], wheels,
+                              (GarageLogic.Engines.FuelEngine)i_Properties["Fuel Engine"],
+                              (Enums.eCarColors)i_Properties["Car Color"], (int)i_Properties["Number Of Doors"]);
                     break;
-                case Enums.VehiclesTypes.ElectricCar:
-                    vehicle = new ElectricCar(i_OwnerName, i_OwnerPhoneNumber, i_ModelName, i_LicenseNumber, i_RemainingEnergy);
+                case Enums.eVehicleType.ElectricCar:
+                    vehicle = new ElectricCar((Customer)i_Properties["Customer"], (string)i_Properties["Model Name"],
+                               (string)i_Properties["License Number"], wheels,
+                               (GarageLogic.Engines.ElectricEngine)i_Properties["Electric Engine"],
+                               (Enums.eCarColors)i_Properties["Car Color"], (int)i_Properties["Number Of Doors"]);
                     break;
-                case Enums.VehiclesTypes.Truck:
-                    vehicle = new FuelTruck(i_OwnerName, i_OwnerPhoneNumber, i_ModelName, i_LicenseNumber, i_RemainingEnergy);
+                case Enums.eVehicleType.FuelTruck:
+                    vehicle = new FuelTruck((Customer)i_Properties["Customer"], (string)i_Properties["Model Name"],
+                              (string)i_Properties["License Number"], wheels,
+                              (GarageLogic.Engines.FuelEngine)i_Properties["Fuel Engine"],
+                              (float)i_Properties["Cargo Volume"], (bool)i_Properties["Dangerous Cargo"]);
                     break;
             }
-            
-            configureSpecialProperties(vehicle, i_specialProperties);
-            configureVehicleWheels(vehicle);
+            /*
+            switch (i_VehicleType)
+            {
+                case Enums.eVehicleType.FuelMotorcycle:
+
+                    vehicle = new FuelMotorcycle();
+                    break;
+                case Enums.eVehicleType.ElectricMotorcycle:
+                    vehicle = new ElectricMotorcycle();
+                    break;
+                case Enums.eVehicleType.FuelCar:
+                    vehicle = new FuelCar();
+                    break;
+                case Enums.eVehicleType.ElectricCar:
+                    vehicle = new ElectricCar();
+                    break;
+                case Enums.eVehicleType.FuelTruck:
+                    vehicle = new FuelTruck();
+                    break;
+            }*/
 
             return vehicle;
         }
-
-        private static void configureSpecialProperties(Vehicle i_vehicle, Dictionary<string, object> i_specialProperties)
-        {
-            foreach (KeyValuePair<string, object> entry in i_specialProperties)
-            {
-                PropertyInfo propertyInfo = i_vehicle.GetType().GetProperty(entry.Key);
-                propertyInfo.SetValue(i_vehicle, entry.Value, null);
-            }
-        }
-        
-        private static void configureVehicleWheels(Vehicle i_vehicle)
-        {
-        }
-        
-        public static List<Type> GetVehicleTypes()
-        {
-            return new List<Type>()
-            {
-                typeof(ElectricMotorcycle),
-                typeof(FuelMotorcycle),
-                typeof(FuelCar),
-                typeof(ElectricCar),
-                typeof(FuelTruck)
-            };
-        }
-    }
+    } 
 }

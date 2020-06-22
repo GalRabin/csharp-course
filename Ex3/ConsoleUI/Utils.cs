@@ -12,15 +12,15 @@ namespace ConsoleUI
         {
             string response = Console.ReadLine();
 
-            while (response != "yes" && response != "no")
+            while (response != Messages.k_YesOption && response != Messages.k_NoOption)
             {
                 Console.Write(Messages.k_InvalidInput);
                 response = Console.ReadLine();
             }
 
-            return response == "yes";
+            return response == Messages.k_YesOption;
         }
-        
+
         internal static int GetValidInRangeFromUser(int min, int max)
         {
             int response;
@@ -66,6 +66,7 @@ namespace ConsoleUI
         internal static string GetValidStringFromUser()
         {
             string response;
+
             while ((response = Console.ReadLine()).Length == 0)
             {
                 Console.Write(Messages.k_InvalidInput);
@@ -93,7 +94,8 @@ namespace ConsoleUI
         {
             int keyboardInputAsInteger;
 
-            while (!int.TryParse(Console.ReadLine(), out keyboardInputAsInteger) || !Enum.IsDefined(i_Enum, keyboardInputAsInteger) || keyboardInputAsInteger == 0)
+            while (!int.TryParse(Console.ReadLine(), out keyboardInputAsInteger) ||
+                !Enum.IsDefined(i_Enum, keyboardInputAsInteger) || keyboardInputAsInteger == 0)
             {
                 Console.Write(Messages.k_InvalidInput);
             }
@@ -107,37 +109,25 @@ namespace ConsoleUI
         {
             ConstructorInfo ci = i_Type.GetConstructors()[0];
             object[] parameters = new object[ci.GetParameters().Length];
-
             int i = 0;
 
             foreach (ParameterInfo pi in ci.GetParameters())
             {
-                if(pi.HasDefaultValue)
+                if (pi.HasDefaultValue)
                 {
                     continue;
                 }
-                propertyPrompt(toPrettyString(pi.Name), pi.ParameterType);
+
+                PropertyPrompt(ToPrettyString(pi.Name), pi.ParameterType);
+
                 if (pi.ParameterType == typeof(int))
                 {
-                    int keyBoardParam;
-
-                    while (!int.TryParse(Console.ReadLine(), out keyBoardParam))
-                    {
-                        Console.Write(Messages.k_InvalidInput);
-                    }
-
-                    parameters[i] = keyBoardParam;
+                    parameters[i] = ReadInt();
                     i++;
                 }
                 else if (pi.ParameterType == typeof(float))
                 {
-                    float keyBoardParam;
-
-                    while (!float.TryParse(Console.ReadLine(), out keyBoardParam))
-                    {
-                        Console.Write(Messages.k_InvalidInput);
-                    }
-                    parameters[i] = keyBoardParam;
+                    parameters[i] = ReadFloat();
                     i++;
                 }
                 else
@@ -151,15 +141,40 @@ namespace ConsoleUI
 
             return parameters;
         }
-        
+
+        internal static int ReadInt()
+        {
+            int keyBoardParam;
+
+            while (!int.TryParse(Console.ReadLine(), out keyBoardParam))
+            {
+                Console.Write(Messages.k_InvalidInput);
+            }
+
+            return keyBoardParam;
+        }
+
+        internal static float ReadFloat()
+        {
+            float keyBoardParam;
+
+            while (!float.TryParse(Console.ReadLine(), out keyBoardParam))
+            {
+                Console.Write(Messages.k_InvalidInput);
+            }
+
+            return keyBoardParam;
+        }
         internal static string SplitCamelCase(string i_Input)
         {
+
             return Regex.Replace(i_Input, "(?<=[a-z])([A-Z])", " $1", RegexOptions.Compiled);
         }
 
-        private static void printPrettyEnumChoices(Type i_EnumType)
+        internal static void PrintPrettyEnumChoices(Type i_EnumType)
         {
             Console.WriteLine($"Choose {SplitCamelCase(i_EnumType.Name)}: ");
+
             foreach (object item in Enum.GetValues(i_EnumType))
             {
                 if (item.ToString() != "None")
@@ -167,23 +182,29 @@ namespace ConsoleUI
                     Console.WriteLine($"   {(int)item}. {SplitCamelCase(item.ToString())}.");
                 }
             }
+
             Console.Write(Messages.k_EnterOption);
         }
 
-        private static void propertyPrompt(string i_Key, Type i_Type)
+        internal static void PropertyPrompt(string i_Key, Type i_Type)
         {
             if (i_Type == typeof(int) || i_Type == typeof(string) || i_Type == typeof(float))
             {
-                Console.Write($"{i_Key} - Enter {SplitCamelCase(i_Key)}: ");
+                Console.Write(Messages.EnterKey(i_Key, SplitCamelCase(i_Key)));
             }
             else if (i_Type.IsEnum)
             {
                 Console.Write($"{i_Type} - ");
-                printPrettyEnumChoices(i_Type);
+                PrintPrettyEnumChoices(i_Type);
             }
             else if (i_Type == typeof(bool))
             {
-                Console.Write($"{i_Key} - Enter if {SplitCamelCase(i_Key)}: (yes/no)");
+                Console.Write(Messages.EnterYesNoKey(i_Key, SplitCamelCase(i_Key)));
+            }
+            else if (i_Type.IsClass)
+            {
+                Console.WriteLine(i_Key + Environment.NewLine);
+                Console.WriteLine(Messages.EnterObjectConfigurations(i_Type));
             }
         }
         internal static Dictionary<string, Type> PrettyEmptyDictionary(Dictionary<string, Type> i_Dict)
@@ -192,13 +213,13 @@ namespace ConsoleUI
 
             foreach (KeyValuePair<string, Type> pair in i_Dict)
             {
-                prettyDict.Add(toPrettyString(pair.Key), pair.Value);
+                prettyDict.Add(ToPrettyString(pair.Key), pair.Value);
             }
 
             return prettyDict;
         }
 
-        private static string toPrettyString(string i_Str)
+        internal static string ToPrettyString(string i_Str)
         {
             string prettyString = i_Str.Substring(i_Str.LastIndexOf('_') + 1);
 
@@ -226,40 +247,15 @@ namespace ConsoleUI
                 {
                     try
                     {
-                        propertyPrompt(key, argumentType);
-                        object value;
-                        if (argumentType == typeof(int))
+                        object value = GetPropertyFromUser(key, argumentType, i_Garage, i_TargetType);
+                        
+                        if(value == null)
                         {
-                            value = getValidIntegerFromUser();
-                        }
-                        else if (argumentType == typeof(float))
-                        {
-                            value = GetValidFloatFromUser();
-                        }
-                        else if (argumentType == typeof(string))
-                        {
-                            value = Console.ReadLine();
-                        }
-                        else if(argumentType == typeof(bool))
-                        {
-                            value = getValidYesNoFromUser();
-                        }
-                        else if (argumentType.IsEnum)
-                        {
-                            value = GetValidEnumFromUser(argumentType);
-                        }
-                        else if (argumentType.IsClass)
-                        {
-                            object[] objectParameters = GetValidObjectFromUser(argumentType);
-                            value = i_Garage.CreateObject(objectParameters, argumentType, i_TargetType);
-                        }
-                        else 
-                        { 
                             break;
                         }
 
                         valuesDict.Add(key, value);
-                      
+
                         Console.Clear();
                         break;
                     }
@@ -272,6 +268,55 @@ namespace ConsoleUI
             }
 
             return valuesDict;
+        }
+        internal static object GetPropertyFromUser(string i_Key, Type i_ArgumentType, GarageLogic.Garage i_Garage,
+            Type i_TargetType)
+        {
+            object value;
+            PropertyPrompt(i_Key, i_ArgumentType);
+
+            if (i_ArgumentType == typeof(int))
+            {
+                value = getValidIntegerFromUser();
+            }
+            else if (i_ArgumentType == typeof(float))
+            {
+                value = GetValidFloatFromUser();
+            }
+            else if (i_ArgumentType == typeof(string))
+            {
+                value = Console.ReadLine();
+            }
+            else if (i_ArgumentType == typeof(bool))
+            {
+                value = getValidYesNoFromUser();
+            }
+            else if (i_ArgumentType.IsEnum)
+            {
+                value = GetValidEnumFromUser(i_ArgumentType);
+            }
+            else if (i_ArgumentType.IsClass)
+            {
+                while (true)
+                {
+                    object[] objectParameters = GetValidObjectFromUser(i_ArgumentType);
+                    try
+                    {
+                        value = i_Garage.CreateObject(objectParameters, i_ArgumentType, i_TargetType);
+                        break;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+            }
+            else
+            {
+                value = null;
+            }
+
+            return value;
         }
     }
 }

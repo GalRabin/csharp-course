@@ -24,7 +24,7 @@ namespace GarageLogic.Engines
                 this.m_FuelType = value;
             }
         }
-        internal override void Recharge(float numberOfHoursToCharge)
+        internal override void Recharge(float i_NumberOfHoursToCharge)
         {
             throw new ArgumentException("Fuel engine can't charge.");
         }

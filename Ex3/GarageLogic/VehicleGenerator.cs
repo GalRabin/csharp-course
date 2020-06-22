@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using GarageLogic.Vehicles;
 
@@ -10,19 +11,11 @@ namespace GarageLogic
         public static Vehicle GenerateVehicle(Enums.eVehicleType i_VehicleType, Dictionary<string, object> i_Properties)
         {
             Vehicle vehicle = null;
-            List<Wheel> wheels = new List<Wheel>();
-            
-            foreach (var v in i_Properties.Values)
-            {
-                if (v.GetType() == typeof(Wheel))
-                {
-                    wheels.Add((Wheel)v);
-                }
-            }
+            List<Wheel> wheels = buildWheels(i_Properties.Values);
+
             switch (i_VehicleType)
             {
                 case Enums.eVehicleType.FuelMotorcycle:
-
                     vehicle = new FuelMotorcycle((Customer)i_Properties["Customer"], (string)i_Properties["Model Name"],
                          (string)i_Properties["License Number"], wheels,
                          (Engines.FuelEngine)i_Properties["Fuel Engine"],
@@ -53,9 +46,23 @@ namespace GarageLogic
                               (float)i_Properties["Cargo Volume"], (bool)i_Properties["Dangerous Cargo"]);
                     break;
             }
-            
 
             return vehicle;
         }
-    } 
+
+        private static List<Wheel> buildWheels(Dictionary<string, object>.ValueCollection i_Values)
+        {
+            List<Wheel> wheels = new List<Wheel>();
+
+            foreach (var v in i_Values)
+            {
+                if (v.GetType() == typeof(Wheel))
+                {
+                    wheels.Add((Wheel)v);
+                }
+            }
+
+            return wheels;
+        }
+    }
 }

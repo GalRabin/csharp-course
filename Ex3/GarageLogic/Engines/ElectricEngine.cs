@@ -10,14 +10,14 @@ namespace GarageLogic.Engines
         {
         }
 
-        internal override void Recharge(float numberOfHoursToCharge)
+        internal override void Recharge(float i_NumberOfHoursToCharge)
         {
-            if (numberOfHoursToCharge + m_CurrentEnergy > m_MaxEnergy)
+            if (i_NumberOfHoursToCharge + m_CurrentEnergy > m_MaxEnergy)
             {
                 throw new ValueOutOfRangeException(0, m_MaxEnergy);
             }
 
-            m_CurrentEnergy += numberOfHoursToCharge;
+            m_CurrentEnergy += i_NumberOfHoursToCharge;
         }
 
         internal override void Refuel(Enums.eFuelTypes i_FuelType, float i_FuelAmount)

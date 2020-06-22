@@ -6,7 +6,8 @@ namespace GarageLogic
 {
     public class VehiclesDictionary
     {
-        public static readonly Dictionary<Enums.eVehicleType, Dictionary<string, object>> dict = new Dictionary<Enums.eVehicleType, Dictionary<string, object>>()
+        public static readonly Dictionary<Enums.eVehicleType, Dictionary<string, object>> sr_DefaultDictionary = 
+            new Dictionary<Enums.eVehicleType, Dictionary<string, object>>()
         {
             {Enums.eVehicleType.FuelMotorcycle, new Dictionary<string, object>
                 {

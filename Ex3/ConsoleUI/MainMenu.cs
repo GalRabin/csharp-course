@@ -8,14 +8,15 @@ namespace ConsoleUI
         public MainMenu()
         {
             Garage garage = new Garage();
-
             eMenuOperations operation = eMenuOperations.None;
+
             while (operation != eMenuOperations.Exit)
             {
                 Console.Clear();
                 Console.Write(Messages.MenuOperations());
                 operation = (eMenuOperations) Utils.GetValidEnumFromUser(typeof(eMenuOperations));
                 Console.Clear();
+
                 switch (operation)
                 {
                     case eMenuOperations.InsertVehicle:

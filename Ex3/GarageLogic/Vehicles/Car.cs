@@ -48,6 +48,7 @@ namespace GarageLogic.Vehicles
         }
         public override string ToString()
         {
+
             return base.ToString() + string.Format("Car color: {0}" + Environment.NewLine + 
                                                     "Number of doors: {1}" + Environment.NewLine,
                                                     this.Color,

@@ -1,49 +1,61 @@
 using System;
-using System.Reflection;
 using GarageLogic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace ConsoleUI
 {
-    public class Menu
+    public class MainMenu
     {
-        public Menu()
+        public MainMenu()
         {
             Garage garage = new Garage();
-            
-            Enums.eMenuOperations operation = Enums.eMenuOperations.None;
-            while (operation != Enums.eMenuOperations.Exit)
+
+            eMenuOperations operation = eMenuOperations.None;
+            while (operation != eMenuOperations.Exit)
             {
                 Console.Clear();
                 Console.Write(Messages.MenuOperations());
-                operation = (Enums.eMenuOperations)Utils.GetValidEnumFromUser(typeof(Enums.eMenuOperations));
+                operation = (eMenuOperations) Utils.GetValidEnumFromUser(typeof(eMenuOperations));
                 Console.Clear();
                 switch (operation)
                 {
-                    case Enums.eMenuOperations.InsertVehicle:
+                    case eMenuOperations.InsertVehicle:
                         Operations.InsertVehicle(garage);
                         break;
-                    case Enums.eMenuOperations.ListPlates:
+                    case eMenuOperations.ListPlates:
                         Operations.ListVehicles(garage);
                         break;
-                    case Enums.eMenuOperations.ChangeStatus:
+                    case eMenuOperations.ChangeStatus:
                         Operations.ChangeVehicleStatus(garage);
                         break;
-                    case Enums.eMenuOperations.InflateWheels:
+                    case eMenuOperations.InflateWheels:
                         Operations.InflateWheelsToMax(garage);
                         break;
-                    case Enums.eMenuOperations.Refuel:
+                    case eMenuOperations.Refuel:
                         Operations.RefuelVehicle(garage);
                         break;
-                    case Enums.eMenuOperations.Recharge:
+                    case eMenuOperations.Recharge:
                         Operations.RechargeVehicle(garage);
                         break;
-                    case Enums.eMenuOperations.DisplayVehicle:
+                    case eMenuOperations.DisplayVehicle:
                         Operations.DisplayVehicle(garage);
                         break;
                 }
+
                 System.Threading.Thread.Sleep(2000);
             }
+        }
+        
+        internal enum eMenuOperations
+        {
+            None,
+            InsertVehicle,
+            ListPlates,
+            ChangeStatus,
+            InflateWheels,
+            Refuel,
+            Recharge,
+            DisplayVehicle,
+            Exit
         }
     }
 }

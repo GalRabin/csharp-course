@@ -1,12 +1,10 @@
-using System;
-
 namespace ConsoleUI
 {
-    public class Program
+    public static class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
-            Menu menu = new Menu();
+            MainMenu mainMenu = new MainMenu();
         }
     }
 }

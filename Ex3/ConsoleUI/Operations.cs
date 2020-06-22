@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Reflection;
 using GarageLogic;
 using GarageLogic.Exceptions;
-using GarageLogic.Vehicles;
 
 namespace ConsoleUI
 {
-    public class Operations
+    public static class Operations
     {
         internal static void InsertVehicle(Garage i_Garage)
         {
-            List<Type> vehicleTypes = i_Garage.GetVehicleTypes();
+            List<Type> vehicleTypes = Garage.GetVehicleTypes();
             Console.Write(Messages.ChooseVehicleType(vehicleTypes));
             Type vehicleType = vehicleTypes[Utils.GetValidInRangeFromUser(1, vehicleTypes.Count) - 1];
             Dictionary<string, Type> vehicleConfiguration = i_Garage.GetEmptyDictionary(vehicleType);
@@ -21,17 +18,16 @@ namespace ConsoleUI
             
             if(!i_Garage.InsertVehicle(vehicleType, vehicleValues))
             {
-                Console.WriteLine("Vehicle already exist in the garage." + Environment.NewLine +
-                                "The system use the original configuration and updated vehicle status to in repair." + Environment.NewLine);
+                Console.WriteLine(Messages.sr_VehicleAllreadyExist);
             }      
         }
         
         public static void ListVehicles(Garage i_Garage)
         {
-            List<string> vehicleStatuses = i_Garage.GetVehicleStatuses();
+            List<string> vehicleStatuses = Garage.GetVehicleStatuses();
             Console.WriteLine(Messages.ChooseVehicleStatus(vehicleStatuses));
             string vehicleStatus = vehicleStatuses[Utils.GetValidInRangeFromUser(1, vehicleStatuses.Count) - 1];
-            List<string> vehicles = i_Garage.GetLicensesByStatus(vehicleStatus);
+            IEnumerable<string> vehicles = i_Garage.GetLicensesByStatus(vehicleStatus);
 
             foreach(string str in vehicles)
             {
@@ -41,98 +37,98 @@ namespace ConsoleUI
         
         public static void ChangeVehicleStatus(Garage i_Garage)
         {
-            Console.WriteLine("Enter License Number: " + Environment.NewLine);
+            Console.WriteLine(Messages.sr_EnterLicenseNumber);
             string licenseNumber = Utils.GetValidStringFromUser();
-            List<string> vehicleStatuses = i_Garage.GetVehicleStatuses();
+            List<string> vehicleStatuses = Garage.GetVehicleStatuses();
             Console.WriteLine(Messages.ChooseVehicleStatus(vehicleStatuses));
             string vehicleStatus = vehicleStatuses[Utils.GetValidInRangeFromUser(1, vehicleStatuses.Count) - 1];
             
             try
             {
-                i_Garage.UpadeVehicleStatus(licenseNumber, vehicleStatus);
+                i_Garage.UpdateVehicleStatus(licenseNumber, vehicleStatus);
             }
-            catch(ArgumentException ae)
+            catch(ArgumentException e)
             {
-                Console.WriteLine(ae.Message);
+                Console.WriteLine(e.Message);
             }
         }
         
         public static void InflateWheelsToMax(Garage i_Garage)
         {
-            Console.WriteLine("Enter License Number: " + Environment.NewLine);
+            Console.WriteLine(Messages.sr_EnterLicenseNumber);
             string licenseNumber = Utils.GetValidStringFromUser();
 
             try
             {
                 i_Garage.InflateWheelsToMax(licenseNumber);
             }
-            catch(ArgumentException ae)
+            catch(ArgumentException e)
             {
-                Console.WriteLine(ae.Message);
+                Console.WriteLine(e.Message);
             }
 
         }
         
         public static void RefuelVehicle(Garage i_Garage)
         {
-            Console.WriteLine("Enter License Number: " + Environment.NewLine);
+            Console.WriteLine(Messages.sr_EnterLicenseNumber);
             string licenseNumber = Utils.GetValidStringFromUser();
 
-            List<string> fuelTypes = i_Garage.GetFuelTypes();
+            List<string> fuelTypes = Garage.GetFuelTypes();
             Console.WriteLine(Messages.ChooseVehicleStatus(fuelTypes));
             string fuelType = fuelTypes[Utils.GetValidInRangeFromUser(1, fuelTypes.Count) - 1];
 
-            Console.WriteLine("Type amount of fuel to refuel " + Environment.NewLine);
+            Console.WriteLine(Messages.sr_TypeAmoutOfFuel);
             float fuelAmount = Utils.GetValidFloatFromUser();
 
             try
             {
                 i_Garage.Refuel(licenseNumber, fuelType, fuelAmount);
             }
-            catch(ArgumentException ae)
+            catch(ArgumentException e)
             {
-                Console.WriteLine(ae.Message);
+                Console.WriteLine(e.Message);
             }
-            catch(ValueOutOfRangeException voore)
+            catch(ValueOutOfRangeException e)
             {
-                Console.WriteLine(voore.Message);
+                Console.WriteLine(e.Message);
             }
 
         }
         
         public static void RechargeVehicle(Garage i_Garage)
         {
-            Console.WriteLine("Enter License Number: " + Environment.NewLine);
+            Console.WriteLine(Messages.sr_EnterLicenseNumber);
             string licenseNumber = Utils.GetValidStringFromUser();
 
-            Console.WriteLine("Type amount of minutes to charge: " + Environment.NewLine);
+            Console.WriteLine(Messages.sr_TypeAmountOfCharge);
             float chargeAmount = Utils.GetValidFloatFromUser();
 
             try
             {
                 i_Garage.Recharge(licenseNumber, chargeAmount);
             }
-            catch (ArgumentException ae)
+            catch (ArgumentException e)
             {
-                Console.WriteLine(ae.Message);
+                Console.WriteLine(e.Message);
             }
-            catch (ValueOutOfRangeException voore)
+            catch (ValueOutOfRangeException e)
             {
-                Console.WriteLine(voore.Message);
+                Console.WriteLine(e.Message);
             }
         }
         public static void DisplayVehicle(Garage i_Garage)
         {
-            Console.WriteLine("Enter License Number: " + Environment.NewLine);
+            Console.WriteLine(Messages.sr_EnterLicenseNumber);
             string licenseNumber = Utils.GetValidStringFromUser();
 
             try
             {
                 Console.WriteLine(i_Garage.GetVehicleInfo(licenseNumber));
             }
-            catch(ArgumentException ae)
+            catch(ArgumentException e)
             {
-                Console.WriteLine(ae.Message);
+                Console.WriteLine(e.Message);
             }
         }
     }

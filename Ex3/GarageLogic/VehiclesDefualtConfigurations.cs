@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GarageLogic
 {
-    public class VehiclesDictionary
+    public class VehiclesDefualtConfigurations
     {
         public static readonly Dictionary<Enums.eVehicleType, Dictionary<string, object>> sr_DefaultDictionary = 
             new Dictionary<Enums.eVehicleType, Dictionary<string, object>>()

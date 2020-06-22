@@ -105,41 +105,41 @@ namespace ConsoleUI
             return keyboardInputAsInteger;
         }
 
-        private static object[] GetValidObjectFromUser(Type i_Type)
+        private static object[] GetValidObjectParametersFromUser(Type i_Type)
         {
-            ConstructorInfo ci = i_Type.GetConstructors()[0];
-            object[] parameters = new object[ci.GetParameters().Length];
-            int i = 0;
+            ConstructorInfo constructorInfo = i_Type.GetConstructors()[0];
+            object[] objetParameters = new object[constructorInfo.GetParameters().Length];
+            int acceptedParameters = 0;
 
-            foreach (ParameterInfo pi in ci.GetParameters())
+            foreach (ParameterInfo parameterInfo in constructorInfo.GetParameters())
             {
-                if (pi.HasDefaultValue)
+                if (parameterInfo.HasDefaultValue)
                 {
                     continue;
                 }
 
-                PropertyPrompt(ToPrettyString(pi.Name), pi.ParameterType);
+                PropertyPrompt(ToPrettyString(parameterInfo.Name), parameterInfo.ParameterType);
 
-                if (pi.ParameterType == typeof(int))
+                if (parameterInfo.ParameterType == typeof(int))
                 {
-                    parameters[i] = ReadInt();
-                    i++;
+                    objetParameters[acceptedParameters] = ReadInt();
+                    acceptedParameters++;
                 }
-                else if (pi.ParameterType == typeof(float))
+                else if (parameterInfo.ParameterType == typeof(float))
                 {
-                    parameters[i] = ReadFloat();
-                    i++;
+                    objetParameters[acceptedParameters] = ReadFloat();
+                    acceptedParameters++;
                 }
                 else
                 {
-                    parameters[i] = Console.ReadLine();
-                    i++;
+                    objetParameters[acceptedParameters] = Console.ReadLine();
+                    acceptedParameters++;
                 }
             }
 
             Console.Clear();
 
-            return parameters;
+            return objetParameters;
         }
 
         internal static int ReadInt()
@@ -299,10 +299,10 @@ namespace ConsoleUI
             {
                 while (true)
                 {
-                    object[] objectParameters = GetValidObjectFromUser(i_ArgumentType);
+                    object[] objectParameters = GetValidObjectParametersFromUser(i_ArgumentType);
                     try
                     {
-                        value = i_Garage.CreateObject(objectParameters, i_ArgumentType, i_TargetType);
+                        value = i_Garage.CreateGarageObject(objectParameters, i_ArgumentType, i_TargetType);
                         break;
                     }
                     catch (Exception e)

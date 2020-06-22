@@ -12,11 +12,11 @@ namespace ConsoleUI
             List<Type> vehicleTypes = Garage.GetVehicleTypes();
             Console.Write(Messages.ChooseVehicleType(vehicleTypes));
             Type vehicleType = vehicleTypes[Utils.GetValidInRangeFromUser(1, vehicleTypes.Count) - 1];
-            Dictionary<string, Type> vehicleConfiguration = i_Garage.GetEmptyDictionary(vehicleType);
-            Dictionary<string, Type> prettyVehicleConfiguration = Utils.PrettyEmptyDictionary(vehicleConfiguration);
-            Dictionary<string, object> vehicleValues = Utils.GetConfigurationByDictionary(prettyVehicleConfiguration, i_Garage, vehicleType);
+            Dictionary<string, Type> emptyVehicleConfigurations = i_Garage.GetEmptyDictionary(vehicleType);
+            Dictionary<string, Type> prettyEmptyVehicleConfiguration = Utils.PrettyEmptyDictionary(emptyVehicleConfigurations);
+            Dictionary<string, object> vehicleConfigurations = Utils.GetConfigurationByDictionary(prettyEmptyVehicleConfiguration, i_Garage, vehicleType);
             
-            if(!i_Garage.InsertVehicle(vehicleType, vehicleValues))
+            if(!i_Garage.InsertVehicle(vehicleType, vehicleConfigurations))
             {
                 Console.WriteLine(Messages.sr_VehicleAllreadyExist);
             }      
@@ -73,11 +73,9 @@ namespace ConsoleUI
         {
             Console.WriteLine(Messages.sr_EnterLicenseNumber);
             string licenseNumber = Utils.GetValidStringFromUser();
-
             List<string> fuelTypes = Garage.GetFuelTypes();
             Console.WriteLine(Messages.ChooseVehicleStatus(fuelTypes));
             string fuelType = fuelTypes[Utils.GetValidInRangeFromUser(1, fuelTypes.Count) - 1];
-
             Console.WriteLine(Messages.sr_TypeAmoutOfFuel);
             float fuelAmount = Utils.GetValidFloatFromUser();
 
@@ -85,22 +83,16 @@ namespace ConsoleUI
             {
                 i_Garage.Refuel(licenseNumber, fuelType, fuelAmount);
             }
-            catch(ArgumentException e)
+            catch(Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            catch(ValueOutOfRangeException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
         }
         
         public static void RechargeVehicle(Garage i_Garage)
         {
             Console.WriteLine(Messages.sr_EnterLicenseNumber);
             string licenseNumber = Utils.GetValidStringFromUser();
-
             Console.WriteLine(Messages.sr_TypeAmountOfCharge);
             float chargeAmount = Utils.GetValidFloatFromUser();
 
@@ -108,11 +100,7 @@ namespace ConsoleUI
             {
                 i_Garage.Recharge(licenseNumber, chargeAmount);
             }
-            catch (ArgumentException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            catch (ValueOutOfRangeException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
@@ -126,7 +114,7 @@ namespace ConsoleUI
             {
                 Console.WriteLine(i_Garage.GetVehicleInfo(licenseNumber));
             }
-            catch(ArgumentException e)
+            catch(Exception e)
             {
                 Console.WriteLine(e.Message);
             }

@@ -46,7 +46,7 @@ namespace GarageLogic
             {
                 if (instanceParameter.ParameterType == typeof(List<Wheel>))
                 {
-                    for (int i = 0; i < (int)VehiclesDictionary.sr_DefaultDictionary[vehicleType]["Number Of Wheels"]; i++)
+                    for (int i = 0; i < (int)VehiclesDefualtConfigurations.sr_DefaultDictionary[vehicleType]["Number Of Wheels"]; i++)
                     {
                         vehicleConfiguration.Add(string.Format("Wheel {0}", i + 1), typeof(Wheel));
                     }
@@ -60,29 +60,29 @@ namespace GarageLogic
             return vehicleConfiguration;
         }
 
-        public object CreateObject(object[] i_Parameters, Type i_Type, Type i_VehicleType)
+        public object CreateGarageObject(object[] i_Parameters, Type i_Type, Type i_VehicleType)
         {
             object obj;
             Enums.eVehicleType vehicleType = (Enums.eVehicleType)Enum.Parse(typeof(Enums.eVehicleType), i_VehicleType.Name);
 
             if (i_Type == typeof(Wheel))
             {
-                float maxEnergy = (float)VehiclesDictionary.sr_DefaultDictionary[vehicleType]["Maximum Air Pressure"];
+                float maxEnergy = (float)VehiclesDefualtConfigurations.sr_DefaultDictionary[vehicleType]["Maximum Air Pressure"];
                 ConstructorInfo ci = i_Type.GetConstructors()[0];
                 i_Parameters[^1] = maxEnergy;
                 obj = new Wheel((string)i_Parameters[0],(float) i_Parameters[1], (float)i_Parameters[2]);
             }
             if (i_Type == typeof(ElectricEngine))
             {
-                float maxEnergy = (float)VehiclesDictionary.sr_DefaultDictionary[vehicleType]["Maximum Energy"];
+                float maxEnergy = (float)VehiclesDefualtConfigurations.sr_DefaultDictionary[vehicleType]["Maximum Energy"];
                 ConstructorInfo ci = i_Type.GetConstructors()[0];
                 i_Parameters[^1] = maxEnergy;
                 obj = new ElectricEngine((float)i_Parameters[0], (float)i_Parameters[1]); 
             }
             else if (i_Type == typeof(FuelEngine))
             {
-                Enums.eFuelTypes fuelType = (Enums.eFuelTypes)VehiclesDictionary.sr_DefaultDictionary[vehicleType]["Fuel Type"];
-                float maxEnergy = (float)VehiclesDictionary.sr_DefaultDictionary[vehicleType]["Maximum Energy"];
+                Enums.eFuelTypes fuelType = (Enums.eFuelTypes)VehiclesDefualtConfigurations.sr_DefaultDictionary[vehicleType]["Fuel Type"];
+                float maxEnergy = (float)VehiclesDefualtConfigurations.sr_DefaultDictionary[vehicleType]["Maximum Energy"];
                 ConstructorInfo ci = i_Type.GetConstructors()[0];
                 i_Parameters[^2] = maxEnergy;
                 i_Parameters[^1] = fuelType;

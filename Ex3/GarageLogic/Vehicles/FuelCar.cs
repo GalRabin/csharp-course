@@ -1,16 +1,14 @@
 using GarageLogic.Engines;
+using System.Collections.Generic;
 
 namespace GarageLogic.Vehicles
 {
     public class FuelCar : Car
     {
-        private static readonly float sr_DefaultMaxFuelCapactity = 60;
-        private static readonly Enums.eFuelTypes sr_DefaultFuelType = Enums.eFuelTypes.Octan96;
-        
-        public FuelCar(string i_OwnerName, string i_OwnerPhoneNumber, string i_ModelName, string i_LicenseNumber, float i_RemainingEnergy) :
-            base(i_OwnerName, i_OwnerPhoneNumber, i_ModelName, i_LicenseNumber)
+        public FuelCar(Customer i_Customer, string i_ModelName, string i_LicenseNumber,List<Wheel> i_Wheels,
+            FuelEngine i_FuelEngine, Enums.eCarColors i_CarColor, int i_NumberOfDoors) :
+            base(i_Customer, i_ModelName, i_LicenseNumber,i_Wheels, i_FuelEngine, i_CarColor, i_NumberOfDoors)
         {
-            m_Engine = new FuelEngine(sr_DefaultMaxFuelCapactity, i_RemainingEnergy, sr_DefaultFuelType);
         }
     }
 }

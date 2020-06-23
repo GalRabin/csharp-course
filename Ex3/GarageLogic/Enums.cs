@@ -1,15 +1,24 @@
+using GarageLogic.Vehicles;
+using System;
+
 namespace GarageLogic
 {
     public class Enums
     {
-        public enum VehiclesTypes
+        public enum eEngineTypes
+        {
+            None,
+            ElectricEngine,
+            FuelEngine
+        }
+        public enum eVehicleType
         {
             None,
             FuelMotorcycle,
             ElectricMotorcycle,
             FuelCar,
             ElectricCar,
-            Truck
+            FuelTruck
         }
         public enum eMotorcycleLicenseTypes
         {

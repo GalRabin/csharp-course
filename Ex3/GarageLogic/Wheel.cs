@@ -1,50 +1,69 @@
 using GarageLogic.Exceptions;
+using System;
 
 namespace GarageLogic
 {
     public class Wheel
     {
-        private string m_BrandName;
-        private float m_CurrentPressure;
-        private readonly float r_MaxPressure;
-        public Wheel(string i_BrandName, float i_CurrentPressure, float i_MaxPressure)
+        private string m_WheelBrandName;
+        private float m_WheelCurrentPressure;
+        private float m_WheelMaxPressure;
+       
+        public Wheel(string i_WheelBrandName, float i_WheelCurrentPressure, float i_WheelMaxPressure = 0)
         {
-            m_BrandName = i_BrandName;
-            m_CurrentPressure = i_CurrentPressure;
-            r_MaxPressure = i_MaxPressure;
+            if(i_WheelCurrentPressure > i_WheelMaxPressure)
+            {
+                throw new ValueOutOfRangeException(0, i_WheelMaxPressure);
+            }
+            m_WheelBrandName = i_WheelBrandName;
+            m_WheelCurrentPressure = i_WheelCurrentPressure;
+            m_WheelMaxPressure = i_WheelMaxPressure;
         }
-
-        internal string BrandName
+        
+        public string BrandName
         {
             get
             {
-                return m_BrandName;
+                return m_WheelBrandName;
+            }
+            set
+            {
+                this.m_WheelBrandName = value;
             }
         }
 
-        internal float CurrentPressure
+        public float CurrentPressure
         {
             get
             {
-                return m_CurrentPressure;
+                return m_WheelCurrentPressure;
+            }
+            set
+            {
+                this.m_WheelCurrentPressure = value;
+            }
+        }
+        public float MaxPressure
+        {
+            get
+            {
+                return m_WheelMaxPressure;
             }
         }
 
         internal void InflateToMax()
         {
-            m_CurrentPressure = r_MaxPressure;
+            m_WheelCurrentPressure = m_WheelMaxPressure;
         }
 
-        internal void Inflate(float i_PressureToAdd)
+        public override string ToString()
         {
-            if (i_PressureToAdd + m_CurrentPressure > r_MaxPressure)
-            {
-                throw new ValueOutOfRangeException(0, r_MaxPressure);
-            }
-
-            m_CurrentPressure += i_PressureToAdd;
+            return string.Format("Wheel brand name: {0}" + Environment.NewLine +
+                                 "Wheel current pressure: {1}" + Environment.NewLine +
+                                 "Wheel max pressure: {2}" + Environment.NewLine,
+                                  this.BrandName,
+                                  this.CurrentPressure,
+                                  this.MaxPressure);
         }
-        
-        
     }
 }

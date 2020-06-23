@@ -1,15 +1,20 @@
+using GarageLogic.Engines;
+using System;
+using System.Collections.Generic;
+
 namespace GarageLogic.Vehicles
 {
-    public abstract class Motocycle : Vehicle
+    public abstract class Motorcycle : Vehicle
     {
-        private static readonly int sr_DefaultNumberOfWheels = 2;
-        private static readonly int sr_DefaultMaxWheelsPressure = 30;
         private Enums.eMotorcycleLicenseTypes m_LicenseType;
         private int m_EngineVolume;
-
-        public Motocycle(string i_OwnerName, string i_OwnerPhoneNumber, string i_ModelName, string i_LicenseNumber) :
-            base(i_OwnerName, i_OwnerPhoneNumber, i_ModelName, i_LicenseNumber)
+        
+        public Motorcycle(Customer i_Customer, string i_ModelName, string i_LicenseNumber, List<Wheel> i_Wheels,
+            Engine i_Engine, Enums.eMotorcycleLicenseTypes i_LicenseType, int i_EngineVolume) :
+            base(i_Customer, i_ModelName, i_LicenseNumber, i_Wheels, i_Engine)
         {
+            this.m_LicenseType = i_LicenseType;
+            this.m_EngineVolume = i_EngineVolume;
         }
 
         public Enums.eMotorcycleLicenseTypes LicenseType
@@ -34,6 +39,13 @@ namespace GarageLogic.Vehicles
             {
                 m_EngineVolume = value;
             }
+        }
+        public override string ToString()
+        {
+            return base.ToString() + string.Format("License type: {0}" + Environment.NewLine +
+                                                    "Engine volume: {1}" + Environment.NewLine,
+                                                    this.LicenseType,
+                                                    this.EngineVolume);
         }
     }
 }

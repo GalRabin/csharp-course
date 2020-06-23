@@ -1,23 +1,22 @@
 using GarageLogic.Engines;
+using System;
+using System.Collections.Generic;
 
 namespace GarageLogic.Vehicles
 {
     public class FuelTruck : Vehicle
     {
-        private static readonly int sr_DefaultNumberOfWheels = 16;
-        private static readonly int sr_DefaultMaxWheelsPressure = 28;
-        private static readonly float sr_DefaultMaxFuelCapactity = 120;
-        private static readonly Enums.eFuelTypes sr_DefaultFuelType = Enums.eFuelTypes.Soler;
         private float m_CargoVolume;
         private bool m_DangerousCargo;
         
-        public FuelTruck(string i_OwnerName, string i_OwnerPhoneNumber, string i_ModelName, string i_LicenseNumber, float i_RemainingEnergy) : 
-            base(i_OwnerName, i_OwnerPhoneNumber, i_ModelName, i_LicenseNumber)
+        public FuelTruck(Customer i_Customer, string i_ModelName, string i_LicenseNumber, List<Wheel> i_Wheels, 
+            FuelEngine i_FuelEngine, float i_CargoVolume, bool i_DangerousCargo) : 
+            base(i_Customer, i_ModelName, i_LicenseNumber, i_Wheels, i_FuelEngine)
         {
-            m_Engine = new FuelEngine(sr_DefaultMaxFuelCapactity, i_RemainingEnergy, sr_DefaultFuelType);
-
+            this.m_CargoVolume = i_CargoVolume;
+            this.m_DangerousCargo = i_DangerousCargo;
         }
-
+        
         public float CargoVolume
         {
             get
@@ -40,6 +39,13 @@ namespace GarageLogic.Vehicles
             {
                 m_DangerousCargo = value;
             }
+        }
+        public override string ToString()
+        {
+            return base.ToString() + string.Format("Cargo volume: {0}" + Environment.NewLine +
+                                                    "Contain dangerous cargo: {1}" + Environment.NewLine,
+                                                    this.CargoVolume,
+                                                    this.DangerousCargo);
         }
     }
 }

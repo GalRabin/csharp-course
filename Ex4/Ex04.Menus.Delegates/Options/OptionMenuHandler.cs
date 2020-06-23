@@ -29,6 +29,7 @@ namespace Ex04.Menus.Delegates.Options
             Console.Write(Messages.k_EnterUserChoice);
             int indexOption = Utils.GetValidInRangeFromUser(0, r_Options.Count);
             Console.Clear();
+
             if (indexOption == 0)
             {
                 if (r_Parent != null)
@@ -42,9 +43,10 @@ namespace Ex04.Menus.Delegates.Options
             }
         }
 
-        private string GetBackOrExitOption()
+        private string getBackOrExitOption()
         {
             string option = "Exit";
+
             if (r_Parent != null)
             {
                 option = "Back";
@@ -60,7 +62,8 @@ namespace Ex04.Menus.Delegates.Options
             menu.AppendLine(lineSeparator);
             menu.AppendLine(r_OptionHeader);
             menu.AppendLine(lineSeparator);
-            menu.AppendLine(string.Format("0 - {0}", GetBackOrExitOption()));
+            menu.AppendLine(string.Format("0 - {0}", getBackOrExitOption()));
+
             for (int optionIndex = 0; optionIndex < r_Options.Count; optionIndex++)
             {
                 menu.AppendLine(string.Format("{0} - {1}", optionIndex + 1, r_Options[optionIndex].OptionHeader));

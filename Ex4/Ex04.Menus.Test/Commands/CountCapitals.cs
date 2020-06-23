@@ -6,9 +6,10 @@ namespace Ex04.Menus.Test.Commands
 {
     public class CountCapitals : ICallback
     {
-        private static int CountCapitalsAmout(string i_Sentence = "")
+        private static int countCapitalsAmout(string i_Sentence = "")
         {
             int count = 0;
+
             foreach (char character in i_Sentence.Where(char.IsUpper))
             {
                 count++;
@@ -21,7 +22,7 @@ namespace Ex04.Menus.Test.Commands
         {
             Console.Write("Please type sentence: ");
             string userInput = Console.ReadLine();
-            Console.WriteLine(string.Format("Number of capital letters is {0}", CountCapitalsAmout(userInput)));
+            Console.WriteLine(string.Format("Number of capital letters is {0}", countCapitalsAmout(userInput)));
         }
         
         public void RunCallback()

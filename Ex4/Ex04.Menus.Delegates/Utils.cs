@@ -7,6 +7,7 @@ namespace Ex04.Menus.Delegates
         internal static int GetValidInRangeFromUser(int i_Min, int i_Max)
         {
             int response;
+
             while (!int.TryParse(Console.ReadLine(), out response) || i_Min > response || response > i_Max)
             {
                 Console.Write(Messages.InvalidInput(response, i_Min, i_Max));

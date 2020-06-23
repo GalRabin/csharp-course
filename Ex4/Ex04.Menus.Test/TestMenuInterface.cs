@@ -11,12 +11,12 @@ namespace Ex04.Menus.Test
         public TestMenuInterface()
         {
             r_MainMenu = new MainMenu("Main Menu");
-            InitializeFirstSubMenu();
-            InitializeSecondSubMenu();
+            initializeFirstSubMenu();
+            initializeSecondSubMenu();
             r_MainMenu.Show();
         }
 
-        private void InitializeFirstSubMenu()
+        private void initializeFirstSubMenu()
         {
             OptionMenuHandler subMenu = new OptionMenuHandler("Version and Capitals", r_MainMenu.MainMenuHandler);
             subMenu.AddMenuOption(new OptionCallback(new CountCapitals(), "Count Capitals", subMenu));
@@ -24,7 +24,7 @@ namespace Ex04.Menus.Test
             r_MainMenu.AddMenuOption(subMenu);
         }
         
-        private void InitializeSecondSubMenu()
+        private void initializeSecondSubMenu()
         {
             OptionMenuHandler subMenu = new OptionMenuHandler("Show Date/Time", r_MainMenu.MainMenuHandler);
             subMenu.AddMenuOption(new OptionCallback(new ShowTime(), "Show Time", subMenu));

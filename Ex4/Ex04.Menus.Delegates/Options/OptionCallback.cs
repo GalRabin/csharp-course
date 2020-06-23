@@ -17,6 +17,7 @@ namespace Ex04.Menus.Delegates.Options
             {
                 UserCommandChoice.Invoke();
             }
+
             Utils.PressAnyKeyToContinue();
             r_Parent.RunOption();
         }

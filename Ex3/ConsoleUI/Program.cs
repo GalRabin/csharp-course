@@ -1,6 +1,6 @@
 namespace ConsoleUI
 {
-    public static class Program
+    public class Program
     {
         public static void Main()
         {

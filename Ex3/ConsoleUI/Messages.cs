@@ -49,7 +49,8 @@ namespace ConsoleUI
 
             for (int i = 0; i < i_VehicleTypes.Count; i++)
             {
-                string simplifiedType = Utils.SplitCamelCase(i_VehicleTypes[i].ToString().Split('.')[^1]);
+                string[] splittedName = i_VehicleTypes[i].ToString().Split('.');
+                string simplifiedType = Utils.SplitCamelCase(splittedName[splittedName.Length - 1]);
                 message.Append(string.Format(k_OptionFormat, i + 1, simplifiedType));
             }
 
@@ -57,6 +58,7 @@ namespace ConsoleUI
             
             return message.ToString();
         }
+
         internal static string ChooseVehicleStatus(List<string> i_VehicleStatus)
         {
             StringBuilder message = new StringBuilder();
@@ -64,7 +66,8 @@ namespace ConsoleUI
 
             for (int i = 0; i < i_VehicleStatus.Count; i++)
             {
-                string simplifiedType = Utils.SplitCamelCase(i_VehicleStatus[i].Split('.')[^1]);
+                string[] splittedName = i_VehicleStatus[i].ToString().Split('.');
+                string simplifiedType = Utils.SplitCamelCase(i_VehicleStatus[splittedName.Length - 1]);
                 message.Append(string.Format(k_OptionFormat, i + 1, simplifiedType));
             }
 
@@ -72,16 +75,19 @@ namespace ConsoleUI
 
             return message.ToString();
         }
+
         internal static string EnterKey(string i_Key, string i_OrganizeKey)
         {
 
             return $"{i_Key} - Enter {i_OrganizeKey}: ";
         }
+
         internal static string EnterYesNoKey(string i_Key, string i_OrganizeKey)
         {
 
             return $"{i_Key} - Enter {i_OrganizeKey}: (yes/no)";
         }
+
         internal static string EnterObjectConfigurations(Type i_Type)
         {
 

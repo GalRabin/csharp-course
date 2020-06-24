@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace ConsoleUI
 {
@@ -165,10 +164,21 @@ namespace ConsoleUI
 
             return keyBoardParam;
         }
+
         internal static string SplitCamelCase(string i_Input)
         {
+            StringBuilder newString = new StringBuilder();
+            foreach (char character in i_Input)
+            {
+                if (char.IsUpper(character))
+                {
+                    newString.Append(" ");
+                }
 
-            return Regex.Replace(i_Input, "(?<=[a-z])([A-Z])", " $1", RegexOptions.Compiled);
+                newString.Append(char.ToLower(character));
+            }
+
+            return newString.ToString();
         }
 
         internal static void PrintPrettyEnumChoices(Type i_EnumType)
@@ -241,20 +251,20 @@ namespace ConsoleUI
             Console.Clear();
             Dictionary<string, object> valuesDict = new Dictionary<string, object>();
 
-            foreach ((string key, Type argumentType) in i_DefinerDict)
+            foreach (KeyValuePair<string, Type> property in i_DefinerDict)
             {
                 while (true)
                 {
                     try
                     {
-                        object value = GetPropertyFromUser(key, argumentType, i_Garage, i_TargetType);
+                        object value = GetPropertyFromUser(property.Key, property.Value, i_Garage, i_TargetType);
                         
                         if(value == null)
                         {
                             break;
                         }
 
-                        valuesDict.Add(key, value);
+                        valuesDict.Add(property.Key, value);
 
                         Console.Clear();
                         break;

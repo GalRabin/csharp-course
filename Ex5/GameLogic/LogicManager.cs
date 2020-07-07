@@ -38,7 +38,13 @@ namespace GameLogic
         {
             m_MatchManager.AddPlayer(i_Name);
         }
-
+        public bool isComputerTurn
+        {
+            get
+            {
+                return this.CurrentPlayer().IsComputer;
+            }
+        }
         public Player CurrentPlayer()
         {
             return m_MatchManager.CurrentPlayer();

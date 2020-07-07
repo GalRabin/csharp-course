@@ -28,70 +28,75 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelCurrentPlayer = new System.Windows.Forms.Label();
+            this.labelFirstScore = new System.Windows.Forms.Label();
+            this.labelSecondScore = new System.Windows.Forms.Label();
+            this.tableLayoutPanelBoard = new System.Windows.Forms.TableLayoutPanel();
             this.SuspendLayout();
             // 
-            // label1
+            // labelCurrentPlayer
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.label1.Location = new System.Drawing.Point(32, 388);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(105, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Current Player: Dean";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.labelCurrentPlayer.AutoSize = true;
+            this.labelCurrentPlayer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.labelCurrentPlayer.Location = new System.Drawing.Point(43, 478);
+            this.labelCurrentPlayer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelCurrentPlayer.Name = "labelCurrentPlayer";
+            this.labelCurrentPlayer.Size = new System.Drawing.Size(141, 17);
+            this.labelCurrentPlayer.TabIndex = 0;
+            this.labelCurrentPlayer.Text = "Current Player: Dean";
+            this.labelCurrentPlayer.Click += new System.EventHandler(this.label1_Click);
             // 
-            // label2
+            // labelFirstScore
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.label2.Location = new System.Drawing.Point(32, 410);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Dean: 2 Pairs";
+            this.labelFirstScore.AutoSize = true;
+            this.labelFirstScore.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.labelFirstScore.Location = new System.Drawing.Point(43, 505);
+            this.labelFirstScore.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelFirstScore.Name = "labelFirstScore";
+            this.labelFirstScore.Size = new System.Drawing.Size(94, 17);
+            this.labelFirstScore.TabIndex = 1;
+            this.labelFirstScore.Text = "Dean: 2 Pairs";
             // 
-            // label3
+            // labelSecondScore
             // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.label3.Location = new System.Drawing.Point(32, 432);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Gal: 1 Pair(s)";
+            this.labelSecondScore.AutoSize = true;
+            this.labelSecondScore.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.labelSecondScore.Location = new System.Drawing.Point(43, 532);
+            this.labelSecondScore.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelSecondScore.Name = "labelSecondScore";
+            this.labelSecondScore.Size = new System.Drawing.Size(92, 17);
+            this.labelSecondScore.TabIndex = 2;
+            this.labelSecondScore.Text = "Gal: 1 Pair(s)";
             // 
-            // tableLayoutPanel1
-            //
-            this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(26, 12);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 4;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(466, 337);
-            this.tableLayoutPanel1.TabIndex = 3;
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
+            // tableLayoutPanelBoard
+            // 
+            this.tableLayoutPanelBoard.ColumnCount = 4;
+            this.tableLayoutPanelBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanelBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanelBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanelBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanelBoard.Location = new System.Drawing.Point(35, 15);
+            this.tableLayoutPanelBoard.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanelBoard.Name = "tableLayoutPanelBoard";
+            this.tableLayoutPanelBoard.RowCount = 4;
+            this.tableLayoutPanelBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanelBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanelBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanelBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanelBoard.Size = new System.Drawing.Size(621, 415);
+            this.tableLayoutPanelBoard.TabIndex = 3;
+            this.tableLayoutPanelBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // FormGame
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(529, 478);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(705, 588);
+            this.Controls.Add(this.tableLayoutPanelBoard);
+            this.Controls.Add(this.labelSecondScore);
+            this.Controls.Add(this.labelFirstScore);
+            this.Controls.Add(this.labelCurrentPlayer);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "FormGame";
             this.Text = "Memory Game";
@@ -102,9 +107,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label labelCurrentPlayer;
+        private System.Windows.Forms.Label labelFirstScore;
+        private System.Windows.Forms.Label labelSecondScore;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelBoard;
     }
 }

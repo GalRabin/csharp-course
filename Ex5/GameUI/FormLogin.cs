@@ -12,10 +12,11 @@ namespace GameUI
 {
     public partial class FormLogin : Form
     {
-        private int m_CurrentHeight = 4;
-        private int m_CurrentWidth = 4;
+        private int m_CurrentHeight;
+        private int m_CurrentWidth;
         private bool m_AgainstComputer = true;
         private bool m_ClosedByStart = false;
+        
         
         public FormLogin()
         {
@@ -25,7 +26,34 @@ namespace GameUI
             this.ButtonAgainst.Text = "Against a Freind";
             this.TextBoxSecondPlayerName.Text = "- computer -";
         }
-
+        public string FirstPlayerName
+        {
+            get
+            {
+                return this.TextBoxFirstPlayerName.Text;
+            }
+        }
+        public string SecondPlayerName
+        {
+            get
+            {
+                return this.m_AgainstComputer ? null : this.TextBoxSecondPlayerName.Text;
+            }
+        }
+        public int BoardHeight
+        {
+            get
+            {
+                return this.m_CurrentHeight;
+            }
+        }
+        public int BoardWidth
+        {
+            get
+            {
+                return this.m_CurrentWidth;
+            }
+        }
         public bool ClosedByStart
         {
             get
@@ -66,6 +94,8 @@ namespace GameUI
         private void ButtonStart_Click(object sender, EventArgs e)
         {
             m_ClosedByStart = true;
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

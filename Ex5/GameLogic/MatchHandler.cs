@@ -1,26 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace GameLogic
 {
-    public class MatchManager
+    public class MatchHandler
     {
-        private List<Player> m_Players = new List<Player>();
-        private int m_MaxPlayers = 2;
+        private readonly List<Player> r_Players = new List<Player>();
+        private const int k_MaxPlayers = 2;
         private int m_IndexCurrentPlayer = 0;
 
         public List<Player> Players
         {
             get
             {
-                return m_Players;
+                return r_Players;
             }
         }
 
         public bool IsMatchConfigured()
         {
-            return m_Players.Count == m_MaxPlayers;
+            return r_Players.Count == k_MaxPlayers;
         }
 
         public void AddPlayer(string i_Name = null)
@@ -32,24 +31,24 @@ namespace GameLogic
 
             if (i_Name == null)
             {
-                m_Players.Add(new Player());
+                r_Players.Add(new Player());
             }
             else
             {
-                m_Players.Add(new Player(i_Name));
+                r_Players.Add(new Player(i_Name));
             }
         }
 
         public Player CurrentPlayer()
         {
-            return m_Players[m_IndexCurrentPlayer];
+            return r_Players[m_IndexCurrentPlayer];
         }
 
         public Player CurrentWinner()
         {
             Player currentWinner = null;
             int maxScore = 0;
-            foreach (Player player in m_Players)
+            foreach (Player player in r_Players)
             {
                 if (player.Score == maxScore)
                 {

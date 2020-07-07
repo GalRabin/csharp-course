@@ -12,9 +12,28 @@ namespace GameUI
 {
     public partial class FormGame : Form
     {
+        private bool m_ValidConfiguration = false;
+        private GameLogic.LogicManager m_Game;
         public FormGame()
         {
+            m_Game = new GameLogic.LogicManager();
+            while(ensureValidConfiguration());
             InitializeComponent();
+        }
+
+        private bool ensureValidConfiguration()
+        {
+            if (!m_ValidConfiguration)
+            {
+                FormLogin win = new FormLogin();
+                win.ShowDialog();
+                if (win.ClosedByStart)
+                {
+                    m_ValidConfiguration = true;
+                }
+            }
+
+            return m_ValidConfiguration;
         }
 
         private void label1_Click(object sender, EventArgs e)

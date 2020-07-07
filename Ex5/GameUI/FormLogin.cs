@@ -10,13 +10,14 @@ using System.Windows.Forms;
 
 namespace GameUI
 {
-    public partial class LoginForm : Form
+    public partial class FormLogin : Form
     {
         private int m_CurrentHeight = 4;
         private int m_CurrentWidth = 4;
         private bool m_AgainstComputer = true;
+        private bool m_ClosedByStart = false;
         
-        public LoginForm()
+        public FormLogin()
         {
             InitializeComponent();
             this.ButtonBoardSize.Text = $"{m_CurrentHeight}x{m_CurrentWidth}";
@@ -24,6 +25,14 @@ namespace GameUI
             this.ButtonAgainst.Text = "Against a Freind";
             this.TextBoxSecondPlayerName.Text = "- computer -";
         }
+
+        public bool ClosedByStart
+        {
+            get
+            {
+                return m_ClosedByStart;
+            }
+        } 
 
         private void ButtonAgainst_Click(object sender, EventArgs e)
         {
@@ -56,6 +65,7 @@ namespace GameUI
 
         private void ButtonStart_Click(object sender, EventArgs e)
         {
+            m_ClosedByStart = true;
         }
     }
 }

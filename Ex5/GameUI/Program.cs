@@ -11,7 +11,7 @@ namespace GameUI
     {
         public static void Main()
         {
-            new LoginForm().ShowDialog();
+            new FormLogin().ShowDialog();
         }
     }
 }

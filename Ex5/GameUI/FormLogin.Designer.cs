@@ -1,6 +1,6 @@
 ﻿namespace GameUI
 {
-    partial class LoginForm
+    partial class FormLogin
     {
         /// <summary>
         /// Required designer variable.

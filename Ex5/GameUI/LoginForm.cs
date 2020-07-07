@@ -12,24 +12,50 @@ namespace GameUI
 {
     public partial class LoginForm : Form
     {
+        private int m_CurrentHeight = 4;
+        private int m_CurrentWidth = 4;
+        private bool m_AgainstComputer = true;
+        
         public LoginForm()
         {
             InitializeComponent();
+            this.ButtonBoardSize.Text = $"{m_CurrentHeight}x{m_CurrentWidth}";
+            this.TextBoxSecondPlayerName.ReadOnly = true;
+            this.ButtonAgainst.Text = "Against a Freind";
+            this.TextBoxSecondPlayerName.Text = "- computer -";
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void ButtonAgainst_Click(object sender, EventArgs e)
         {
-
+            if (m_AgainstComputer)
+            {
+                this.ButtonAgainst.Text = "Against Computer";
+                this.TextBoxSecondPlayerName.Text = "";
+                this.TextBoxSecondPlayerName.ReadOnly = false;
+                m_AgainstComputer = false;
+            } else
+            {
+                this.ButtonAgainst.Text = "Against a Freind";
+                this.TextBoxSecondPlayerName.Text = "- computer -";
+                this.TextBoxSecondPlayerName.ReadOnly = true;
+                m_AgainstComputer = true;
+            }
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
 
+        private void ButtonBoardSize_Click(object sender, EventArgs e)
+        {
+            int newCurrentWidth = m_CurrentWidth < 6 ? m_CurrentWidth + 1 : 4;
+            if (m_CurrentWidth > newCurrentWidth)
+            {
+                m_CurrentHeight = m_CurrentHeight < 6 ? m_CurrentHeight + 1 : 4;
+            }
+            m_CurrentWidth = newCurrentWidth;
+            this.ButtonBoardSize.Text = $"{m_CurrentHeight}x{m_CurrentWidth}";
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void ButtonStart_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

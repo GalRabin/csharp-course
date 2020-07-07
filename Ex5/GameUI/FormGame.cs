@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace GameUI
 {
-    public partial class Manager : Form
+    public partial class FormGame : Form
     {
-        public Manager()
+        public FormGame()
         {
             InitializeComponent();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

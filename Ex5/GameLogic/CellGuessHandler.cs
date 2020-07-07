@@ -6,7 +6,7 @@ namespace GameLogic
     {
         private readonly int[,] r_Guesses = new int[2, 2];
         private readonly Random r_Rnd = new Random();
-        private int m_CurrentGuess = 0;
+        private int m_CurrentGuess;
 
         public bool IsCellGuessFinished()
         {

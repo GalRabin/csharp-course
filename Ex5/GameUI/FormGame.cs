@@ -13,10 +13,10 @@ namespace GameUI
     public partial class FormGame : Form
     {
         private bool m_ValidConfiguration = false;
-        private GameLogic.LogicManager m_Game;
+        private GameLogic.GameManager m_Game;
         public FormGame()
         {
-            m_Game = new GameLogic.LogicManager();
+            m_Game = new GameLogic.GameManager();
             while(ensureValidConfiguration());
             InitializeComponent();
         }

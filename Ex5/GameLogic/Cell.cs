@@ -9,12 +9,17 @@ namespace GameLogic
         private readonly string r_CellValue;
         private bool m_RevealCellState;
         private Player m_PlayerRevealed;
-        private Random m_rnd = new Random();
+        private readonly Random r_Rnd = new Random();
 
         public Cell()
         {
             // System.Threading.Thread.Sleep(10);
             r_CellValue = getRandomCharacter();
+        }
+
+        public Cell(string i_Character)
+        {
+            r_CellValue = i_Character;
         }
 
         public bool IsReveal
@@ -36,10 +41,10 @@ namespace GameLogic
         private string getRandomCharacter()
         {
             // Random character
-            char randomChar = (char)m_rnd.Next('a', 'z');
+            char randomChar = (char)r_Rnd.Next('a', 'z');
 
             // Random lowercase or uppercase
-            if (m_rnd.Next(1, 3) == 1)
+            if (r_Rnd.Next(1, 3) == 1)
             {
                 randomChar = char.ToUpper(randomChar);
             }

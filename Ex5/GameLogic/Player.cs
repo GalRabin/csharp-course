@@ -6,15 +6,15 @@ namespace GameLogic
 {
     public class Player
     {
-        private string m_Name;
+        private readonly string r_Name;
         private int m_Score;
-        private bool m_IsComputer;
+        private readonly bool r_IsComputer;
 
         public Player(string i_Name)
         {
             if (IsValidName(i_Name))
             {
-                m_Name = i_Name;
+                r_Name = i_Name;
             }
             else
             {
@@ -24,15 +24,15 @@ namespace GameLogic
 
         public Player()
         {
-            m_Name = "Computer";
-            m_IsComputer = true;
+            r_Name = "Computer";
+            r_IsComputer = true;
         }
 
         public bool IsComputer
         {
             get
             {
-                return m_IsComputer;
+                return r_IsComputer;
             }
         }
 
@@ -40,7 +40,7 @@ namespace GameLogic
         {
             get
             {
-                return m_Name;
+                return r_Name;
             }
         }
 

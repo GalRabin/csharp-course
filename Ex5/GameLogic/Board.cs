@@ -7,8 +7,8 @@ namespace GameLogic
     public class Board
     {
         private int m_RevealedCells = 0;
-        private Random m_Rnd = new Random();
-        private Cell[,] m_CurrentBoard;
+        private readonly Cell[,] r_CurrentBoard;
+        private readonly Random r_Rnd = new Random();
 
         public Board(int i_Height, int i_Width)
         {
@@ -16,7 +16,7 @@ namespace GameLogic
             {
                 throw new ArgumentException("Board size is not valid. Size should be Height in range 4-6 and Width in range 4-6.");
             }
-            m_CurrentBoard = new Cell[i_Height, i_Width];
+            r_CurrentBoard = new Cell[i_Height, i_Width];
             SetBoard();
         }
 
@@ -24,7 +24,7 @@ namespace GameLogic
         {
             get
             {
-                return m_CurrentBoard.GetLength(0);
+                return r_CurrentBoard.GetLength(0);
             }
         }
 
@@ -32,7 +32,7 @@ namespace GameLogic
         {
             get
             {
-                return m_CurrentBoard.GetLength(1);
+                return r_CurrentBoard.GetLength(1);
             }
         }
 
@@ -40,13 +40,13 @@ namespace GameLogic
         {
             get
             {
-                return m_CurrentBoard;
+                return r_CurrentBoard;
             }
         }
 
         private int getRandomHorizontalIndex(List<int> i_FreeIndexs)
         {
-            int random = m_Rnd.Next(i_FreeIndexs.Count);
+            int random = r_Rnd.Next(i_FreeIndexs.Count);
             int freeIndex = i_FreeIndexs[random];
             i_FreeIndexs.Remove(freeIndex);
 
@@ -55,34 +55,34 @@ namespace GameLogic
 
         public void SetBoard()
         {
-            List<int> freeIndexs = System.Linq.Enumerable.Range(0, m_CurrentBoard.Length).ToList();
+            List<int> freeIndexs = Enumerable.Range(0, r_CurrentBoard.Length).ToList();
 
             for (int row = 0; row < Height; row++)
             {
                 for (int column = 0; column < Width; column++)
                 {
                     // Set cell only if null
-                    if (m_CurrentBoard[row, column] == null)
+                    if (r_CurrentBoard[row, column] == null)
                     {
                         // Horizontal index
                         int horizontalIndex = (row * Width) + column;
                         freeIndexs.Remove(horizontalIndex);
-                        m_CurrentBoard[row, column] = new Cell();
-                        string value = m_CurrentBoard[row, column].GetStringIfRevealed(true);
+                        r_CurrentBoard[row, column] = new Cell();
+                        string value = r_CurrentBoard[row, column].GetStringIfRevealed(true);
                         // Get random matching cell
                         int randomHorizontalIndex = getRandomHorizontalIndex(freeIndexs);
                         int randomRow = randomHorizontalIndex / Width;
                         int randomColumn = randomHorizontalIndex % Width;
-                        m_CurrentBoard[randomRow, randomColumn] = new Cell(value);
+                        r_CurrentBoard[randomRow, randomColumn] = new Cell(value);
                     }
                 }
             }
         }
 
-        public bool RevealCellsIfEqual(CellGuessMangaer i_Guess , Player i_PlayerReveal)
+        public bool RevealCellsIfEqual(CellGuessHandler i_Guess, Player i_PlayerReveal)
         {
-            string firstCellValue = m_CurrentBoard[i_Guess.GetRowGuess(0), i_Guess.GetColumnGuess(0)].GetStringIfRevealed(true);
-            string secondCellValue = m_CurrentBoard[i_Guess.GetRowGuess(1), i_Guess.GetColumnGuess(1)].GetStringIfRevealed(true);
+            string firstCellValue = r_CurrentBoard[i_Guess.GetRowGuess(0), i_Guess.GetColumnGuess(0)].GetStringIfRevealed(true);
+            string secondCellValue = r_CurrentBoard[i_Guess.GetRowGuess(1), i_Guess.GetColumnGuess(1)].GetStringIfRevealed(true);
             bool isReavling = firstCellValue == secondCellValue;
             if (isReavling)
             {
@@ -93,19 +93,19 @@ namespace GameLogic
             return isReavling;
         }
 
-        public void RevealCellState(CellGuessMangaer i_Guess, bool i_RevealCells, Player i_PlayerReveal = null)
+        public void RevealCellState(CellGuessHandler i_Guess, bool i_RevealCells, Player i_PlayerReveal = null)
         {
-            m_CurrentBoard[i_Guess.GetRowGuess(0), i_Guess.GetColumnGuess(0)].RevealState(i_RevealCells, i_PlayerReveal);
-            m_CurrentBoard[i_Guess.GetRowGuess(1), i_Guess.GetColumnGuess(1)].RevealState(i_RevealCells, i_PlayerReveal);
+            r_CurrentBoard[i_Guess.GetRowGuess(0), i_Guess.GetColumnGuess(0)].RevealState(i_RevealCells, i_PlayerReveal);
+            r_CurrentBoard[i_Guess.GetRowGuess(1), i_Guess.GetColumnGuess(1)].RevealState(i_RevealCells, i_PlayerReveal);
         }
 
         public void Clear()
         {
-            for (int row = 0; row < m_CurrentBoard.GetLength(0); row++)
+            for (int row = 0; row < r_CurrentBoard.GetLength(0); row++)
             {
-                for (int column = 0; column < m_CurrentBoard.GetLength(1); column++)
+                for (int column = 0; column < r_CurrentBoard.GetLength(1); column++)
                 {
-                    m_CurrentBoard[row, column] = null;
+                    r_CurrentBoard[row, column] = null;
                 }
             }
 

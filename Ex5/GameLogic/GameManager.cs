@@ -81,7 +81,8 @@ namespace GameLogic
         {
             if (!(r_MatchManager.IsMatchConfigured() && m_Board != null))
             {
-                throw new ArgumentNullException("Game is not configured, Can't start guess, Missing 2 players or board configuration");
+                throw new ArgumentNullException("Game is not configured, Can't start guess, " +
+                                                "Missing 2 players or board configuration");
             }        
         }
 

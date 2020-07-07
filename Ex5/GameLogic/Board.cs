@@ -6,7 +6,7 @@ namespace GameLogic
 {
     public class Board
     {
-        private int m_RevealedCells = 0;
+        private int m_RevealedCells;
         private readonly Cell[,] r_CurrentBoard;
         private readonly Random r_Rnd = new Random();
 

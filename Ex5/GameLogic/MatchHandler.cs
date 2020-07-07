@@ -7,7 +7,7 @@ namespace GameLogic
     {
         private readonly List<Player> r_Players = new List<Player>();
         private const int k_MaxPlayers = 2;
-        private int m_IndexCurrentPlayer = 0;
+        private int m_IndexCurrentPlayer;
 
         public List<Player> Players
         {
@@ -29,14 +29,7 @@ namespace GameLogic
                 throw new ArgumentException("Maximum number of player is configured");
             }
 
-            if (i_Name == null)
-            {
-                r_Players.Add(new Player());
-            }
-            else
-            {
-                r_Players.Add(new Player(i_Name));
-            }
+            r_Players.Add(i_Name == null ? new Player() : new Player(i_Name));
         }
 
         public Player CurrentPlayer()
@@ -66,14 +59,7 @@ namespace GameLogic
 
         public void NextPlayer()
         {
-            if (m_IndexCurrentPlayer == 1)
-            {
-                m_IndexCurrentPlayer = 0;
-            }
-            else
-            {
-                m_IndexCurrentPlayer = 1;
-            }
+            m_IndexCurrentPlayer = m_IndexCurrentPlayer == 1 ? 0 : 1;
         }
 
         public void AddScoreToCurrentPlayer()

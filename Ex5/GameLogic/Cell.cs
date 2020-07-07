@@ -37,7 +37,13 @@ namespace GameLogic
                 return m_PlayerRevealed;
             }
         }
-
+        public string CellValue
+        {
+            get
+            {
+                return this.r_CellValue;
+            }
+        }
         private string getRandomCharacter()
         {
             // Random character

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace GameUI
 {
@@ -11,7 +12,9 @@ namespace GameUI
     {
         public static void Main()
         {
-            new FormLogin().ShowDialog();
+            Application.EnableVisualStyles();
+            FormGame formGame = new FormGame();
+            formGame.ShowDialog();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GameLogic
 {
@@ -15,6 +16,22 @@ namespace GameLogic
             r_CellGuessManager = new CellGuessHandler();
         }
 
+        public string[,] StringBoard
+        {
+            get
+            {
+                string [,] board = new string[this.m_Board.Height, this.m_Board.Width]; 
+                for(int i = 0; i < this.m_Board.Height; i++)
+                {
+                    for (int j = 0; j < this.m_Board.Width; j++)
+                    {
+                        board[i, j] = this.m_Board.CurrentBoard[i, j].CellValue;
+                    }
+                }
+                
+                return board;
+            }
+        }
         public Board Board
         {
             get

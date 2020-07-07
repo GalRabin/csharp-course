@@ -44,7 +44,6 @@
             this.labelCurrentPlayer.Size = new System.Drawing.Size(141, 17);
             this.labelCurrentPlayer.TabIndex = 0;
             this.labelCurrentPlayer.Text = "Current Player: Dean";
-            this.labelCurrentPlayer.Click += new System.EventHandler(this.label1_Click);
             // 
             // labelFirstScore
             // 
@@ -70,22 +69,14 @@
             // 
             // tableLayoutPanelBoard
             // 
-            this.tableLayoutPanelBoard.ColumnCount = 4;
-            this.tableLayoutPanelBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanelBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanelBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanelBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanelBoard.Location = new System.Drawing.Point(35, 15);
-            this.tableLayoutPanelBoard.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanelBoard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanelBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanelBoard.Location = new System.Drawing.Point(26, 12);
             this.tableLayoutPanelBoard.Name = "tableLayoutPanelBoard";
-            this.tableLayoutPanelBoard.RowCount = 4;
-            this.tableLayoutPanelBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanelBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanelBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanelBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanelBoard.Size = new System.Drawing.Size(621, 415);
+            this.tableLayoutPanelBoard.Size = new System.Drawing.Size(466, 337);
             this.tableLayoutPanelBoard.TabIndex = 3;
-            this.tableLayoutPanelBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // FormGame
             // 
@@ -111,5 +102,6 @@
         private System.Windows.Forms.Label labelFirstScore;
         private System.Windows.Forms.Label labelSecondScore;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelBoard;
+        //private CellButton button1;
     }
 }

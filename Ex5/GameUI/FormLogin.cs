@@ -12,8 +12,8 @@ namespace GameUI
 {
     public partial class FormLogin : Form
     {
-        private int m_CurrentHeight;
-        private int m_CurrentWidth;
+        private int m_CurrentHeight = 4;
+        private int m_CurrentWidth = 4;
         private bool m_AgainstComputer = true;
         private bool m_ClosedByStart = false;
         

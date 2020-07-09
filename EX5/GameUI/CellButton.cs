@@ -9,8 +9,11 @@ namespace GameUI
 {
     class CellButton : Button
     {
+        public event EventHandler cellReveal;
+
         private int m_RowIndex;
         private int m_ColumnIndex;
+        private bool m_IsReveal = false;
 
         public CellButton(int i_RowIndex, int i_ColumnIndex)
         {
@@ -32,6 +35,19 @@ namespace GameUI
                 return this.m_ColumnIndex;
             }
         }
-
+        public void changeReveal()
+        {
+            this.m_IsReveal = (this.m_IsReveal == false ? true : false);
+            OnCellRevealed(EventArgs.Empty);
+        }
+        protected virtual void OnCellRevealed(EventArgs e)
+        {
+            EventHandler handler = cellReveal;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+            
+        }
     }
 }

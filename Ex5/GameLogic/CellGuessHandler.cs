@@ -21,6 +21,7 @@ namespace GameLogic
             }
             r_Guesses[m_CurrentGuess,0] = i_Row;
             r_Guesses[m_CurrentGuess, 1] = i_Column;
+            m_CurrentGuess++;
         }
 
         public void SetRandomGuess(int i_MaxRow, int i_MaxColumn)
@@ -53,6 +54,22 @@ namespace GameLogic
             validateGuessNumber(i_GuessNumber);
 
             return r_Guesses[i_GuessNumber, 0];
+        }
+
+        public int CurrentGuess
+        {
+            get
+            {
+                return m_CurrentGuess;
+            }
+        }
+
+        public int[,] Guesses
+        {
+            get
+            {
+                return r_Guesses;
+            }
         }
 
         public void Clear()

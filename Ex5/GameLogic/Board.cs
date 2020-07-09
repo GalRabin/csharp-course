@@ -8,7 +8,7 @@ namespace GameLogic
     {
         private int m_RevealedCells;
         private readonly Cell[,] r_CurrentBoard;
-        private readonly Random r_Rnd = new Random();
+        private static readonly Random sr_Rnd = new Random();
 
         public Board(int i_Height, int i_Width)
         {
@@ -46,7 +46,7 @@ namespace GameLogic
 
         private int getRandomHorizontalIndex(List<int> i_FreeIndexs)
         {
-            int random = r_Rnd.Next(i_FreeIndexs.Count);
+            int random = sr_Rnd.Next(i_FreeIndexs.Count);
             int freeIndex = i_FreeIndexs[random];
             i_FreeIndexs.Remove(freeIndex);
 
@@ -95,8 +95,10 @@ namespace GameLogic
 
         public void RevealCellState(CellGuessHandler i_Guess, bool i_RevealCells, Player i_PlayerReveal = null)
         {
-            r_CurrentBoard[i_Guess.GetRowGuess(0), i_Guess.GetColumnGuess(0)].RevealState(i_RevealCells, i_PlayerReveal);
-            r_CurrentBoard[i_Guess.GetRowGuess(1), i_Guess.GetColumnGuess(1)].RevealState(i_RevealCells, i_PlayerReveal);
+            for(int i = 0; i < i_Guess.CurrentGuess; i++)
+            {
+                r_CurrentBoard[i_Guess.GetRowGuess(i), i_Guess.GetColumnGuess(i)].RevealState(i_RevealCells, i_PlayerReveal);
+            }
         }
 
         public void Clear()

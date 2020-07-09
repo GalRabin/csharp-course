@@ -6,8 +6,8 @@ namespace GameLogic
     {
         private readonly string r_CellValue;
         private bool m_RevealCellState;
-        private Player m_PlayerRevealed;
-        private readonly Random r_Rnd = new Random();
+        private Player m_PlayerRevealed = null;
+        private static readonly Random sr_Rnd = new Random();
 
         public Cell()
         {
@@ -32,23 +32,17 @@ namespace GameLogic
         {
             get
             {
-                return m_PlayerRevealed;
+                return m_PlayerRevealed;//IsReveal ? m_PlayerRevealed : null;
             }
         }
-        public string CellValue
-        {
-            get
-            {
-                return this.r_CellValue;
-            }
-        }
+
         private string getRandomCharacter()
         {
             // Random character
-            char randomChar = (char)r_Rnd.Next('a', 'z');
+            char randomChar = (char)sr_Rnd.Next('a', 'z');
 
             // Random lowercase or uppercase
-            if (r_Rnd.Next(1, 3) == 1)
+            if (sr_Rnd.Next(1, 3) == 1)
             {
                 randomChar = char.ToUpper(randomChar);
             }

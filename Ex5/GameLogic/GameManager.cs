@@ -16,22 +16,20 @@ namespace GameLogic
             r_CellGuessManager = new CellGuessHandler();
         }
 
-        public string[,] StringBoard
+        public string GetCellValue(int i_RowIndex, int i_ColumnIndex, bool i_ForceReveal = false)
         {
-            get
-            {
-                string [,] board = new string[this.m_Board.Height, this.m_Board.Width]; 
-                for(int i = 0; i < this.m_Board.Height; i++)
-                {
-                    for (int j = 0; j < this.m_Board.Width; j++)
-                    {
-                        board[i, j] = this.m_Board.CurrentBoard[i, j].CellValue;
-                    }
-                }
-                
-                return board;
-            }
+            return Board.CurrentBoard[i_RowIndex, i_ColumnIndex].GetStringIfRevealed(i_ForceReveal);
         }
+        public int GetCellPlayer(int i_RowIndex, int i_ColumnIndex)
+        {
+            return Board.CurrentBoard[i_RowIndex, i_ColumnIndex].PlayerRevealed != null ?
+                r_MatchManager.Players.IndexOf(Board.CurrentBoard[i_RowIndex, i_ColumnIndex].PlayerRevealed) : -1;
+        }
+        public bool GetCellRevealState(int i_RowIndex, int i_ColumnIndex)
+        {
+            return Board.CurrentBoard[i_RowIndex, i_ColumnIndex].IsReveal;
+        }
+
         public Board Board
         {
             get
@@ -62,19 +60,27 @@ namespace GameLogic
                 return this.CurrentPlayer().IsComputer;
             }
         }
+        public int GetPlayerScore(int i_PlayerIndex)
+        {
+            return r_MatchManager.Players[i_PlayerIndex].Score;
+        }
         public Player CurrentPlayer()
         {
             return r_MatchManager.CurrentPlayer();
         }
-
+        public bool IsNewTurn()
+        {
+            return r_CellGuessManager.IsCellGuessFinished();
+        }
         public bool IsCurrentPlayerComputer()
         {
             return r_MatchManager.CurrentPlayer().IsComputer;
         }
 
-        public Player CurrentWinner()
+        public string CurrentWinnerName()
         {
-            return r_MatchManager.CurrentWinner();
+
+            return r_MatchManager.CurrentWinner() != null ? r_MatchManager.CurrentWinner().Name : null;
         }
 
         private void validateGameConfigured()
@@ -91,6 +97,7 @@ namespace GameLogic
             bool correctGuess = false;
             validateGameConfigured();
             r_CellGuessManager.SetGuess(i_Row, i_Column);
+
             // Check if cell Guess is finished for current player
             if (r_CellGuessManager.IsCellGuessFinished())
             {
@@ -100,13 +107,15 @@ namespace GameLogic
                 {
                     r_MatchManager.CurrentPlayer().AddScore();
                 }
-                r_MatchManager.NextPlayer();
-                r_CellGuessManager.Clear();
             }
 
             return correctGuess;
         }
-
+        public void ClearTurn()
+        {
+            r_MatchManager.NextPlayer();
+            r_CellGuessManager.Clear();
+        }
         public bool SetGuess()
         {
             bool correctGuess = false;
@@ -120,14 +129,12 @@ namespace GameLogic
                 {
                     r_MatchManager.AddScoreToCurrentPlayer();
                 }
-                r_MatchManager.NextPlayer();
-                r_CellGuessManager.Clear();
             }
 
             return correctGuess;
         }
 
-        public void RevealBoardGuessState(bool i_RevealState)
+        public void ForceRevealBoardGuessState(bool i_RevealState)
         {
             validateGameConfigured();
             m_Board.RevealCellState(r_CellGuessManager, i_RevealState);

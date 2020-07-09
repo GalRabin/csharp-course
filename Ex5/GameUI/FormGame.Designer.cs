@@ -32,6 +32,7 @@
             this.labelFirstScore = new System.Windows.Forms.Label();
             this.labelSecondScore = new System.Windows.Forms.Label();
             this.tableLayoutPanelBoard = new System.Windows.Forms.TableLayoutPanel();
+           // this.timerButtons = new System.Windows.Forms.Timer();
             this.SuspendLayout();
             // 
             // labelCurrentPlayer
@@ -43,7 +44,7 @@
             this.labelCurrentPlayer.Name = "labelCurrentPlayer";
             this.labelCurrentPlayer.Size = new System.Drawing.Size(141, 17);
             this.labelCurrentPlayer.TabIndex = 0;
-            this.labelCurrentPlayer.Text = "Current Player: Dean";
+            //this.labelCurrentPlayer.Click += new System.EventHandler(this.label1_Click);
             // 
             // labelFirstScore
             // 
@@ -54,7 +55,6 @@
             this.labelFirstScore.Name = "labelFirstScore";
             this.labelFirstScore.Size = new System.Drawing.Size(94, 17);
             this.labelFirstScore.TabIndex = 1;
-            this.labelFirstScore.Text = "Dean: 2 Pairs";
             // 
             // labelSecondScore
             // 
@@ -72,9 +72,8 @@
             this.tableLayoutPanelBoard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanelBoard.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanelBoard.Location = new System.Drawing.Point(26, 12);
-            this.tableLayoutPanelBoard.Name = "tableLayoutPanelBoard";
+            this.tableLayoutPanelBoard.Name = "Game Board";
             this.tableLayoutPanelBoard.Size = new System.Drawing.Size(466, 337);
             this.tableLayoutPanelBoard.TabIndex = 3;
             // 
@@ -93,6 +92,7 @@
             this.Text = "Memory Game";
             this.ResumeLayout(false);
             this.PerformLayout();
+            
 
         }
 
@@ -102,6 +102,7 @@
         private System.Windows.Forms.Label labelFirstScore;
         private System.Windows.Forms.Label labelSecondScore;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelBoard;
+       // private System.Windows.Forms.Timer timerButtons;
         //private CellButton button1;
     }
 }

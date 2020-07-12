@@ -32,40 +32,34 @@
             this.labelFirstScore = new System.Windows.Forms.Label();
             this.labelSecondScore = new System.Windows.Forms.Label();
             this.tableLayoutPanelBoard = new System.Windows.Forms.TableLayoutPanel();
-           // this.timerButtons = new System.Windows.Forms.Timer();
             this.SuspendLayout();
             // 
             // labelCurrentPlayer
             // 
             this.labelCurrentPlayer.AutoSize = true;
-            this.labelCurrentPlayer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.labelCurrentPlayer.Location = new System.Drawing.Point(43, 478);
             this.labelCurrentPlayer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelCurrentPlayer.Name = "labelCurrentPlayer";
-            this.labelCurrentPlayer.Size = new System.Drawing.Size(141, 17);
+            this.labelCurrentPlayer.Size = new System.Drawing.Size(0, 17);
             this.labelCurrentPlayer.TabIndex = 0;
-            //this.labelCurrentPlayer.Click += new System.EventHandler(this.label1_Click);
             // 
             // labelFirstScore
             // 
             this.labelFirstScore.AutoSize = true;
-            this.labelFirstScore.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.labelFirstScore.Location = new System.Drawing.Point(43, 505);
             this.labelFirstScore.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelFirstScore.Name = "labelFirstScore";
-            this.labelFirstScore.Size = new System.Drawing.Size(94, 17);
+            this.labelFirstScore.Size = new System.Drawing.Size(0, 17);
             this.labelFirstScore.TabIndex = 1;
             // 
             // labelSecondScore
             // 
             this.labelSecondScore.AutoSize = true;
-            this.labelSecondScore.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.labelSecondScore.Location = new System.Drawing.Point(43, 532);
             this.labelSecondScore.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSecondScore.Name = "labelSecondScore";
-            this.labelSecondScore.Size = new System.Drawing.Size(92, 17);
+            this.labelSecondScore.Size = new System.Drawing.Size(0, 17);
             this.labelSecondScore.TabIndex = 2;
-            this.labelSecondScore.Text = "Gal: 1 Pair(s)";
             // 
             // tableLayoutPanelBoard
             // 
@@ -73,7 +67,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanelBoard.Location = new System.Drawing.Point(26, 12);
-            this.tableLayoutPanelBoard.Name = "Game Board";
+            this.tableLayoutPanelBoard.Name = "tableLayoutPanelBoard";
             this.tableLayoutPanelBoard.Size = new System.Drawing.Size(466, 337);
             this.tableLayoutPanelBoard.TabIndex = 3;
             // 
@@ -92,17 +86,13 @@
             this.Text = "Memory Game";
             this.ResumeLayout(false);
             this.PerformLayout();
-            
 
         }
 
         #endregion
-
         private System.Windows.Forms.Label labelCurrentPlayer;
         private System.Windows.Forms.Label labelFirstScore;
         private System.Windows.Forms.Label labelSecondScore;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelBoard;
-       // private System.Windows.Forms.Timer timerButtons;
-        //private CellButton button1;
     }
 }

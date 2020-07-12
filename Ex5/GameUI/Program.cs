@@ -13,7 +13,7 @@ namespace GameUI
         public static void Main()
         {
             Application.EnableVisualStyles();
-            FormGame formGame = new FormGame();
+            FormGame formGame = new FormGame();            
             formGame.ShowDialog();
         }
     }

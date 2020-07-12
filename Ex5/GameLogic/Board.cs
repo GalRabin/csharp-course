@@ -12,10 +12,12 @@ namespace GameLogic
 
         public Board(int i_Height, int i_Width)
         {
-            if (!(4 <= i_Height && i_Height <= 6 && 4 <= i_Width && i_Width <= 6))
+            if (!(4 <= i_Height && i_Height <= 6 && 4 <= i_Width && i_Width <= 6 && i_Width * i_Height % 2 == 0))
             {
-                throw new ArgumentException("Board size is not valid. Size should be Height in range 4-6 and Width in range 4-6.");
+                throw new ArgumentException("Board size is not valid." + Environment.NewLine + 
+                    "Size should be Height in range 4-6 and Width in range 4-6 with even number of cells.");
             }
+
             r_CurrentBoard = new Cell[i_Height, i_Width];
             SetBoard();
         }
@@ -111,6 +113,7 @@ namespace GameLogic
                 }
             }
 
+            m_RevealedCells = 0;
             SetBoard();
         }
 

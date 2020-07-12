@@ -14,6 +14,7 @@ namespace GameUI
         private int m_RowIndex;
         private int m_ColumnIndex;
         private bool m_IsReveal = false;
+        private bool m_IsInCheck = false;
 
         public CellButton(int i_RowIndex, int i_ColumnIndex)
         {
@@ -37,17 +38,29 @@ namespace GameUI
         }
         public void changeReveal()
         {
-            this.m_IsReveal = (this.m_IsReveal == false ? true : false);
+            m_IsReveal = (this.m_IsReveal == false ? true : false);
             OnCellRevealed(EventArgs.Empty);
         }
         protected virtual void OnCellRevealed(EventArgs e)
         {
             EventHandler handler = cellReveal;
+
             if (handler != null)
             {
                 handler(this, e);
             }
             
+        }
+        public bool InCheck
+        {
+            get
+            {
+                return m_IsInCheck;
+            }
+            set
+            {
+                m_IsInCheck = value;
+            }
         }
     }
 }

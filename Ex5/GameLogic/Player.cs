@@ -68,7 +68,7 @@ namespace GameLogic
                 // Check if all chars is letters
                 foreach (char c in i_Str)
                 {
-                    if (char.IsLetter(c))
+                    if (char.IsLetter(c) || char.IsWhiteSpace(c))
                     {
                         continue;
                     }

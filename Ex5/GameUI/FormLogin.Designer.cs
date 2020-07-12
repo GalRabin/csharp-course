@@ -115,7 +115,7 @@
             this.ButtonStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.ButtonStart.FlatAppearance.BorderSize = 2;
-            this.ButtonStart.Location = new System.Drawing.Point(344, 149);
+            this.ButtonStart.Location = new System.Drawing.Point(375, 154);
             this.ButtonStart.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonStart.Name = "ButtonStart";
             this.ButtonStart.Size = new System.Drawing.Size(121, 28);
@@ -128,7 +128,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(469, 182);
+            this.ClientSize = new System.Drawing.Size(500, 187);
             this.Controls.Add(this.ButtonStart);
             this.Controls.Add(this.ButtonAgainst);
             this.Controls.Add(this.ButtonBoardSize);
@@ -143,6 +143,7 @@
             this.MinimizeBox = false;
             this.Name = "FormLogin";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Memory Game - Settings";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -7,11 +7,11 @@ namespace GameLogic
         private readonly string r_CellValue;
         private bool m_RevealCellState;
         private Player m_PlayerRevealed = null;
+        private bool m_IsInCheck = false;
         private static readonly Random sr_Rnd = new Random();
 
         public Cell()
         {
-            // System.Threading.Thread.Sleep(10);
             r_CellValue = getRandomCharacter();
         }
 
@@ -35,7 +35,17 @@ namespace GameLogic
                 return m_PlayerRevealed;//IsReveal ? m_PlayerRevealed : null;
             }
         }
-
+        public bool Incheck
+        {
+            get
+            {
+                return m_IsInCheck;
+            }
+            set
+            {
+                m_IsInCheck = value;
+            }
+        }
         private string getRandomCharacter()
         {
             // Random character
@@ -54,6 +64,11 @@ namespace GameLogic
         {
             m_RevealCellState = i_RevealState;
             m_PlayerRevealed = i_PlayerReveal;
+
+            if(i_PlayerReveal == null)
+            {
+                m_IsInCheck = i_RevealState;
+            }
         }
 
         public string GetStringIfRevealed(bool i_Force = false)

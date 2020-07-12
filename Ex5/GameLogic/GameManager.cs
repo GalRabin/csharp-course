@@ -9,7 +9,7 @@ namespace GameLogic
         private Board m_Board;
         private readonly CellGuessHandler r_CellGuessManager;
         private readonly MatchHandler r_MatchManager;
-        
+
         public GameManager()
         {
             r_MatchManager = new MatchHandler();
@@ -57,18 +57,32 @@ namespace GameLogic
         {
             get
             {
-                return this.CurrentPlayer().IsComputer;
+                return CurrentPlayer().IsComputer;
             }
         }
         public int GetPlayerScore(int i_PlayerIndex)
         {
             return r_MatchManager.Players[i_PlayerIndex].Score;
         }
-        public Player CurrentPlayer()
+        private Player CurrentPlayer()
         {
             return r_MatchManager.CurrentPlayer();
         }
+
+        public int CurrentPlayerIndex()
+        {
+            return r_MatchManager.Players.IndexOf(r_MatchManager.CurrentPlayer());
+        }
+
+        public string GetPlayerName(int i_PlayerIndex)
+        {
+            return r_MatchManager.Players[i_PlayerIndex].Name;
+        }
         public bool IsNewTurn()
+        {
+            return r_CellGuessManager.IsCellGuessFinished() || r_CellGuessManager.CurrentGuess == 0;
+        }
+        public bool IsTurnOver()
         {
             return r_CellGuessManager.IsCellGuessFinished();
         }
@@ -82,45 +96,42 @@ namespace GameLogic
 
             return r_MatchManager.CurrentWinner() != null ? r_MatchManager.CurrentWinner().Name : null;
         }
-
+        public bool IsGuessesInit()
+        {
+            return r_CellGuessManager.IsInit;
+        }
         private void validateGameConfigured()
         {
             if (!(r_MatchManager.IsMatchConfigured() && m_Board != null))
             {
                 throw new ArgumentNullException("Game is not configured, Can't start guess, " +
                                                 "Missing 2 players or board configuration");
-            }        
+            }
         }
-
+        public int GetColumnGuess(int i_GuessNumber)
+        {
+            return r_CellGuessManager.GetColumnGuess(i_GuessNumber);
+        }
+        public int GetRowGuess(int i_GuessNumber)
+        {
+            return r_CellGuessManager.GetRowGuess(i_GuessNumber);
+        }
         public bool SetGuess(int i_Row, int i_Column)
         {
             bool correctGuess = false;
             validateGameConfigured();
-            r_CellGuessManager.SetGuess(i_Row, i_Column);
 
-            // Check if cell Guess is finished for current player
-            if (r_CellGuessManager.IsCellGuessFinished())
+            if (r_CellGuessManager.CurrentGuess == 0)
             {
-                // If finished check if cells equal
-                correctGuess = m_Board.RevealCellsIfEqual(r_CellGuessManager, CurrentPlayer());
-                if (correctGuess)
-                {
-                    r_MatchManager.CurrentPlayer().AddScore();
-                }
+                r_CellGuessManager.SetGuess(i_Row, i_Column);
+                Board.CurrentBoard[i_Row, i_Column].Incheck = true;
             }
-
-            return correctGuess;
-        }
-        public void ClearTurn()
-        {
-            r_MatchManager.NextPlayer();
-            r_CellGuessManager.Clear();
-        }
-        public bool SetGuess()
-        {
-            bool correctGuess = false;
-            validateGameConfigured();
-            r_CellGuessManager.SetRandomGuess(Board.Height, Board.Width);
+            else if (r_CellGuessManager.CurrentGuess == 1)
+            {
+                r_CellGuessManager.SetGuess(i_Row, i_Column, r_CellGuessManager.GetRowGuess(0), r_CellGuessManager.GetColumnGuess(0));
+                Board.CurrentBoard[i_Row, i_Column].Incheck = true;
+            }
+            // Check if cell Guess is finished for current player
             if (r_CellGuessManager.IsCellGuessFinished())
             {
                 // If finished check if cells equal
@@ -134,12 +145,54 @@ namespace GameLogic
             return correctGuess;
         }
 
+        public bool SetGuess()
+        {
+            bool correctGuess = false;
+            validateGameConfigured();
+            if (r_CellGuessManager.CurrentGuess == 0)
+            {
+                r_CellGuessManager.SetRandomGuess(Board.Height, Board.Width, Board.CurrentBoard);
+                Board.CurrentBoard[r_CellGuessManager.GetRowGuess(0), r_CellGuessManager.GetColumnGuess(0)].Incheck = true;
+            }
+            else if (r_CellGuessManager.CurrentGuess == 1)
+            {
+                r_CellGuessManager.SetRandomGuess(Board.Height, Board.Width, Board.CurrentBoard, r_CellGuessManager.GetRowGuess(0), r_CellGuessManager.GetColumnGuess(0));
+                Board.CurrentBoard[r_CellGuessManager.GetRowGuess(1), r_CellGuessManager.GetColumnGuess(1)].Incheck = true;
+            }
+
+            if (r_CellGuessManager.IsCellGuessFinished())
+            {
+                // If finished check if cells equal
+                correctGuess = m_Board.RevealCellsIfEqual(r_CellGuessManager, CurrentPlayer());
+                if (correctGuess)
+                {
+                    r_MatchManager.AddScoreToCurrentPlayer();
+                }
+            }
+
+            return correctGuess;
+        }
+
+        public bool IsCellInCheck(int i_RowIndex, int i_ColumnIndex)
+        {
+            return Board.CurrentBoard[i_RowIndex, i_ColumnIndex].Incheck;
+        }
+
         public void ForceRevealBoardGuessState(bool i_RevealState)
         {
             validateGameConfigured();
             m_Board.RevealCellState(r_CellGuessManager, i_RevealState);
         }
-
+        public void ClearTurn(bool i_DontChangePlayer)
+        {
+            if (!i_DontChangePlayer)
+            {
+                r_MatchManager.NextPlayer();
+            }
+            Board.CurrentBoard[r_CellGuessManager.GetRowGuess(0), r_CellGuessManager.GetColumnGuess(0)].Incheck = false;
+            Board.CurrentBoard[r_CellGuessManager.GetRowGuess(1), r_CellGuessManager.GetColumnGuess(1)].Incheck = false;
+            r_CellGuessManager.Clear();
+        }
         public bool IsGameFinished()
         {
             validateGameConfigured();

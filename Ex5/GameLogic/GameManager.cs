@@ -36,7 +36,7 @@ namespace GameLogic
             m_Board = new Board(i_Height, i_Width);
         }
 
-        public List<object> GetRandomObjects()
+        public List<string> GetRandomObjects()
         {
             return m_Board.RandomObjects;
         }

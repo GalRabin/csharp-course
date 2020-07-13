@@ -9,7 +9,7 @@ namespace GameLogic
     {
         private int m_RevealedCells;
         private readonly Cell[,] r_CurrentBoard;
-        private readonly HashSet<object> r_RandomObjectsList = new HashSet<object>();
+        private readonly HashSet<string> r_RandomObjectsList = new HashSet<string>();
         private static readonly Random sr_Rnd = new Random();
 
         public Board(int i_Height, int i_Width)
@@ -47,11 +47,11 @@ namespace GameLogic
                 return r_CurrentBoard;
             }
         }
-        public List<object> RandomObjects
+        public List<string> RandomObjects
         {
             get
             {
-                return r_RandomObjectsList.ToList<object>();
+                return r_RandomObjectsList.ToList<string>();
             }
         }
 

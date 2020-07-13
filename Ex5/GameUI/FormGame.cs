@@ -20,20 +20,20 @@ namespace GameUI
         private static readonly Color sr_WrongBoardButtonForeColor = Color.Red;
         private bool m_ValidConfiguration = false;
         private GameLogic.GameManager m_Game;
-        private int m_BoardHeight = 4;
-        private int m_BoardWidth = 4;
+        private int m_BoardRows = 4;
+        private int m_BoardColumns = 4;
         private int m_ButtonsWidth;
         private int m_ButtonsHeight;
         private bool m_LoginFormClosedByX = false;
         private bool m_WantToPlay = true;
-        private Dictionary<object, object> m_CharImageDict;
+        private Dictionary<string, object> m_CharImageDict;
         private bool m_HasInternetConnection;
 
 
         public FormGame()
         {
             m_Game = new GameLogic.GameManager();
-
+            checkInternetConnection();
             while (!ensureValidConfiguration() && !m_LoginFormClosedByX) ;
             InitializeComponent();
 
@@ -70,10 +70,10 @@ namespace GameUI
         }
         private void createTable()
         {
-            tableLayoutPanelBoard.ColumnCount = m_BoardWidth;
-            tableLayoutPanelBoard.RowCount = m_BoardHeight;
-            int rowPercentage = 100 / m_BoardHeight;
-            int columnPercentage = 100 / m_BoardWidth;
+            tableLayoutPanelBoard.ColumnCount = m_BoardColumns;
+            tableLayoutPanelBoard.RowCount = m_BoardRows;
+            int rowPercentage = 100 / m_BoardRows;
+            int columnPercentage = 100 / m_BoardColumns;
 
             for (int i = 0; i < tableLayoutPanelBoard.ColumnCount; i++)
             {
@@ -87,19 +87,33 @@ namespace GameUI
         }
         private void addButtonsToTable()
         {
+            m_ButtonsWidth = (tableLayoutPanelBoard.Width / m_BoardColumns);
+            m_ButtonsHeight = (tableLayoutPanelBoard.Height / m_BoardRows) ;
+            generateCharImageDict(m_Game.GetRandomObjects());
+            
             CellButton cellButton = null;
+
             for (int i = 0; i < tableLayoutPanelBoard.RowCount; i++)
             {
                 for (int j = 0; j < tableLayoutPanelBoard.ColumnCount; j++)
                 {
-                    cellButton = createCellButton(i, j);
-                    tableLayoutPanelBoard.Controls.Add(cellButton, j, i);
+                    if (m_HasInternetConnection)
+                    {
+                        cellButton = new ImageCellButton(i, j, (PictureBox)m_CharImageDict[m_Game.GetCellValue(i, j, true)]);
+                        cellButton = createCellButton(ref cellButton);
+                        tableLayoutPanelBoard.Controls.Add(cellButton, j, i);
+                    }
+                    else
+                    {
+                        cellButton = new CellButton(i, j);
+                        cellButton = createCellButton(ref cellButton);
+                        tableLayoutPanelBoard.Controls.Add(cellButton, j, i);
+                    }
+                    
                 }
             }
 
-            m_ButtonsWidth = cellButton.Width;
-            m_ButtonsHeight = cellButton.Height;
-            generateCharImageDict(m_Game.GetRandomObjects());
+           
         }
         private void setLabels()
         {
@@ -110,24 +124,23 @@ namespace GameUI
             labelSecondScore.Text = Messages.SecondPlayerLabelText(m_Game.GetPlayerScore(1));
             labelSecondScore.BackColor = sr_PairsColor[1];
         }
-        private CellButton createCellButton(int i_RowIndex, int i_ColumnIndex)
+        private CellButton createCellButton(ref CellButton io_CellButton)
         {
-            CellButton cellButton = new CellButton(i_RowIndex, i_ColumnIndex);
-            cellButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            io_CellButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                 | System.Windows.Forms.AnchorStyles.Left)
                 | System.Windows.Forms.AnchorStyles.Right)));
-            cellButton.Location = new System.Drawing.Point(3, 3);
-            cellButton.Name = string.Format("Button {0}, {1}", i_RowIndex, i_ColumnIndex);
-            cellButton.Size = new System.Drawing.Size(110, 78);
-            cellButton.TabIndex = tableLayoutPanelBoard.TabIndex + i_RowIndex + i_ColumnIndex;
-            cellButton.Text = "";
-            cellButton.BackColor = sr_DefaultBoardButtonBackColor;
-            cellButton.ForeColor = sr_DefaultBoardButtonForeColor;
-            cellButton.UseVisualStyleBackColor = true;
-            cellButton.Value = m_Game.GetCellValue(i_RowIndex, i_ColumnIndex, true);
-            cellButton.Click += new EventHandler(cellButton_Click);
+            io_CellButton.Location = new System.Drawing.Point(3, 3);
+            io_CellButton.Name = string.Format("Button {0}, {1}", io_CellButton.RowIndex, io_CellButton.ColumnIndex);
+            io_CellButton.Size = new System.Drawing.Size(m_ButtonsWidth, m_ButtonsHeight);
+            io_CellButton.TabIndex = tableLayoutPanelBoard.TabIndex + io_CellButton.RowIndex + io_CellButton.ColumnIndex;
+            io_CellButton.Text = "";
+            io_CellButton.BackColor = sr_DefaultBoardButtonBackColor;
+            io_CellButton.ForeColor = sr_DefaultBoardButtonForeColor;
+            io_CellButton.UseVisualStyleBackColor = true;
+            io_CellButton.Value = m_Game.GetCellValue(io_CellButton.RowIndex, io_CellButton.ColumnIndex, true);
+            io_CellButton.Click += new EventHandler(cellButton_Click);
 
-            return cellButton;
+            return io_CellButton;
         }
         private bool ensureValidConfiguration()
         {
@@ -142,8 +155,8 @@ namespace GameUI
                     {
                         try
                         {
-                            m_BoardHeight = win.BoardHeight;
-                            m_BoardWidth = win.BoardWidth;
+                            m_BoardRows = win.BoardHeight;
+                            m_BoardColumns = win.BoardWidth;
                             m_Game.SetBoardSize(win.BoardHeight, win.BoardWidth);
                             m_Game.AddPlayer(win.FirstPlayerName);
                             m_Game.AddPlayer(win.SecondPlayerName);
@@ -158,8 +171,8 @@ namespace GameUI
                     else
                     {
                         m_LoginFormClosedByX = true;
-                        m_BoardHeight = win.BoardHeight;
-                        m_BoardWidth = win.BoardWidth;
+                        m_BoardRows = win.BoardHeight;
+                        m_BoardColumns = win.BoardWidth;
                         m_Game.SetBoardSize(win.BoardHeight, win.BoardWidth);
                         m_Game.AddPlayer(" ");
                         m_Game.AddPlayer(" ");
@@ -265,23 +278,21 @@ namespace GameUI
         private void handleFirstClick()
         {
             Control crl = tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(0), m_Game.GetRowGuess(0));
-            crl.Text = (crl as CellButton).Value;
-            (crl as CellButton).InCheck = true;
-            crl.BackColor = sr_PairsColor[m_Game.CurrentPlayerIndex()];
-            crl.Enabled = false;
+
+            (crl as CellButton).ShowAndDisableValueInCheck(sr_PairsColor[m_Game.CurrentPlayerIndex()]);
+
             Refresh();
             System.Threading.Thread.Sleep(800);
-            crl.BackColor = sr_DefaultBoardButtonBackColor;
-            crl.Text = "";
+            (crl as CellButton).ShowDefaultAndDisable(sr_DefaultBoardButtonBackColor, "");
+
             Refresh();
         }
         private void handleSecondClick(bool i_Correct)
         {
             Control crl = tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(1), m_Game.GetRowGuess(1));
-            crl.Text = (crl as CellButton).Value;
-            (crl as CellButton).InCheck = true;
-            crl.BackColor = sr_PairsColor[m_Game.CurrentPlayerIndex()];
-            crl.Enabled = false;
+
+            (crl as CellButton).ShowAndDisableValueInCheck(sr_PairsColor[m_Game.CurrentPlayerIndex()]);
+
             Refresh();
             System.Threading.Thread.Sleep(800);
 
@@ -302,17 +313,9 @@ namespace GameUI
             Control firstGuess = tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(0), m_Game.GetRowGuess(0));
             Control secondGuess = tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(1), m_Game.GetRowGuess(1));
 
-            firstGuess.Text = (firstGuess as CellButton).Value;
-            secondGuess.Text = (secondGuess as CellButton).Value;
-
-            (firstGuess as CellButton).InCheck = false;
-            (secondGuess as CellButton).InCheck = false;
-
-            firstGuess.BackColor = sr_PairsColor[i_PlayerIndex];
-            secondGuess.BackColor = sr_PairsColor[i_PlayerIndex];
-
-            firstGuess.Enabled = false;
-            secondGuess.Enabled = false;
+            (firstGuess as CellButton).ShowAndDisableValue(sr_PairsColor[i_PlayerIndex]);
+            (secondGuess as CellButton).ShowAndDisableValue(sr_PairsColor[i_PlayerIndex]);
+            
         }
         /*private void handleBoardAfterClick(bool i_Correct)
         {
@@ -421,30 +424,15 @@ namespace GameUI
             Control firstGuess = tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(0), m_Game.GetRowGuess(0));
             Control secondGuess = tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(1), m_Game.GetRowGuess(1));
 
-            firstGuess.Text = (firstGuess as CellButton).Value;
-            secondGuess.Text = (secondGuess as CellButton).Value;
-
-            (firstGuess as CellButton).InCheck = false;
-            (secondGuess as CellButton).InCheck = false;
-
-            firstGuess.BackColor = sr_WrongBoardButtonForeColor;
-            secondGuess.BackColor = sr_WrongBoardButtonForeColor;
-
+            (firstGuess as CellButton).ShowAsWrong(sr_WrongBoardButtonForeColor);
+            (secondGuess as CellButton).ShowAsWrong(sr_WrongBoardButtonForeColor);
+            
             Refresh();
             System.Threading.Thread.Sleep(800);
 
-            firstGuess.Text = "";
-            secondGuess.Text = "";
-
-            (firstGuess as CellButton).InCheck = false;
-            (secondGuess as CellButton).InCheck = false;
-
-            firstGuess.BackColor = sr_DefaultBoardButtonBackColor;
-            secondGuess.BackColor = sr_DefaultBoardButtonBackColor;
-
-            firstGuess.Enabled = true;
-            secondGuess.Enabled = true;
-
+            (firstGuess as CellButton).ShowDefault(sr_DefaultBoardButtonBackColor, "");
+            (secondGuess as CellButton).ShowDefault(sr_DefaultBoardButtonBackColor, "");
+            
             Refresh();
 
         }
@@ -455,10 +443,9 @@ namespace GameUI
                 for (int j = 0; j < tableLayoutPanelBoard.ColumnCount; j++)
                 {
                     Control crl = tableLayoutPanelBoard.GetControlFromPosition(j, i);
-                    crl.BackColor = sr_DefaultBoardButtonBackColor;
-                    crl.Enabled = true;
-                    crl.Text = m_Game.GetCellValue(i, j);
+                    (crl as CellButton).ShowDefault(sr_DefaultBoardButtonBackColor, m_Game.GetCellValue(i, j));
                     (crl as CellButton).Value = m_Game.GetCellValue(i, j, true);
+                    
                 }
             }
 
@@ -501,8 +488,8 @@ namespace GameUI
             notification.Visible = true;
             notification.BackColor = Color.White;
             notification.ForeColor = Color.Black;
-            notification.Left = 50;
-            notification.Top = tableLayoutPanelBoard.Height + 50;
+            notification.Location = new Point( this.Width / 3,
+                tableLayoutPanelBoard.Top +  tableLayoutPanelBoard.Height + 20);
             notification.Font = new Font(this.Font.FontFamily, this.Font.Size, FontStyle.Bold);
             notification.AutoSize = true;
             notification.Name = "label";
@@ -520,19 +507,19 @@ namespace GameUI
             }
         }
 
-        private void generateCharImageDict(List<object> i_RandomObjects)
+        private void generateCharImageDict(List<string> i_RandomObjects)
         {
-            m_CharImageDict = new Dictionary<object, object>();
+            m_CharImageDict = new Dictionary<string, object>();
 
-            foreach (object obj in i_RandomObjects)
+            foreach (string str in i_RandomObjects)
             {
                 if (m_HasInternetConnection)
                 {
-                    m_CharImageDict.Add(obj, generateImage(m_ButtonsWidth - 10, m_ButtonsHeight - 10));
+                    m_CharImageDict.Add(str, generateImage(m_ButtonsWidth, m_ButtonsHeight));
                 }
                 else
                 {
-                    m_CharImageDict.Add(obj, obj);
+                    m_CharImageDict.Add(str, str);
                 }
             }
 
@@ -551,7 +538,7 @@ namespace GameUI
             try
             {
                 Ping myPing = new Ping();
-                String host = "https://picsum.photos";
+                String host = "google.com";
                 byte[] buffer = new byte[32];
                 int timeout = 1000;
                 PingOptions pingOptions = new PingOptions();

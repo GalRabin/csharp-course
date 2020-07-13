@@ -15,18 +15,6 @@ namespace GameUI
         {
             m_PictureBox = i_PictureBox;
         }
-
-        public PictureBox PictureBox
-        {
-            get
-            {
-                return m_PictureBox;
-            }
-            set
-            {
-                m_PictureBox = value;
-            }
-        }
         public override void ShowAndDisableValueInCheck(Color i_PlayerColor)
         {
             InCheck = true;

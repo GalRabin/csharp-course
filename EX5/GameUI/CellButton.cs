@@ -95,6 +95,5 @@ namespace GameUI
             Enabled = true;
             InCheck = false;
         }
-
     }
 }

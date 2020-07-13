@@ -34,6 +34,7 @@ namespace GameUI
         {
             m_Game = new GameLogic.GameManager();
             checkInternetConnection();
+
             while (!ensureValidConfiguration() && !m_LoginFormClosedByX) ;
             InitializeComponent();
 
@@ -60,7 +61,6 @@ namespace GameUI
             addButtonsToTable();
             setLabels();
             setCellButtonsBoard();
-            //updateCellsBoardAfterClick();
             Refresh();
 
             if (m_Game.isComputerTurn)
@@ -87,10 +87,9 @@ namespace GameUI
         }
         private void addButtonsToTable()
         {
-            m_ButtonsWidth = (tableLayoutPanelBoard.Width / m_BoardColumns);
-            m_ButtonsHeight = (tableLayoutPanelBoard.Height / m_BoardRows) ;
+            m_ButtonsWidth = tableLayoutPanelBoard.Width / m_BoardColumns;
+            m_ButtonsHeight = tableLayoutPanelBoard.Height / m_BoardRows;
             generateCharImageDict(m_Game.GetRandomObjects());
-            
             CellButton cellButton = null;
 
             for (int i = 0; i < tableLayoutPanelBoard.RowCount; i++)
@@ -109,11 +108,8 @@ namespace GameUI
                         cellButton = createCellButton(ref cellButton);
                         tableLayoutPanelBoard.Controls.Add(cellButton, j, i);
                     }
-                    
                 }
             }
-
-           
         }
         private void setLabels()
         {
@@ -191,57 +187,32 @@ namespace GameUI
                 bool correct = false;
                 if (!m_Game.IsGuessesInit())
                 {
-                    while (true)
-                    {
-                        try
-                        {
-                            correct = m_Game.SetGuess((sender as CellButton).RowIndex, (sender as CellButton).ColumnIndex);
-                            (sender as CellButton).InCheck = m_Game.IsCellInCheck((sender as CellButton).RowIndex, (sender as CellButton).ColumnIndex);
-                            //handleBoardAfterClick(correct);
-                            handleFirstClick();
-                            break;
-                        }
-                        catch (ArgumentException ae)
-                        {
-
-                        }
-                    }
+                    correct = m_Game.SetGuess((sender as CellButton).RowIndex, (sender as CellButton).ColumnIndex);
+                    (sender as CellButton).InCheck = m_Game.IsCellInCheck((sender as CellButton).RowIndex, (sender as CellButton).ColumnIndex);
+                    handleFirstClick();
                 }
                 else
                 {
-                    while (true)
+                    correct = m_Game.SetGuess((sender as CellButton).RowIndex, (sender as CellButton).ColumnIndex);
+                    (sender as CellButton).InCheck = m_Game.IsCellInCheck((sender as CellButton).RowIndex, (sender as CellButton).ColumnIndex);
+                    handleSecondClick(correct);
+
+                    if (m_Game.IsNewTurn())
                     {
-                        try
-                        {
-                            correct = m_Game.SetGuess((sender as CellButton).RowIndex, (sender as CellButton).ColumnIndex);
-                            (sender as CellButton).InCheck = m_Game.IsCellInCheck((sender as CellButton).RowIndex, (sender as CellButton).ColumnIndex);
-                            //handleBoardAfterClick(correct);
-                            handleSecondClick(correct);
-
-                            break;
-                        }
-                        catch (ArgumentException ae)
-                        {
-
-                        }
+                        m_Game.ClearTurn(correct);
+                        updateLabels();
                     }
                 }
 
-                if (m_Game.IsNewTurn())
+                while (m_Game.isComputerTurn && !m_Game.IsGameFinished())
                 {
-                    m_Game.ClearTurn(correct);
-                    updateLabels();
+                    computerPlay();
                 }
-            }
 
-            while (m_Game.isComputerTurn && !m_Game.IsGameFinished())
-            {
-                computerPlay();
-            }
-
-            if (m_Game.IsGameFinished())
-            {
-                handleGameOver();
+                if (m_Game.IsGameFinished())
+                {
+                    handleGameOver();
+                }
             }
         }
 
@@ -278,21 +249,16 @@ namespace GameUI
         private void handleFirstClick()
         {
             Control crl = tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(0), m_Game.GetRowGuess(0));
-
             (crl as CellButton).ShowAndDisableValueInCheck(sr_PairsColor[m_Game.CurrentPlayerIndex()]);
-
             Refresh();
             System.Threading.Thread.Sleep(800);
             (crl as CellButton).ShowDefaultAndDisable(sr_DefaultBoardButtonBackColor, "");
-
             Refresh();
         }
         private void handleSecondClick(bool i_Correct)
         {
             Control crl = tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(1), m_Game.GetRowGuess(1));
-
             (crl as CellButton).ShowAndDisableValueInCheck(sr_PairsColor[m_Game.CurrentPlayerIndex()]);
-
             Refresh();
             System.Threading.Thread.Sleep(800);
 
@@ -306,135 +272,26 @@ namespace GameUI
             }
 
             Refresh();
-
         }
         private void handleSuccessGuess(int i_PlayerIndex)
         {
             Control firstGuess = tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(0), m_Game.GetRowGuess(0));
             Control secondGuess = tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(1), m_Game.GetRowGuess(1));
-
             (firstGuess as CellButton).ShowAndDisableValue(sr_PairsColor[i_PlayerIndex]);
             (secondGuess as CellButton).ShowAndDisableValue(sr_PairsColor[i_PlayerIndex]);
-            
         }
-        /*private void handleBoardAfterClick(bool i_Correct)
-        {
-            if (!i_Correct)
-            {
-                m_Game.ForceRevealBoardGuessState(true);
-                updateCellsBoardAfterClick();
-                System.Threading.Thread.Sleep(800);
-                m_Game.ForceRevealBoardGuessState(false);
-            }
 
-            updateCellsBoardAfterClick(i_Correct);
-
-            if (m_Game.IsNewTurn())
-            {
-                m_Game.ClearTurn(i_Correct);
-                updateLabels();
-            }
-            if (!i_Correct && m_Game.IsTurnOver() && m_Game.IsGuessesInit())
-            {
-               // markIncorrectCells();
-            }
-            //updateCellsBoardAfterClick();
-        }*/
-        /*
-        private void updatePhotosBoardAfterClick(bool i_Correct = false)
-        {
-            for (int i = 0; i < tableLayoutPanelBoard.RowCount; i++)
-            {
-                for (int j = 0; j < tableLayoutPanelBoard.ColumnCount; j++)
-                {
-                    Control crl = tableLayoutPanelBoard.GetControlFromPosition(j, i);
-                    (crl as CellButton).InCheck = m_Game.IsCellInCheck((crl as CellButton).RowIndex, (crl as CellButton).ColumnIndex);
-
-                    // all reveal cells including the temporeries
-                    if (m_Game.GetCellValue(i, j) != null)
-                    {
-                        PictureBox pictureBox = (PictureBox)m_CharImageDict[m_Game.GetCellValue(i, j)];
-                        pictureBox.BackColor = sr_PairsColor[m_Game.CurrentPlayerIndex()];
-                        crl.BackgroundImage = pictureBox.Image;
-                        crl.Enabled = false;
-                    }
-                    else if (m_Game.GetCellPlayer(i, j) != -1)
-                    {
-                        PictureBox pictureBox = (PictureBox)m_CharImageDict[m_Game.GetCellValue(i, j)];
-                        pictureBox.BackColor = sr_PairsColor[m_Game.GetCellPlayer(i, j)];
-                        pictureBox.BorderStyle = BorderStyle.None;
-                        pictureBox.Padding = new Padding(10);
-                        crl.BackgroundImage = pictureBox.Image;
-                        crl.Enabled = false;
-                    }
-                    // if
-                    else if ((crl as CellButton).InCheck && !m_Game.IsNewTurn())
-                    {
-                        PictureBox pictureBox = (PictureBox)m_CharImageDict[m_Game.GetCellValue(i, j, true)];
-                        pictureBox.BackColor = sr_PairsColor[m_Game.CurrentPlayerIndex()];
-                        crl.BackgroundImage = pictureBox.Image;
-                        crl.Enabled = false;
-                    }
-                    // all other unclicked buttons
-                    else
-                    {
-                        crl.BackColor = sr_DefaultBoardButtonBackColor;
-                        crl.BackgroundImage = null;
-                        crl.Enabled = true;
-                    }
-                }
-            }
-
-            Refresh();
-        }
-        private void updateCellsBoardAfterClick(bool i_Correct = false)
-        {
-            for (int i = 0; i < tableLayoutPanelBoard.RowCount; i++)
-            {
-                for (int j = 0; j < tableLayoutPanelBoard.ColumnCount; j++)
-                {
-                    Control crl = tableLayoutPanelBoard.GetControlFromPosition(j, i);
-                    crl.Text = m_Game.GetCellValue(i, j);
-                    (crl as CellButton).InCheck = m_Game.IsCellInCheck((crl as CellButton).RowIndex, (crl as CellButton).ColumnIndex);
-
-                    if (m_Game.GetCellPlayer(i, j) != -1)
-                    {
-                        crl.BackColor = sr_PairsColor[m_Game.GetCellPlayer(i, j)];
-                        crl.Enabled = false;
-                    }
-                    else if ((crl as CellButton).InCheck && !m_Game.IsNewTurn())
-                    {
-                        crl.Enabled = false;
-                        crl.BackColor = sr_DefaultBoardButtonBackColor;
-                        //crl.BackColor = sr_PairsColor[m_Game.CurrentPlayerIndex()];
-                        crl.ForeColor = sr_DefaultBoardButtonForeColor;
-                    }
-                    else
-                    {
-                        crl.BackColor = sr_DefaultBoardButtonBackColor;
-                        crl.Enabled = true;
-                    }
-                }
-            }
-
-            Refresh();
-        }*/
         private void handleFailGuess()
         {
             Control firstGuess = tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(0), m_Game.GetRowGuess(0));
             Control secondGuess = tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(1), m_Game.GetRowGuess(1));
-
             (firstGuess as CellButton).ShowAsWrong(sr_WrongBoardButtonForeColor);
             (secondGuess as CellButton).ShowAsWrong(sr_WrongBoardButtonForeColor);
-            
             Refresh();
             System.Threading.Thread.Sleep(800);
-
             (firstGuess as CellButton).ShowDefault(sr_DefaultBoardButtonBackColor, "");
             (secondGuess as CellButton).ShowDefault(sr_DefaultBoardButtonBackColor, "");
-            
             Refresh();
-
         }
         private void setCellButtonsBoard()
         {
@@ -445,20 +302,12 @@ namespace GameUI
                     Control crl = tableLayoutPanelBoard.GetControlFromPosition(j, i);
                     (crl as CellButton).ShowDefault(sr_DefaultBoardButtonBackColor, m_Game.GetCellValue(i, j));
                     (crl as CellButton).Value = m_Game.GetCellValue(i, j, true);
-                    
                 }
             }
 
             Refresh();
         }
-        /*private void markIncorrectPhotos()
-        {
-            PictureBox pictureBox = (PictureBox)m_CharImageDict[m_Game.GetCellValue(m_Game.GetColumnGuess(0), m_Game.GetRowGuess(0), true)];
-            pictureBox.BackColor = sr_DefaultBoardButtonBackColor;
-            tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(0), m_Game.GetRowGuess(0)).BackgroundImage = pictureBox.Image;
-            pictureBox = (PictureBox)m_CharImageDict[m_Game.GetCellValue(m_Game.GetColumnGuess(1), m_Game.GetRowGuess(1), true)];
-            tableLayoutPanelBoard.GetControlFromPosition(m_Game.GetColumnGuess(1), m_Game.GetRowGuess(1)).BackgroundImage = pictureBox.Image;
-        }*/
+
         private void updateLabels()
         {
             labelCurrentPlayer.Text = Messages.CurrentPlayerLabelText(m_Game.GetPlayerName(m_Game.CurrentPlayerIndex()));
@@ -488,8 +337,8 @@ namespace GameUI
             notification.Visible = true;
             notification.BackColor = Color.White;
             notification.ForeColor = Color.Black;
-            notification.Location = new Point( this.Width / 3,
-                tableLayoutPanelBoard.Top +  tableLayoutPanelBoard.Height + 20);
+            notification.Location = new Point(this.Width / 3,
+                tableLayoutPanelBoard.Top + tableLayoutPanelBoard.Height + 20);
             notification.Font = new Font(this.Font.FontFamily, this.Font.Size, FontStyle.Bold);
             notification.AutoSize = true;
             notification.Name = "label";
@@ -522,7 +371,6 @@ namespace GameUI
                     m_CharImageDict.Add(str, str);
                 }
             }
-
         }
         private PictureBox generateImage(int i_width, int i_Height)
         {

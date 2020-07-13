@@ -65,15 +65,15 @@ namespace GameLogic
             m_RevealCellState = i_RevealState;
             m_PlayerRevealed = i_PlayerReveal;
 
-            if(i_PlayerReveal == null)
+            /*if(i_PlayerReveal == null)
             {
                 m_IsInCheck = i_RevealState;
-            }
+            }*/
         }
 
         public string GetStringIfRevealed(bool i_Force = false)
         {
-            string returnValue = " ";
+            string returnValue = null;
 
             if (m_RevealCellState || i_Force)
             {

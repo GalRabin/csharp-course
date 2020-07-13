@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace GameLogic
 {
@@ -8,6 +9,7 @@ namespace GameLogic
     {
         private int m_RevealedCells;
         private readonly Cell[,] r_CurrentBoard;
+        private readonly HashSet<object> r_RandomObjectsList = new HashSet<object>();
         private static readonly Random sr_Rnd = new Random();
 
         public Board(int i_Height, int i_Width)
@@ -45,6 +47,13 @@ namespace GameLogic
                 return r_CurrentBoard;
             }
         }
+        public List<object> RandomObjects
+        {
+            get
+            {
+                return r_RandomObjectsList.ToList<object>();
+            }
+        }
 
         private int getRandomHorizontalIndex(List<int> i_FreeIndexs)
         {
@@ -76,6 +85,7 @@ namespace GameLogic
                         int randomRow = randomHorizontalIndex / Width;
                         int randomColumn = randomHorizontalIndex % Width;
                         r_CurrentBoard[randomRow, randomColumn] = new Cell(value);
+                        r_RandomObjectsList.Add(value);
                     }
                 }
             }

@@ -18,30 +18,27 @@ namespace GameLogic
 
         public string GetCellValue(int i_RowIndex, int i_ColumnIndex, bool i_ForceReveal = false)
         {
-            return Board.CurrentBoard[i_RowIndex, i_ColumnIndex].GetStringIfRevealed(i_ForceReveal);
+            return m_Board.CurrentBoard[i_RowIndex, i_ColumnIndex].GetStringIfRevealed(i_ForceReveal);
         }
         public int GetCellPlayer(int i_RowIndex, int i_ColumnIndex)
         {
-            return Board.CurrentBoard[i_RowIndex, i_ColumnIndex].PlayerRevealed != null ?
-                r_MatchManager.Players.IndexOf(Board.CurrentBoard[i_RowIndex, i_ColumnIndex].PlayerRevealed) : -1;
+            return m_Board.CurrentBoard[i_RowIndex, i_ColumnIndex].PlayerRevealed != null ?
+                r_MatchManager.Players.IndexOf(m_Board.CurrentBoard[i_RowIndex, i_ColumnIndex].PlayerRevealed) : -1;
         }
         public bool GetCellRevealState(int i_RowIndex, int i_ColumnIndex)
         {
-            return Board.CurrentBoard[i_RowIndex, i_ColumnIndex].IsReveal;
-        }
-
-        public Board Board
-        {
-            get
-            {
-                return m_Board;
-            }
+            return m_Board.CurrentBoard[i_RowIndex, i_ColumnIndex].IsReveal;
         }
 
         public void SetBoardSize(int i_Height, int i_Width)
         {
             // Throw exception if not in range of 4-6 both in width or height
             m_Board = new Board(i_Height, i_Width);
+        }
+
+        public List<object> GetRandomObjects()
+        {
+            return m_Board.RandomObjects;
         }
 
         public List<Player> GetAllPlayers()
@@ -124,12 +121,12 @@ namespace GameLogic
             if (r_CellGuessManager.CurrentGuess == 0)
             {
                 r_CellGuessManager.SetGuess(i_Row, i_Column);
-                Board.CurrentBoard[i_Row, i_Column].Incheck = true;
+                m_Board.CurrentBoard[i_Row, i_Column].Incheck = true;
             }
             else if (r_CellGuessManager.CurrentGuess == 1)
             {
                 r_CellGuessManager.SetGuess(i_Row, i_Column, r_CellGuessManager.GetRowGuess(0), r_CellGuessManager.GetColumnGuess(0));
-                Board.CurrentBoard[i_Row, i_Column].Incheck = true;
+                m_Board.CurrentBoard[i_Row, i_Column].Incheck = true;
             }
             // Check if cell Guess is finished for current player
             if (r_CellGuessManager.IsCellGuessFinished())
@@ -151,13 +148,13 @@ namespace GameLogic
             validateGameConfigured();
             if (r_CellGuessManager.CurrentGuess == 0)
             {
-                r_CellGuessManager.SetRandomGuess(Board.Height, Board.Width, Board.CurrentBoard);
-                Board.CurrentBoard[r_CellGuessManager.GetRowGuess(0), r_CellGuessManager.GetColumnGuess(0)].Incheck = true;
+                r_CellGuessManager.SetRandomGuess(m_Board.Height, m_Board.Width, m_Board.CurrentBoard);
+                m_Board.CurrentBoard[r_CellGuessManager.GetRowGuess(0), r_CellGuessManager.GetColumnGuess(0)].Incheck = true;
             }
             else if (r_CellGuessManager.CurrentGuess == 1)
             {
-                r_CellGuessManager.SetRandomGuess(Board.Height, Board.Width, Board.CurrentBoard, r_CellGuessManager.GetRowGuess(0), r_CellGuessManager.GetColumnGuess(0));
-                Board.CurrentBoard[r_CellGuessManager.GetRowGuess(1), r_CellGuessManager.GetColumnGuess(1)].Incheck = true;
+                r_CellGuessManager.SetRandomGuess(m_Board.Height, m_Board.Width, m_Board.CurrentBoard, r_CellGuessManager.GetRowGuess(0), r_CellGuessManager.GetColumnGuess(0));
+                m_Board.CurrentBoard[r_CellGuessManager.GetRowGuess(1), r_CellGuessManager.GetColumnGuess(1)].Incheck = true;
             }
 
             if (r_CellGuessManager.IsCellGuessFinished())
@@ -175,7 +172,7 @@ namespace GameLogic
 
         public bool IsCellInCheck(int i_RowIndex, int i_ColumnIndex)
         {
-            return Board.CurrentBoard[i_RowIndex, i_ColumnIndex].Incheck;
+            return m_Board.CurrentBoard[i_RowIndex, i_ColumnIndex].Incheck;
         }
 
         public void ForceRevealBoardGuessState(bool i_RevealState)
@@ -189,8 +186,8 @@ namespace GameLogic
             {
                 r_MatchManager.NextPlayer();
             }
-            Board.CurrentBoard[r_CellGuessManager.GetRowGuess(0), r_CellGuessManager.GetColumnGuess(0)].Incheck = false;
-            Board.CurrentBoard[r_CellGuessManager.GetRowGuess(1), r_CellGuessManager.GetColumnGuess(1)].Incheck = false;
+            m_Board.CurrentBoard[r_CellGuessManager.GetRowGuess(0), r_CellGuessManager.GetColumnGuess(0)].Incheck = false;
+            m_Board.CurrentBoard[r_CellGuessManager.GetRowGuess(1), r_CellGuessManager.GetColumnGuess(1)].Incheck = false;
             r_CellGuessManager.Clear();
         }
         public bool IsGameFinished()

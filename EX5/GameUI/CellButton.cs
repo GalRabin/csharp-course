@@ -15,6 +15,7 @@ namespace GameUI
         private int m_ColumnIndex;
         private bool m_IsReveal = false;
         private bool m_IsInCheck = false;
+        private string m_value;
 
         public CellButton(int i_RowIndex, int i_ColumnIndex)
         {
@@ -60,6 +61,18 @@ namespace GameUI
             set
             {
                 m_IsInCheck = value;
+            }
+        }
+
+        public string Value
+        {
+            get
+            {
+                return m_value;
+            }
+            set
+            {
+                m_value = value;
             }
         }
     }
